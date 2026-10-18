@@ -36,9 +36,8 @@ pub const ALLOWED_LICENCES: &[&str] = &[
 ];
 
 /// The closed list of Adobe-authored, non-visual technical data (AGENTS.md §1.1): (crate, path).
-/// Storyteller's own brand marks (the ArtCraft name and logos): shipped in the app and docs, but
-/// not licensed for reuse by forks. Allowed only for `kind = "logo"` entries under `docs/brand/`
-/// (AGENTS.md §1.2).
+/// The upstream brand marks (a third-party trademark, not licensed for reuse by forks) were
+/// removed from this fork (FORK.md); the allowlist rule below stays for policy completeness.
 pub const BRAND_LICENCE: &str = "LicenseRef-Storyteller-Trademark";
 
 pub const ADOBE_DATA_ALLOWED: &[(&str, &str)] = &[("hayro-cmap", "assets/cmaps.brotli"), ("hayro-interpret", "src/font/generated/metrics.rs")];
@@ -552,11 +551,9 @@ mod tests {
     #[test]
     fn brand_licence_only_for_brand_logos() {
         let root = super::root();
-        for (path, kind, pass) in [
-            ("docs/brand/artcraft-mark.svg", "logo", true),
-            ("docs/brand/artcraft-mark.svg", "icon", false),
-            ("assets/icons/mark.svg", "logo", false),
-        ] {
+        for (path, kind, pass) in
+            [("docs/brand/mark.svg", "logo", true), ("docs/brand/mark.svg", "icon", false), ("assets/icons/mark.svg", "logo", false)]
+        {
             let mut a = asset(path, "Storyteller", kind, BRAND_LICENCE);
             a.licence_file = "docs/brand/LICENSE-brand.txt".into();
             let m = Manifest { asset: vec![a], ..Default::default() };

@@ -1242,8 +1242,14 @@ fn collide(glyphs: &[&TextGlyph], height: &dyn Fn(usize) -> f32, h: f32, sc: &mu
 /// belongs to the span.
 /// Reverse right-to-left runs of `idx` (visual → logical), and the word gaps between their glyphs
 /// with them: `spaces[w]` is a gap left of `idx[w]` (#1062).
+/// When the first strong directional character is right-to-left, the spans themselves run in
+/// reverse logical order, so their sequence is reversed too (mixed Urdu+English lines).
 fn reverse_rtl(glyphs: &[&TextGlyph], idx: &mut [usize], spaces: &mut [bool]) {
     let rtl = |i: usize| glyphs[i].text.chars().any(is_rtl);
+    // Maximal spans: right-to-left runs (with internal spaces, exactly as before) alternate
+    // with non-right-to-left runs. Boundaries are recorded so the span order can be flipped
+    // for a right-to-left base direction below.
+    let mut spans: Vec<(usize, usize, bool)> = Vec::new();
     let mut k = 0;
     while k < idx.len() {
         if rtl(idx[k]) {
@@ -1251,14 +1257,59 @@ fn reverse_rtl(glyphs: &[&TextGlyph], idx: &mut [usize], spaces: &mut [bool]) {
             while e + 1 < idx.len() && (rtl(idx[e + 1]) || (glyphs[idx[e + 1]].text.trim().is_empty() && e + 2 < idx.len() && rtl(idx[e + 2]))) {
                 e += 1;
             }
-            idx[k..=e].reverse();
-            if let Some(gaps) = spaces.get_mut(k + 1..=e) {
-                gaps.reverse();
-            }
+            spans.push((k, e, true));
             k = e + 1;
         } else {
-            k += 1;
+            let mut e = k;
+            while e + 1 < idx.len() && !rtl(idx[e + 1]) {
+                e += 1;
+            }
+            spans.push((k, e, false));
+            k = e + 1;
         }
+    }
+    for &(s, e, is_rtl) in &spans {
+        if is_rtl {
+            idx[s..=e].reverse();
+            if let Some(gaps) = spaces.get_mut(s + 1..=e) {
+                gaps.reverse();
+            }
+        }
+    }
+    // Base direction from the first strong (right-to-left or Latin) character; digits and
+    // neutrals do not decide it.
+    let base_rtl = idx
+        .iter()
+        .flat_map(|&i| glyphs[i].text.chars())
+        .find(|c| is_rtl(*c) || c.is_ascii_alphabetic())
+        .is_some_and(is_rtl);
+    if base_rtl && spans.len() > 1 {
+        // Right-to-left paragraph: the visual span order is the reverse of the logical order.
+        // Emit the spans back-to-front as blocks. The gap that separated two spans in visual
+        // order stays between them, so each span (except the new first) takes the leading gap
+        // of the span that followed it visually.
+        let n = spans.len();
+        let mut new_idx = Vec::with_capacity(idx.len());
+        let mut new_spaces = Vec::with_capacity(spaces.len());
+        for (i, &(s, e, _)) in spans.iter().rev().enumerate() {
+            let orig = n - 1 - i;
+            let leading_gap = if i == 0 {
+                false
+            } else {
+                spans
+                    .get(orig + 1)
+                    .and_then(|&(fs, _, _)| spaces.get(fs))
+                    .copied()
+                    .unwrap_or(false)
+            };
+            new_idx.extend_from_slice(&idx[s..=e]);
+            new_spaces.push(leading_gap);
+            if let Some(inner) = spaces.get(s + 1..=e) {
+                new_spaces.extend_from_slice(inner);
+            }
+        }
+        idx.copy_from_slice(&new_idx);
+        spaces.copy_from_slice(&new_spaces);
     }
 }
 
@@ -2572,5 +2623,58 @@ mod tests {
         let expected = "Rückfragen für Überhitzungsschutz: können, weiß, Café";
         assert_eq!(ocr_layer_text(4, false), expected, "symbolic, no /ToUnicode");
         assert_eq!(ocr_layer_text(32, true), expected, "nonsymbolic, /ToUnicode for ASCII only");
+    }
+
+    /// Urdu extraction corpus (`crates/render/tests/data/urdu/`): shaped Noto Nastaliq Urdu
+    /// PDFs with visual-order content streams (as real Urdu PDFs have) must extract in
+    /// logical (reading/typing) order.
+    fn urdu_corpus_text(name: &str) -> String {
+        let path = format!("{}/tests/data/urdu/{name}", env!("CARGO_MANIFEST_DIR"));
+        let bytes = std::fs::read(&path).unwrap_or_else(|e| panic!("{path}: {e}"));
+        let pdf = Pdf::new(std::sync::Arc::new(bytes)).unwrap();
+        extract_page(&pdf, 0, &InterpreterSettings::default()).unwrap().plain_text()
+    }
+
+    /// Words in reading order; line wraps and word-gap spacing may differ.
+    fn words(s: &str) -> Vec<&str> {
+        s.split_whitespace().collect()
+    }
+
+    #[test]
+    fn urdu_paragraph_extracts_in_reading_order() {
+        let text = urdu_corpus_text("urdu-paragraph.pdf");
+        let expected = "اردو ہماری قومی زبان ہے۔ یہ پاکستان کے طول و عرض میں بولی اور سمجھی جاتی ہے۔ \
+            ہر بچے کو اردو پڑھنا اور لکھنا آنا چاہیے۔ کتابیں علم کا خزانہ ہیں، اور جو بچہ \
+            کتاب پڑھتا ہے وہ کامیاب ہوتا ہے۔ استاد کا فرض ہے کہ وہ بچوں میں پڑھنے کا شوق پیدا کرے۔";
+        assert_eq!(words(&text), words(expected), "extracted:\n{text}");
+    }
+
+    #[test]
+    fn urdu_english_mixed_lines_extract_in_reading_order() {
+        let text = urdu_corpus_text("urdu-mixed.pdf");
+        let lines: Vec<&str> = text.lines().map(str::trim).filter(|l| !l.is_empty()).collect();
+        assert_eq!(lines.len(), 2, "extracted:\n{text}");
+        assert_eq!(
+            words(lines[0]),
+            words("کلاس 5 کے 32 طلبہ نے English Grammar کا ٹیسٹ دیا اور 20 میں سے 18 نمبر حاصل کیے۔"),
+            "line 1"
+        );
+        assert_eq!(
+            words(lines[1]),
+            words("آج کی تاریخ 18 اکتوبر 2026 ہے۔ Science کا سبق نمبر 3 کل پڑھایا جائے گا۔"),
+            "line 2"
+        );
+    }
+
+    #[test]
+    fn urdu_word_list_extracts_each_row_in_order() {
+        let text = urdu_corpus_text("urdu-list.pdf");
+        let lines: Vec<&str> = text.lines().map(str::trim).filter(|l| !l.is_empty()).collect();
+        let expected =
+            ["ہفتے کے دن", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ", "اتوار"];
+        assert_eq!(lines.len(), expected.len(), "extracted:\n{text}");
+        for (line, want) in lines.iter().zip(expected.iter()) {
+            assert_eq!(words(line), words(want), "row");
+        }
     }
 }

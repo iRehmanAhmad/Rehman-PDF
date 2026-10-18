@@ -1,0 +1,2340 @@
+# Urdu (ur) catalog. Columns, separated by a TAB:  context <TAB> source <TAB> translation
+#
+#   context  empty                a plain UI string; `source` is the English text in the code
+#            @id                  a command id (e.g. file.saveAs): wins over the English text for
+#                                 that menu item, so one id can read differently from its twin
+#            @plural              `source` is "one|other" (English forms); the translation lists the
+#                                 language's forms separated by "|" (see `plural` in i18n/mod.rs):
+#                                 one, other (Urdu: singular for 1, plural for everything else)
+#            anything else        a disambiguating context passed to `tr_ctx`
+#   escapes  \n  \t  \\  inside a column. `{name}` placeholders must appear in both columns.
+#   lines starting with # and blank lines are ignored.
+#
+# Clean-room: every entry was written from the plain meaning of the English label using ordinary
+# Urdu computing vocabulary. No proprietary localisation resource, string table or product UI
+# (Acrobat's included) was consulted or copied; add entries the same way.
+# Product and technology names (Rehman-PDF, PDF, Acrobat JavaScript ...) stay in Latin letters;
+# the trailing "\u2026" of dialog commands is kept. Digits are Western (0-9).
+#
+# Write every entry in logical (typing) order. The interface draws text left to right, so
+# i18n/mod.rs puts each entry into display order when it loads the catalog (bidi::display_rtl);
+# see the Arabic catalog for how this reads.
+
+	Menu	مینیو
+	File	فائل
+	Edit	ترمیم
+	Pages	صفحات
+	View	منظر
+	Help	مدد
+	Preferences	ترجیحات
+	Preferences…	ترجیحات…
+	Interface language	انٹرفیس کی زبان
+	Interface size	انٹرفیس کا سائز
+	Auto ({percent}%)	خودکار ({percent}%)
+	Auto follows the system's text size. Pages always render at the display's full resolution.	خودکار: سسٹم کے ٹیکسٹ سائز کی پیروی کی جاتی ہے۔ صفحات ہمیشہ ڈسپلے کی مکمل ریزولوشن پر رینڈر ہوتے ہیں۔
+	Identity	شناخت
+	Name on new comments	نئے تبصروں پر نام
+	Open…	کھولیں…
+	Open Recent	حالیہ کھولیں
+	Clear Recent Files	حالیہ فائلیں صاف کریں
+	Remove from Recent	حالیہ سے ہٹائیں
+	Remove {name} from Recent	{name} کو حالیہ سے ہٹائیں
+	Pin folder to Home…	فولڈر کو ہوم پر پن کریں…
+	Folders	فولڈرز
+	Pin a folder…	فولڈر پن کریں…
+	Pin a folder to Home	فولڈر کو ہوم پر پن کریں
+	Pin a folder to list its newest PDFs here, such as where your scanner or a synced cloud drive saves them.	یہاں اس کی تازہ ترین PDFs درج کرنے کے لیے ایک فولڈر پن کریں، جیسے جہاں آپ کا اسکینر یا ہم وقت ساز کلاؤڈ ڈرائیو انہیں محفوظ کرتی ہے۔
+	Unpin	پن ہٹائیں
+	Unpin {folder}	{folder} کی پن ہٹائیں
+	Looking for PDFs…	PDFs تلاش ہو رہی ہیں…
+	This folder isn't available right now. It may have moved, or its drive or cloud sync is offline.	یہ فولڈر فی الحال دستیاب نہیں ہے۔ ہو سکتا ہے یہ منتقل ہو گیا ہو، یا اس کی ڈرائیو یا کلاؤڈ سنک آف لائن ہو۔
+	No PDFs in this folder yet	اس فولڈر میں ابھی کوئی PDF نہیں ہے
+	Show less	کم دکھائیں
+	Show {n} more	مزید {n} دکھائیں
+	The newest {n} of {total} PDFs	{total} PDFs میں سے تازہ ترین {n}
+	Pinned folders need the desktop app	پن کیے گئے فولڈرز کے لیے ڈیسک ٹاپ ایپ درکار ہے
+	Choose a folder on this computer to pin	پن کرنے کے لیے اس کمپیوٹر سے ایک فولڈر منتخب کریں
+	{folder} is already pinned to Home	{folder} پہلے سے ہوم پر پن ہے
+	You can pin up to {n} folders. Unpin one first.	آپ زیادہ سے زیادہ {n} فولڈرز پن کر سکتے ہیں۔ پہلے کسی ایک کی پن ہٹائیں۔
+	Pinned {folder} to Home	{folder} ہوم پر پن کر دیا گیا
+	No recent files	کوئی حالیہ فائل نہیں
+	New blank PDF	نئی خالی PDF
+	Create PDF from file…	فائل سے PDF بنائیں…
+	Create PDF from images…	تصاویر سے PDF بنائیں…
+	Create PDF from multiple files…	متعدد فائلوں سے PDF بنائیں…
+	Create separate PDFs…	الگ الگ PDFs بنائیں…
+	Create PDF from clipboard	کلپ بورڈ سے PDF بنائیں
+	Combine files…	فائلیں یکجا کریں…
+	Save	محفوظ کریں
+	Save as…	بطور محفوظ کریں…
+	Close file	فائل بند کریں
+	Close all	سب بند کریں
+	Revert	واپس لیں
+	Print…	پرنٹ کریں…
+	Document properties…	دستاویز کی خصوصیات…
+	Undo	کالعدم
+	Redo	دوبارہ کریں
+	Find…	تلاش کریں…
+	Advanced search…	جدید تلاش…
+	Copy pages	صفحات کاپی کریں
+	Cut pages	صفحات کاٹیں
+	Paste pages	صفحات چسپاں کریں
+	Fit visible	نظر آنے والے حصے کے مطابق فٹ کریں
+	Marquee zoom	مارکی زوم
+	Take a snapshot	اسنیپ شاٹ لیں
+	Column select	کالم منتخب کریں
+	Full screen mode	مکمل اسکرین موڈ
+	Read mode	مطالعہ موڈ
+	Next tab	اگلا ٹیب
+	Previous tab	پچھلا ٹیب
+	Switch light / dark theme	ہلکی / گہری تھیم بدلیں
+	Comments panel	تبصروں کا پینل
+	Form fields panel	فارم فیلڈز کا پینل
+	Clear form	فارم صاف کریں
+	Find tools and commands…	ٹولز اور کمانڈز تلاش کریں…
+	Zoom	زوم
+	Actual size	اصل سائز
+	Zoom to page level	صفحے کی سطح تک زوم کریں
+	Fit to width	چوڑائی کے مطابق فٹ کریں
+	Display theme	ڈسپلے تھیم
+	Side panels	سائیڈ پینلز
+	Enable Acrobat JavaScript	Acrobat JavaScript فعال کریں
+	OK	ٹھیک ہے
+	Close	بند کریں
+	Next / previous match	اگلا / پچھلا میچ
+	Copy selected text	منتخب متن کاپی کریں
+	Double-click	ڈبل کلک
+	Select a word	لفظ منتخب کریں
+	Clear selection / close find	انتخاب صاف کریں / تلاش بند کریں
+	Zoom in / out (also pinch or {key}-scroll)	زوم ان / آؤٹ (پنچ یا {key}-اسکرول بھی)
+	Rotate view	منظر گھمائیں
+	First / last page	پہلا / آخری صفحہ
+	Previous / next page	پچھلا / اگلا صفحہ
+	Delete selected pages (Organize)	منتخب صفحات حذف کریں (ترتیب)
+	Select all pages (Organize)	تمام صفحات منتخب کریں (ترتیب)
+	Home	ہوم
+	Open	کھولیں
+	Open a PDF ({key})	PDF کھولیں ({key})
+	Dark gray theme	گہری سرمئی تھیم
+	Light theme	ہلکی تھیم
+	Appearance mode	ظاہری شکل کا موڈ
+	Light	ہلکا
+	Dark	گہرا
+	Active	فعال
+	Dark theme	گہری تھیم
+	Appearance settings…	ظاہری شکل کی ترتیبات…
+	All tools	تمام ٹولز
+	Read	پڑھیں
+	Convert	تبدیل کریں
+	E-Sign	ای دستخط
+	Print ({key})	پرنٹ کریں ({key})
+	Save ({key})	محفوظ کریں ({key})
+	Document properties ({key})	دستاویز کی خصوصیات ({key})
+	Find tools and commands	ٹولز اور کمانڈز تلاش کریں
+	Fit to height	اونچائی کے مطابق فٹ کریں
+	Zoom in	زوم ان
+	Zoom out	زوم آؤٹ
+	Rotate view clockwise	منظر گھڑی کی سمت میں گھمائیں
+	Rotate view counterclockwise	منظر گھڑی کی مخالف سمت میں گھمائیں
+	Page navigation	صفحات کی نیویگیشن
+	Previous view	پچھلا منظر
+	Next view	اگلا منظر
+	Page display	صفحے کی نمائش
+	Continuous scrolling	مسلسل اسکرولنگ
+	Two-page view	دو صفحات کا منظر
+	Single page	واحد صفحہ
+	Show cover page in two-page view	دو صفحات کے منظر میں سرورق دکھائیں
+	Use system setting	سسٹم کی ترتیب استعمال کریں
+	Light gray	ہلکا سرمئی
+	Dark gray	گہرا سرمئی
+	Comments	تبصرے
+	Bookmarks	بک مارکس
+	Fields	فیلڈز
+	Layers	تہیں
+	Attachments	منسلکات
+	Signatures	دستخط
+	Accessibility Checker	رسائی چیکر
+	Search	تلاش
+	Compare	موازنہ
+	Page thumbnails	صفحات کے تھمب نیل
+	Form fields	فارم فیلڈز
+	Zoom out ({key})	زوم آؤٹ ({key})
+	Zoom in ({key})	زوم ان ({key})
+	Rotate view clockwise ({key})	منظر گھڑی کی سمت میں گھمائیں ({key})
+	Toggle fit page / fit width	صفحے کے مطابق فٹ / چوڑائی کے مطابق فٹ بدلیں
+	Next page	اگلا صفحہ
+	Previous page	پچھلا صفحہ
+	Current page — type a page number or label (such as iv) and press Enter	موجودہ صفحہ — صفحے کا نمبر یا لیبل (جیسے iv) لکھیں اور Enter دبائیں
+	Welcome to PdfCraft	Rehman-PDF میں خوش آمدید
+	An open-source PDF workbench — local, private, and scriptable.	ایک اوپن سورس PDF ورک بینچ — مقامی، نجی، اور اسکرپٹ کے قابل۔
+	Recommended tools	تجویز کردہ ٹولز
+	Use now	ابھی استعمال کریں
+	Open file	فائل کھولیں
+	Recent	حالیہ
+	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Rehman-PDF میں جو فائلیں آپ کھولتے ہیں وہ یہاں نظر آتی ہیں۔ کھولنے کے لیے کسی بھی جگہ PDF ڈراپ کریں۔
+	Privacy	رازداری
+	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	Rehman-PDF آف لائن کام کرتا ہے۔ کوئی ٹیلی میٹری نہیں، کوئی اکاؤنٹ نہیں، اور کوئی کلاؤڈ پروسیسنگ نہیں جب تک آپ کوئی فراہم کنندہ شامل نہ کریں۔
+	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	اسکرپٹس فائل یا نیٹ ورک رسائی کے بغیر سینڈ باکس میں چلتی ہیں۔ JavaScript بند ہونے پر بھی، Acrobat کے معیاری فارمیٹ، validate اور calculate فنکشنز کام کرتے ہیں۔
+	Back to all tools	تمام ٹولز پر واپس
+	Close panel	پینل بند کریں
+	View less	کم دیکھیں
+	View more	مزید دیکھیں
+	Available	دستیاب
+	Ready	تیار
+	Search tools and commands…	ٹولز اور کمانڈز تلاش کریں…
+	No matching tools	کوئی مماثل ٹول نہیں
+	Tool	ٹول
+	Command	کمانڈ
+	Add a sticky note	اسٹکی نوٹ شامل کریں
+	Add a text box	ٹیکسٹ باکس شامل کریں
+	Highlight text	متن ہائی لائٹ کریں
+	Underline text	متن انڈر لائن کریں
+	Strikethrough text	متن پر خط کشیدہ (اسٹرائیک تھرو) کریں
+	Squiggly underline text	لہردار انڈر لائن والا متن
+	Draw freehand	آزاد ہاتھ سے بنائیں
+	Draw a line	لکیر بنائیں
+	Draw an arrow	تیر بنائیں
+	Draw a rectangle	مستطیل بنائیں
+	Draw an oval	بیضوی بنائیں
+	Draw a polygon	کثیرالاضلاع بنائیں
+	Draw connected lines	جڑی ہوئی لکیریں بنائیں
+	Draw a cloud	بادل بنائیں
+	Add a callout	کال آؤٹ شامل کریں
+	Insert text	متن داخل کریں
+	Replace text	متن تبدیل کریں
+	Attach a file	فائل منسلک کریں
+	Erase drawings	بنائی ہوئی شکلیں مٹائیں
+	Flatten comments	تبصرے فلیٹ کریں
+	Import comments…	تبصرے درآمد کریں…
+	Add a stamp	اسٹیمپ شامل کریں
+	Export all comments to data file…	تمام تبصرے ڈیٹا فائل میں برآمد کریں…
+	Hide all comments	تمام تبصرے چھپائیں
+	Summarize comments	تبصروں کا خلاصہ
+	Import form data…	فارم ڈیٹا درآمد کریں…
+	Export form data…	فارم ڈیٹا برآمد کریں…
+	PDF/A…	PDF/A…
+	Action Wizard…	ایکشن وزرڈ…
+	Prepare for distribution…	تقسیم کے لیے تیار کریں…
+	Optimize scanned documents…	اسکین شدہ دستاویزات کو بہتر بنائیں…
+	Compare files…	فائلوں کا موازنہ کریں…
+	Detect form fields	فارم فیلڈز کا پتہ لگائیں
+	Merge data files into spreadsheet…	ڈیٹا فائلیں اسپریڈ شیٹ میں ضم کریں…
+	Flatten form fields	فارم فیلڈز فلیٹ کریں
+	Prepare a form	فارم تیار کریں
+	Tab order: by rows	ٹیب کی ترتیب: قطاروں کے حساب سے
+	Tab order: by columns	ٹیب کی ترتیب: کالموں کے حساب سے
+	Tab order: by document structure	ٹیب کی ترتیب: دستاویز کی ساخت کے حساب سے
+	Add text	متن شامل کریں
+	Edit text & images	متن اور تصاویر میں ترمیم کریں
+	Add or edit links	لنکس شامل کریں یا ترمیم کریں
+	Create links from URLs	URLs سے لنکس بنائیں
+	Remove all links	تمام لنکس ہٹائیں
+	No links to remove	ہٹانے کے لیے کوئی لنک نہیں
+	Removed 1 link	1 لنک ہٹایا گیا
+	Removed {n} links	{n} لنکس ہٹائے گئے
+	Add Bates numbering…	بیٹس نمبرنگ شامل کریں…
+	Add image…	تصویر شامل کریں…
+	Redact text and images	متن اور تصاویر کو ریڈیکٹ کریں
+	Redact pages…	صفحات ریڈیکٹ کریں…
+	Find text and redact…	متن تلاش کر کے ریڈیکٹ کریں…
+	Redaction properties…	ریڈیکشن کی خصوصیات…
+	Apply redactions…	ریڈیکشنز لاگو کریں…
+	Clear redaction marks	ریڈیکشن کے نشانات صاف کریں
+	Remove hidden information…	پوشیدہ معلومات ہٹائیں…
+	Sanitize document…	دستاویز کو صاف کریں…
+	Field properties…	فیلڈ کی خصوصیات…
+	Add a text field	ٹیکسٹ فیلڈ شامل کریں
+	Add a checkbox	چیک باکس شامل کریں
+	Add a radio button	ریڈیو بٹن شامل کریں
+	Add a drop-down list	ڈراپ ڈاؤن فہرست شامل کریں
+	Add a list box	فہرست باکس شامل کریں
+	Add a button	بٹن شامل کریں
+	Add an image field	تصویری فیلڈ شامل کریں
+	Add a date field	تاریخ کی فیلڈ شامل کریں
+	Add a digital signature field	ڈیجیٹل دستخط کی فیلڈ شامل کریں
+	Digitally sign	ڈیجیٹل دستخط کریں
+	Certify (visible signature)	تصدیق کریں (نمایاں دستخط)
+	Certify (invisible signature)	تصدیق کریں (غیر نمایاں دستخط)
+	Validate all signatures	تمام دستخطوں کی توثیق کریں
+	Signatures panel	دستخطوں کا پینل
+	Fill & Sign: add text	پُر کریں اور دستخط کریں: متن شامل کریں
+	Fill & Sign: checkmark	پُر کریں اور دستخط کریں: چیک مارک
+	Fill & Sign: cross	پُر کریں اور دستخط کریں: کراس
+	Fill & Sign: dot	پُر کریں اور دستخط کریں: نقطہ
+	Fill & Sign: line	پُر کریں اور دستخط کریں: لکیر
+	Fill & Sign: date	پُر کریں اور دستخط کریں: تاریخ
+	Fill & Sign: sign	پُر کریں اور دستخط کریں: دستخط
+	Fill & Sign: initials	پُر کریں اور دستخط کریں: ابتدائی دستخط
+	Export to image…	تصویر میں برآمد کریں…
+	Reduce file size…	فائل کا سائز کم کریں…
+	Optimize PDF…	PDF کو بہتر بنائیں…
+	Export to text…	متن میں برآمد کریں…
+	Export to Word…	Word میں برآمد کریں…
+	Export to PowerPoint…	PowerPoint میں برآمد کریں…
+	Export to HTML…	HTML میں برآمد کریں…
+	Export to RTF…	RTF میں برآمد کریں…
+	JavaScript console…	JavaScript کنسول…
+	Document JavaScripts…	دستاویز کے JavaScripts…
+	Recognize text…	متن پہچانیں…
+	Recognize text in multiple files…	متعدد فائلوں میں متن پہچانیں…
+	Check for accessibility…	رسائی کی جانچ کریں…
+	Open accessibility report	رسائی رپورٹ کھولیں
+	Change reading options…	پڑھنے کے اختیارات تبدیل کریں…
+	Add alternate text…	متبادل متن شامل کریں…
+	Export all images…	تمام تصاویر برآمد کریں…
+	Add header & footer…	ہیڈر اور فوٹر شامل کریں…
+	Update header & footer…	ہیڈر اور فوٹر اپ ڈیٹ کریں…
+	Remove header & footer	ہیڈر اور فوٹر ہٹائیں
+	Add watermark…	واٹر مارک شامل کریں…
+	Update watermark…	واٹر مارک اپ ڈیٹ کریں…
+	Remove watermark	واٹر مارک ہٹائیں
+	Add background…	پس منظر شامل کریں…
+	Update background…	پس منظر اپ ڈیٹ کریں…
+	Remove background	پس منظر ہٹائیں
+	Protect using password…	پاس ورڈ سے محفوظ کریں…
+	Remove security	سیکیورٹی ہٹائیں
+	Security properties…	سیکیورٹی کی خصوصیات…
+	Organize pages	صفحات ترتیب دیں
+	New bookmark	نیا بک مارک
+	New bookmarks from structure	ساخت سے نئے بک مارکس
+	Rotate pages clockwise	صفحات گھڑی کی سمت میں گھمائیں
+	Rotate pages counterclockwise	صفحات گھڑی کی مخالف سمت میں گھمائیں
+	Delete pages	صفحات حذف کریں
+	Insert blank page	خالی صفحہ داخل کریں
+	Rotate pages…	صفحات گھمائیں…
+	Duplicate pages	صفحات کی نقل بنائیں
+	Crop pages	صفحات کراپ کریں
+	Set page boxes…	صفحے کے باکسز سیٹ کریں…
+	Insert pages from file…	فائل سے صفحات داخل کریں…
+	Replace pages…	صفحات تبدیل کریں…
+	Extract pages…	صفحات نکالیں…
+	Split document…	دستاویز تقسیم کریں…
+	Number pages…	صفحات کو نمبر دیں…
+	Keyboard shortcuts	کی بورڈ شارٹ کٹس
+	Check for updates…	اپ ڈیٹس چیک کریں…
+	About PdfCraft	Rehman-PDF کے بارے میں
+	Export a PDF	PDF برآمد کریں
+	Export to	برآمد کریں بطور
+	Microsoft Word (.docx)	Microsoft Word (.docx)
+	Spreadsheet (.xlsx)	اسپریڈ شیٹ (.xlsx)
+	Presentation (.pptx)	پریزنٹیشن (.pptx)
+	Image (PNG)	تصویر (PNG)
+	Export all images	تمام تصاویر برآمد کریں
+	HTML web page	HTML ویب صفحہ
+	Rich Text Format (.rtf)	رچ ٹیکسٹ فارمیٹ (.rtf)
+	Text (plain)	متن (سادہ)
+	PostScript / EPS	PostScript / EPS
+	Fill & Sign	پُر کریں اور دستخط کریں
+	Fill	پُر کریں
+	Checkmark	چیک مارک
+	Cross	کراس
+	Dot	نقطہ
+	Line	لکیر
+	Date	تاریخ
+	Signature	دستخط
+	Initials	ابتدائی دستخط
+	Edit a PDF	PDF میں ترمیم کریں
+	Modify page	صفحہ تبدیل کریں
+	Rotate pages	صفحات گھمائیں
+	Insert pages	صفحات داخل کریں
+	Extract pages	صفحات نکالیں
+	Add content	مواد شامل کریں
+	Text	متن
+	Image	تصویر
+	Header and footer	ہیڈر اور فوٹر
+	Watermark	واٹر مارک
+	Link	لنک
+	Bates numbering	بیٹس نمبرنگ
+	Background	پس منظر
+	Attach file	فائل منسلک کریں
+	Create a PDF	PDF بنائیں
+	Create from	بنائیں از
+	Single file	واحد فائل
+	Multiple files	متعدد فائلیں
+	Separate PDFs	الگ PDFs
+	Images	تصاویر
+	Clipboard	کلپ بورڈ
+	Blank page	خالی صفحہ
+	Combine files	فائلیں یکجا کریں
+	Combine	یکجا کریں
+	Add files to combine	یکجا کرنے کے لیے فائلیں شامل کریں
+	Page options	صفحے کے اختیارات
+	Page grid	صفحے کی گرڈ
+	Rotate	گھمائیں
+	Delete	حذف کریں
+	Extract	نکالیں
+	Insert	داخل کریں
+	Replace	تبدیل کریں
+	Split	تقسیم کریں
+	More	مزید
+	Set page boxes	صفحے کے باکسز سیٹ کریں
+	Page labels	صفحے کے لیبلز
+	Page transitions	صفحے کی ٹرانزیشنز
+	Add comments	تبصرے شامل کریں
+	Markup	مارک اپ
+	Sticky note	اسٹکی نوٹ
+	Underline	انڈر لائن
+	Strikethrough	اسٹرائیک تھرو
+	Squiggly underline	لہردار انڈر لائن
+	Text box	ٹیکسٹ باکس
+	Drawing	ڈرائنگ
+	Rectangle	مستطیل
+	Oval	بیضوی
+	Arrow	تیر
+	Cloud	بادل
+	Stamp	اسٹیمپ
+	Review	جائزہ
+	Comment list	تبصروں کی فہرست
+	Scan & OCR	اسکین اور OCR
+	Recognize text	متن پہچانیں
+	In this file	اس فائل میں
+	In multiple files	متعدد فائلوں میں
+	Enhance scanned file	اسکین شدہ فائل بہتر بنائیں
+	Correct recognized text	پہچانے گئے متن کو درست کریں
+	Protect a PDF	PDF محفوظ کریں
+	Protect	محفوظ کریں
+	Protect with password	پاس ورڈ سے محفوظ کریں
+	Remove hidden information	پوشیدہ معلومات ہٹائیں
+	Advanced options	جدید اختیارات
+	Encrypt with certificate	سرٹیفکیٹ سے انکرپٹ کریں
+	Security properties	سیکیورٹی کی خصوصیات
+	Redact a PDF	PDF ریڈیکٹ کریں
+	Redact	ریڈیکٹ
+	Redact pages	صفحات ریڈیکٹ کریں
+	Find text and redact	متن تلاش کر کے ریڈیکٹ کریں
+	Set properties	خصوصیات سیٹ کریں
+	Sanitize document	دستاویز صاف کریں
+	Compress a PDF	PDF کمپریس کریں
+	Optimize	بہتر بنائیں
+	Reduce file size	فائل کا سائز کم کریں
+	Advanced optimization	جدید آپٹیمائزیشن
+	Audit space usage	جگہ کے استعمال کا آڈٹ
+	Field list	فیلڈ کی فہرست
+	Field properties	فیلڈ کی خصوصیات
+	Tab order by rows	قطاروں کے حساب سے ٹیب کی ترتیب
+	Tab order by columns	کالموں کے حساب سے ٹیب کی ترتیب
+	Import data	ڈیٹا درآمد کریں
+	Export data	ڈیٹا برآمد کریں
+	Add form components	فارم کے اجزا شامل کریں
+	Text field	ٹیکسٹ فیلڈ
+	Checkbox	چیک باکس
+	Radio button	ریڈیو بٹن
+	Drop-down list	ڈراپ ڈاؤن فہرست
+	List box	فہرست باکس
+	Button	بٹن
+	Image field	تصویری فیلڈ
+	Date field	تاریخ کی فیلڈ
+	Digital signature	ڈیجیٹل دستخط
+	Stamps	اسٹیمپس
+	Stamp palette	اسٹیمپ پیلیٹ
+	Use a certificate	سرٹیفکیٹ استعمال کریں
+	Certificates	سرٹیفکیٹس
+	Timestamp	ٹائم اسٹیمپ
+	Use print production	پرنٹ پروڈکشن استعمال کریں
+	Print production	پرنٹ پروڈکشن
+	Output preview	آؤٹ پٹ کا پیش نظارہ
+	Preflight	پری فلائٹ
+	Convert colors	رنگ تبدیل کریں
+	Add printer marks	پرنٹر کے نشانات شامل کریں
+	Fix hairlines	باریک لکیریں درست کریں
+	Measure objects	اشیاء کی پیمائش کریں
+	Measure	پیمائش
+	Measuring tool	پیمائش کا ٹول
+	Geospatial location	جغرافیائی مقام
+	Compare files	فائلوں کا موازنہ کریں
+	Select files to compare	موازنہ کے لیے فائلیں منتخب کریں
+	Use guided actions	رہنمائی یافتہ اقدامات استعمال کریں
+	Actions list	اقدامات کی فہرست
+	Action Wizard	ایکشن وزرڈ
+	Make accessible	قابل رسائی بنائیں
+	Prepare for distribution	تقسیم کے لیے تیار کریں
+	Optimize scanned documents	اسکین شدہ دستاویزات بہتر بنائیں
+	Archive documents	دستاویزات محفوظ کریں
+	Prepare for accessibility	رسائی کے لیے تیار کریں
+	Accessibility	رسائی
+	Automatically tag PDF	خودکار PDF ٹیگ لگائیں
+	Change reading options	پڑھنے کے اختیارات تبدیل کریں
+	Check for accessibility	رسائی کی جانچ کریں
+	Add alternate text	متبادل متن شامل کریں
+	Fix reading order	پڑھنے کی ترتیب درست کریں
+	Apply PDF standards	PDF معیارات لاگو کریں
+	Standards	معیارات
+	Save as PDF/A	PDF/A کے طور پر محفوظ کریں
+	Save as PDF/X	PDF/X کے طور پر محفوظ کریں
+	Save as PDF/UA	PDF/UA کے طور پر محفوظ کریں
+	Add search index	تلاش کا انڈیکس شامل کریں
+	Index	انڈیکس
+	Manage embedded index	ایمبیڈڈ انڈیکس کا انتظام
+	Use JavaScript	JavaScript استعمال کریں
+	JavaScript	JavaScript
+	Console	کنسول
+	Document JavaScripts	دستاویز کے JavaScripts
+	Document actions	دستاویز کے اقدامات
+	AI assistant	AI اسسٹنٹ
+	Bring your own model (off by default)	اپنا ماڈل لائیں (پہلے سے بند ہے)
+	Summarize	خلاصہ
+	Ask about this document	اس دستاویز کے بارے میں پوچھیں
+	Translate	ترجمہ کریں
+	pages	صفحات
+	Planned	منصوبہ بند
+	Planned for milestone	سنگ میل کے لیے منصوبہ بند
+	open to see what it will include	دیکھنے کے لیے کھولیں کہ اس میں کیا شامل ہوگا
+	Optional: needs an AI provider you configure	اختیاری: آپ کے ترتیب کردہ AI فراہم کنندہ کی ضرورت ہے
+	Coming in milestone	سنگ میل میں آ رہا ہے
+	Items marked Ready work today.	تیار نشان زد آئٹمز آج کام کرتے ہیں۔
+	Preview	پیش نظارہ
+	Edit fields	فیلڈز میں ترمیم کریں
+	Try the form as people filling it in will see it	فارم کو ویسے آزمائیں جیسے پُر کرنے والے اسے دیکھیں گے
+	Redact all	سب ریڈیکٹ کریں
+	Clear all	سب صاف کریں
+	Rotate page	صفحہ گھمائیں
+	Delete page	صفحہ حذف کریں
+	Move page	صفحہ منتقل کریں
+	Move pages	صفحات منتقل کریں
+	Duplicate page	صفحے کی نقل بنائیں
+	Replace page	صفحہ تبدیل کریں
+	Replace pages	صفحات تبدیل کریں
+	Crop page	صفحہ کراپ کریں
+	Cancel	منسوخ کریں
+	Don't save	محفوظ نہ کریں
+	Apply	لاگو کریں
+	Run	چلائیں
+	Clear	صاف کریں
+	Sanitize	صاف کریں
+	Mark all	سب کو نشان زد کریں
+	Save changes to “{name}” before closing?	بند کرنے سے پہلے ”{name}“ میں تبدیلیاں محفوظ کریں؟
+	Your changes will be lost if you don't save them.	اگر آپ انہیں محفوظ نہیں کرتے تو آپ کی تبدیلیاں ضائع ہو جائیں گی۔
+	Password required	پاس ورڈ درکار ہے
+	“{name}” is protected. Enter a password to open it.	”{name}“ محفوظ ہے۔ اسے کھولنے کے لیے پاس ورڈ درج کریں۔
+	Password	پاس ورڈ
+	Incorrect password. Try again.	پاس ورڈ غلط ہے۔ دوبارہ کوشش کریں۔
+	Recognize Text	متن پہچانیں
+	Password protection will be applied when you save	پاس ورڈ کی حفاظت محفوظ کرنے پر لاگو ہوگی
+	Saved the print-ready PDF to {path}	پرنٹ کے لیے تیار PDF {path} میں محفوظ کر دی گئی
+	Could not save: {e}	محفوظ نہیں ہو سکا: {e}
+	Earlier in tab order	ٹیب کی ترتیب میں پہلے
+	Later in tab order	ٹیب کی ترتیب میں بعد میں
+	From:	از:
+	To:	تا:
+	High Resolution	اعلی ریزولوشن
+	Print	پرنٹ کریں
+	Verify to see what the document needs.	دستاویز کو کیا درکار ہے یہ دیکھنے کے لیے تصدیق کریں۔
+	Set Page Boxes	صفحے کے باکسز سیٹ کریں
+	Signature panel	دستخط کا پینل
+	{month} {day}, {y}	{month} {day}، {y}
+	The document's security settings don't allow filling in form fields	دستاویز کی سیکیورٹی ترتیبات فارم فیلڈز پُر کرنے کی اجازت نہیں دیتیں
+	{name} is read-only	{name} صرف پڑھنے کے لیے ہے
+	{name} has no action	{name} کا کوئی عمل نہیں ہے
+	Previous month	پچھلا مہینہ
+	Next month	اگلا مہینہ
+	January	جنوری
+	February	فروری
+	March	مارچ
+	April	اپریل
+	May	مئی
+	June	جون
+	July	جولائی
+	August	اگست
+	September	ستمبر
+	October	اکتوبر
+	November	نومبر
+	December	دسمبر
+	Done	ہو گیا
+	This certificate is in your list of trusted certificates.	یہ سرٹیفکیٹ آپ کے قابل اعتماد سرٹیفکیٹس کی فہرست میں ہے۔
+	This certificate is trusted through a certificate above it in the chain.	یہ سرٹیفکیٹ چین میں اس سے اوپر کے سرٹیفکیٹ کے ذریعے قابل اعتماد ہے۔
+	This certificate is not trusted. Signatures made with it show an unknown identity.	یہ سرٹیفکیٹ قابل اعتماد نہیں ہے۔ اس سے بنائے گئے دستخط نامعلوم شناخت دکھاتے ہیں۔
+	Add to Trusted Certificates	قابل اعتماد سرٹیفکیٹس میں شامل کریں
+	Export…	برآمد کریں…
+	PDF Optimizer	PDF آپٹیمائزر
+	Discard Objects	اشیاء ترک کریں
+	Discard User Data	صارف کا ڈیٹا ترک کریں
+	Clean Up	صاف کریں
+	Color Images	رنگی تصاویر
+	Grayscale Images	گرے اسکیل تصاویر
+	Bicubic downsampling to	بائی کیوبک ڈاؤن سیمپلنگ تا
+	for images above	ان سے اوپر کی تصاویر کے لیے
+	Compression	کمپریشن
+	ZIP	ZIP
+	Retain existing	موجودہ برقرار رکھیں
+	Minimum	کم از کم
+	Low	کم
+	High	زیادہ
+	Maximum	زیادہ سے زیادہ
+	Each image is measured where pages draw it; an image is replaced only if the result is smaller.	ہر تصویر وہیں ماپی جاتی ہے جہاں صفحات اسے بناتے ہیں؛ تصویر صرف اس صورت میں تبدیل کی جاتی ہے جب نتیجہ چھوٹا ہو۔
+	Discard all links, actions and JavaScript	تمام لنکس، اقدامات اور JavaScript ترک کریں
+	Discard alternate images	متبادل تصاویر ترک کریں
+	Discard embedded page thumbnails	ایمبیڈڈ صفحے کے تھمب نیل ترک کریں
+	Discard document tags	دستاویز کے ٹیگز ترک کریں
+	Discard embedded print settings	ایمبیڈڈ پرنٹ ترتیبات ترک کریں
+	Discard bookmarks	بک مارکس ترک کریں
+	Discard hidden layer content	پوشیدہ تہہ کا مواد ترک کریں
+	Discard all comments, forms and multimedia	تمام تبصرے، فارمز اور ملٹی میڈیا ترک کریں
+	Discard document information and metadata	دستاویز کی معلومات اور میٹا ڈیٹا ترک کریں
+	Discard all object data (file attachments)	تمام آبجیکٹ ڈیٹا ترک کریں (فائل منسلکات)
+	Discard private data of other applications	دوسری ایپلی کیشنز کا نجی ڈیٹا ترک کریں
+	Discard hidden text	پوشیدہ متن ترک کریں
+	Use Flate to encode streams that are not encoded	انکوڈ نہ شدہ اسٹریمز کو انکوڈ کرنے کے لیے Flate استعمال کریں
+	Remove invalid links and bookmarks	غلط لنکس اور بک مارکس ہٹائیں
+	Remove unreferenced named destinations	غیر حوالہ شدہ نامزد مقامات ہٹائیں
+	Compress document structure (object streams)	دستاویز کی ساخت کمپریس کریں (آبجیکٹ اسٹریمز)
+	Remove unused objects and merge identical ones	غیر استعمال شدہ اشیاء ہٹائیں اور ایک جیسی اشیاء ضم کریں
+	Audit space usage…	جگہ کے استعمال کا آڈٹ…
+	Space Audit	جگہ کا آڈٹ
+	Bytes	بائٹس
+	Content Streams	مواد کی اسٹریمز
+	X Object Forms	X آبجیکٹ فارمز
+	Structure Info	ساخت کی معلومات
+	Thumbnails	تھمب نیلز
+	Named Destinations	نامزد مقامات
+	Color Spaces	رنگ کی جگہیں
+	Shadings	شیڈنگز
+	Patterns (graphics objects)	پیٹرنز (گرافکس آبجیکٹس)
+	Extended Graphics States	توسیعی گرافکس اسٹیٹس
+	Embedded Files	ایمبیڈڈ فائلیں
+	Document Overhead	دستاویز کا اضافی بوجھ
+	Total	کل
+	Text Field Properties	ٹیکسٹ فیلڈ کی خصوصیات
+	Check Box Properties	چیک باکس کی خصوصیات
+	Radio Button Properties	ریڈیو بٹن کی خصوصیات
+	Dropdown Properties	ڈراپ ڈاؤن کی خصوصیات
+	List Box Properties	فہرست باکس کی خصوصیات
+	Button Properties	بٹن کی خصوصیات
+	Digital Signature Properties	ڈیجیٹل دستخط کی خصوصیات
+	Position	پوزیشن
+	Options	اختیارات
+	Validate	توثیق کریں
+	Calculate	حساب لگائیں
+	Actions	اقدامات
+	This field is locked. Unlock it to change its properties.	یہ فیلڈ مقفل ہے۔ اس کی خصوصیات تبدیل کرنے کے لیے اسے ان لاک کریں۔
+	Tooltip:	ٹول ٹپ:
+	Common Properties	عام خصوصیات
+	Read Only	صرف پڑھنے کے لیے
+	Required	لازم
+	Font Size:	فونٹ کا سائز:
+	Auto	خودکار
+	Text Color:	متن کا رنگ:
+	Borders and Colors	بارڈرز اور رنگ
+	Border Color:	بارڈر کا رنگ:
+	Fill Color:	بھرنے کا رنگ:
+	No color	کوئی رنگ نہیں
+	Beveled	ابھرا ہوا
+	Left:	بائیں:
+	Bottom:	نیچے:
+	Width:	چوڑائی:
+	Height:	اونچائی:
+	Rotation:	گردش:
+	Points from the page's bottom-left corner.	صفحے کے نیچے بائیں کونے سے پوائنٹس۔
+	Alignment:	الائنمنٹ:
+	Default Value:	پہلے سے طے شدہ قدر:
+	Multi-line	متعدد سطریں
+	Scroll long text	لمبا متن اسکرول کریں
+	Allow Rich Text Formatting	رچ ٹیکسٹ فارمیٹنگ کی اجازت دیں
+	Limit of	حد برائے
+	characters	حروف
+	Field is used for file selection	فیلڈ فائل کے انتخاب کے لیے استعمال ہوتی ہے
+	Check spelling	ہجے چیک کریں
+	Comb of	کومب برائے
+	Export Value: {on}	برآمدی قدر: {on}
+	Check box is checked by default	چیک باکس پہلے سے چیک شدہ ہے
+	Button is checked by default	بٹن پہلے سے چیک شدہ ہے
+	Buttons with the same name and value are selected in unison	ایک ہی نام اور قدر والے بٹن یکساں طور پر منتخب ہوتے ہیں
+	Item:	آئٹم:
+	Item List	آئٹم کی فہرست
+	Up	اوپر
+	Delete {o}	{o} حذف کریں
+	Add the choices people pick from.	وہ انتخاب شامل کریں جن میں سے لوگ منتخب کرتے ہیں۔
+	Default:	پہلے سے طے شدہ:
+	(none)	(کوئی نہیں)
+	Sort items	آئٹمز ترتیب دیں
+	Allow user to enter custom text	صارف کو اپنی مرضی کا متن درج کرنے کی اجازت دیں
+	Multiple selection	متعدد انتخاب
+	Commit selected value immediately	منتخب قدر فوری طور پر کمٹ کریں
+	Number	عدد
+	Percentage	فیصد
+	Time	وقت
+	Special	خاص
+	Select format category:	فارمیٹ کی کیٹیگری منتخب کریں:
+	The value is shown as typed.	قدر ویسے دکھائی جاتی ہے جیسے ٹائپ کی گئی ہو۔
+	Decimal places:	اعشاریہ کے مقامات:
+	Separator style:	جدا کرنے والے کا انداز:
+	Currency symbol:	کرنسی کی علامت:
+	Before the number	عدد سے پہلے
+	Negative number style:	منفی عدد کا انداز:
+	Format:	فارمیٹ:
+	Custom:	اپنی مرضی:
+	Zip Code	زپ کوڈ
+	Zip Code + 4	زپ کوڈ + 4
+	Phone Number	فون نمبر
+	Social Security Number	سوشل سیکیورٹی نمبر
+	Arbitrary Mask	من مانی ماسک
+	Mask:	ماسک:
+	9 digit, A letter, O letter or digit, X any character	9 عدد، A حرف، O حرف یا عدد، X کوئی بھی حرف
+	Example: {sample}	مثال: {sample}
+	Field value is not validated	فیلڈ کی قدر کی توثیق نہیں کی گئی
+	Field value is in range:	فیلڈ کی قدر حد میں ہے:
+	Add an Action	ایکشن شامل کریں
+	Select Trigger:	ٹرگر منتخب کریں:
+	Mouse Up	ماؤس اوپر
+	Mouse Down	ماؤس نیچے
+	Mouse Enter	ماؤس داخل
+	Mouse Exit	ماؤس خارج
+	On Focus	فوکس پر
+	On Blur	بلر پر
+	Select Action:	ایکشن منتخب کریں:
+	Open a web link	ویب لنک کھولیں
+	Reset a form	فارم ری سیٹ کریں
+	Execute a menu item	مینیو آئٹم چلائیں
+	Show a field	فیلڈ دکھائیں
+	Hide a field	فیلڈ چھپائیں
+	Submit a form	فارم جمع کرائیں
+	Fields to reset (comma-separated; empty: all)	ری سیٹ کرنے والے فیلڈز (کوما سے جدا؛ خالی: تمام)
+	Print, NextPage, PrevPage, FirstPage or LastPage	Print، NextPage، PrevPage، FirstPage یا LastPage
+	Field names (comma-separated)	فیلڈ کے نام (کوما سے جدا)
+	URL to submit to	جمع کرانے کے لیے URL
+	Script:	اسکرپٹ:
+	Value:	قدر:
+	No actions	کوئی ایکشن نہیں
+	Value is not calculated	قدر کا حساب نہیں لگایا گیا
+	Value is the	قدر ہے
+	sum (+)	جمع (+)
+	product (x)	حاصل ضرب (x)
+	average	اوسط
+	minimum	کم از کم
+	maximum	زیادہ سے زیادہ
+	of the following fields:	ان فیلڈز کا:
+	Simplified field notation:	آسان فیلڈ نوٹیشن:
+	Field names with + - * / and parentheses; put \\ before spaces in names.	+ - * / اور قوسین کے ساتھ فیلڈ کے نام؛ ناموں میں خالی جگہوں سے پہلے \\ لگائیں۔
+	Finding document fonts…	دستاویز کے فونٹس تلاش ہو رہے ہیں…
+	Installed fonts…	انسٹال شدہ فونٹس…
+	Keep source fonts	ماخذ فونٹس برقرار رکھیں
+	Load font…	فونٹ لوڈ کریں…
+	No openly licensed document fonts found. Load a font file.	کوئی اوپن لائسنس یافتہ دستاویز فونٹ نہیں ملا۔ فونٹ فائل لوڈ کریں۔
+	Format text	متن فارمیٹ کریں
+	Bold	بولڈ
+	Italic	اٹالک
+	Align left	بائیں سیدھ کریں
+	Centre	درمیان میں
+	Align right	دائیں سیدھ کریں
+	Justify	جواز
+	Thai and Arabic use regular fallback fonts when available.	تھائی اور عربی دستیاب ہونے پر عام فال بیک فونٹس استعمال کرتے ہیں۔
+	Edit image	تصویر میں ترمیم کریں
+	Rotate counterclockwise	گھڑی کی مخالف سمت میں گھمائیں
+	Rotate clockwise	گھڑی کی سمت میں گھمائیں
+	Flip horizontal	افقی پلٹیں
+	Flip vertical	عمودی پلٹیں
+	Replace image	تصویر تبدیل کریں
+	Crop (% trimmed from each side)	کراپ کریں (ہر طرف سے % تراشا گیا)
+	Click on the page to add text; each click starts a new box, and ✓ finishes. Drag items to move them, drag a corner to resize, double-click text to edit it.	متن شامل کرنے کے لیے صفحے پر کلک کریں؛ ہر کلک سے نیا باکس شروع ہوتا ہے، اور ✓ مکمل کرتا ہے۔ منتقل کرنے کے لیے آئٹمز کو گھسیٹیں، سائز تبدیل کرنے کے لیے کونہ گھسیٹیں، ترمیم کے لیے متن پر ڈبل کلک کریں۔
+	Choose an image	تصویر منتخب کریں
+	Export to Image	تصویر میں برآمد کریں
+	Export to Text	متن میں برآمد کریں
+	Export All Images	تمام تصاویر برآمد کریں
+	Resolution	ریزولوشن
+	Format	فارمیٹ
+	Quality	معیار
+	One {f} file per page, named after the document.	ہر صفحے کے لیے ایک {f} فائل، دستاویز کے نام پر۔
+	Exclude images smaller than	اس سے چھوٹی تصاویر خارج کریں
+	No limit	کوئی حد نہیں
+	Each image once, named after the document and page. JPEG images are saved unchanged; others as PNG.	ہر تصویر ایک بار، دستاویز اور صفحے کے نام پر۔ JPEG تصاویر بغیر تبدیلی کے محفوظ ہوتی ہیں؛ باقی PNG کے طور پر۔
+	Plain text in reading order; pages are separated by form feeds.	پڑھنے کی ترتیب میں سادہ متن؛ صفحات فارم فیڈز سے جدا ہوتے ہیں۔
+	Create {what}	{what} بنائیں
+	initials	ابتدائی دستخط
+	signature	دستخط
+	Create Custom Stamp	اپنی مرضی کا اسٹیمپ بنائیں
+	From {file}	{file} سے
+	Category:	کیٹیگری:
+	e.g. My stamps	مثلاً میرے اسٹیمپس
+	Name:	نام:
+	Custom	اپنی مرضی
+	Delete stamp	اسٹیمپ حذف کریں
+	Create custom stamp…	اپنی مرضی کا اسٹیمپ بنائیں…
+	From a PDF page or an image	PDF صفحے یا تصویر سے
+	Line spacing	لائنوں کا فاصلہ
+	Character spacing	حروف کا فاصلہ
+	Horizontal scale	افقی پیمانہ
+	Rotate Clockwise	گھڑی کی سمت میں گھمائیں
+	Rotate Counterclockwise	گھڑی کی مخالف سمت میں گھمائیں
+	Flip Horizontal	افقی پلٹیں
+	Flip Vertical	عمودی پلٹیں
+	Replace Image…	تصویر تبدیل کریں…
+	Save Image As…	تصویر بطور محفوظ کریں…
+	Copy Image	تصویر کاپی کریں
+	The image has been copied ({w} × {h} pixels)	تصویر کاپی ہو گئی ہے ({w} × {h} پکسلز)
+	Couldn't copy the image: {e}	تصویر کاپی نہیں ہو سکی: {e}
+	Copy Image in Original Format	اصل فارمیٹ میں تصویر کاپی کریں
+	The image has been copied as a {ext} file	تصویر {ext} فائل کے طور پر کاپی ہو گئی ہے
+	The page has changed; select the image again	صفحہ بدل گیا ہے؛ تصویر دوبارہ منتخب کریں
+	Check for updates	اپ ڈیٹس چیک کریں
+	No check has run yet.	ابھی تک کوئی جانچ نہیں ہوئی۔
+	Checking for a newer version…	نئے ورژن کی جانچ ہو رہی ہے…
+	PdfCraft {v} is available.	Rehman-PDF {v} دستیاب ہے۔
+	You have version {c}. Download the new version from its release page.	آپ کے پاس ورژن {c} ہے۔ اس کے ریلیز صفحے سے نیا ورژن ڈاؤن لوڈ کریں۔
+	PdfCraft {c} is up to date.	Rehman-PDF {c} تازہ ترین ہے۔
+	Couldn't check for updates: {e}	اپ ڈیٹس چیک نہیں ہو سکے: {e}
+	You have version {c}. All releases are listed at {page}.	آپ کے پاس ورژن {c} ہے۔ تمام ریلیزز {page} پر درج ہیں۔
+	Asks GitHub for the latest release. Nothing is downloaded or installed automatically.	GitHub سے تازہ ترین ریلیز پوچھتا ہے۔ کچھ بھی خودکار طور پر ڈاؤن لوڈ یا انسٹال نہیں ہوتا۔
+	Download	ڈاؤن لوڈ کریں
+	Later	بعد میں
+	none	کوئی نہیں
+	Declared conformance: {shown}	اعلان کردہ مطابقت: {shown}
+	Output intent: {list}	آؤٹ پٹ کا ارادہ: {list}
+	Conformance level:	مطابقت کی سطح:
+	No problems found: the document conforms to {level}.	کوئی مسئلہ نہیں ملا: دستاویز {level} کے مطابق ہے۔
+	 (page {p})	  (صفحہ {p})
+	  · not fixable here	   · یہیں ٹھیک نہیں ہو سکتا
+	Verify	تصدیق کریں
+	Box	باکس
+	Units	اکائیاں
+	Set to zero	صفر پر سیٹ کریں
+	Current page ({n})	موجودہ صفحہ ({n})
+	Subset	ذیلی سیٹ
+	Update	اپ ڈیٹ کریں
+	Add	شامل کریں
+	{verb} Header and Footer	{verb} ہیڈر اور فوٹر
+	{verb} Watermark	{verb} واٹر مارک
+	{verb} Background	{verb} پس منظر
+	Margins	مارجنز
+	Left Header Text	بایاں ہیڈر متن
+	Center Header Text	درمیانی ہیڈر متن
+	Right Header Text	دایاں ہیڈر متن
+	Left Footer Text	بایاں فوٹر متن
+	Center Footer Text	درمیانی فوٹر متن
+	Right Footer Text	دایاں فوٹر متن
+	Insert Page Number	صفحے کا نمبر داخل کریں
+	Insert Date	تاریخ داخل کریں
+	Start page number	صفحے کے نمبر کی شروعات
+	Source	ماخذ
+	Fit to page	صفحے کے مطابق فٹ کریں
+	Rotation	گردش
+	Appear behind page	صفحے کے پیچھے ظاہر ہو
+	Appear on top of page	صفحے کے اوپر ظاہر ہو
+	Offset from centre	مرکز سے آفسیٹ
+	From colour	رنگ سے
+	Page Range Options	صفحے کی حد کے اختیارات
+	Preview: page {p} of {n}	پیش نظارہ: {n} میں سے صفحہ {p}
+	Applies to 1 page	1 صفحے پر لاگو ہوتا ہے
+	Applies to {n} pages	{n} صفحات پر لاگو ہوتا ہے
+	Replaces the existing one on those pages.	ان صفحات پر موجودہ کو تبدیل کرتا ہے۔
+	PDF or image	PDF یا تصویر
+	No file chosen	کوئی فائل منتخب نہیں
+	Page number	صفحے کا نمبر
+	Scale relative to target page	ہدف صفحے کے مقابلے میں پیمانہ
+	Link Properties	لنک کی خصوصیات
+	Create Link	لنک بنائیں
+	Link Appearance	لنک کی ظاہری شکل
+	Link Type:	لنک کی قسم:
+	Visible Rectangle	نمایاں مستطیل
+	Invisible Rectangle	غیر نمایاں مستطیل
+	Highlight Style:	ہائی لائٹ کا انداز:
+	Invert	الٹیں
+	Outline	خاکہ
+	Inset	اندرونی
+	Line Thickness:	لکیر کی موٹائی:
+	Thin	پتلی
+	Thick	موٹی
+	Line Style:	لکیر کا انداز:
+	Solid	ٹھوس
+	Dashed	ٹوٹی ہوئی
+	Color:	رنگ:
+	Link Action	لنک کا عمل
+	Open a web page	ویب صفحہ کھولیں
+	Go to a page view	صفحے کے منظر پر جائیں
+	Type the web address.	ویب پتہ لکھیں۔
+	This document has no signatures.	اس دستاویز میں کوئی دستخط نہیں ہیں۔
+	The Keychain's digital IDs couldn't be listed: {e}	Keychain کی ڈیجیٹل IDs درج نہیں ہو سکیں: {e}
+	Signed and saved to {path}	دستخط کر کے {path} میں محفوظ کر دیا گیا
+	Couldn't open revision {n}: {e}	نظرثانی {n} نہیں کھل سکی: {e}
+	Couldn't open the signed version: {e}	دستخط شدہ ورژن نہیں کھل سکا: {e}
+	Sign with a Digital ID	ڈیجیٹل ID سے دستخط کریں
+	Choose the digital ID that you want to use for signing:	وہ ڈیجیٹل ID منتخب کریں جسے آپ دستخط کے لیے استعمال کرنا چاہتے ہیں:
+	Keychain  ·  	Keychain  ·  
+	Windows store  ·  	Windows store  ·  
+	Issued by: 	Issued by:  
+	, Expires: 	, Expires:  
+	No digital IDs yet.	ابھی کوئی ڈیجیٹل IDs نہیں ہیں۔
+	Configure New Digital ID	نئی ڈیجیٹل ID ترتیب دیں
+	Remove "{name}" from this list? The file itself is not deleted.	اس فہرست سے ”{name}“ ہٹائیں؟ فائل خود حذف نہیں ہوتی۔
+	Continue	جاری رکھیں
+	Configure a Digital ID for Signing	دستخط کے لیے ڈیجیٹل ID ترتیب دیں
+	Use a Digital ID from a file	فائل سے ڈیجیٹل ID استعمال کریں
+	Create a new Digital ID (self-signed, saved to a password-protected file)	نئی ڈیجیٹل ID بنائیں (خود دستخط شدہ، پاس ورڈ سے محفوظ فائل میں محفوظ)
+	Name	نام
+	Organizational Unit	تنظیمی یونٹ
+	Organization Name	تنظیم کا نام
+	Email Address	ای میل پتہ
+	Country/Region	ملک / علاقہ
+	Key Algorithm	کلیدی الگورتھم
+	Confirm Password	پاس ورڈ کی تصدیق کریں
+	Valid for 5 years, for digital signatures. Self-signed IDs are usually not trusted by others.	ڈیجیٹل دستخطوں کے لیے 5 سال کے لیے درست۔ خود دستخط شدہ IDs عام طور پر دوسروں کے لیے قابل اعتماد نہیں ہوتیں۔
+	File (.p12, .pfx)	فائل (.p12, .pfx)
+	Digital ID	ڈیجیٹل ID
+	Browse…	براؤز کریں…
+	{verb} as "{name}"	{verb} بطور ”{name}“
+	Certify	تصدیق کریں
+	The signature will be invisible.	دستخط غیر نمایاں ہوگا۔
+	The existing action will be preserved.	موجودہ عمل برقرار رکھا جائے گا۔
+	Distinguished name	ممتاز نام
+	Labels	لیبلز
+	Graphic	گرافک
+	Signer's name	دستخط کنندہ کا نام
+	Fill & Sign signature	پُر کریں اور دستخط کریں کا دستخط
+	Choose image…	تصویر منتخب کریں…
+	Permitted actions after certifying	تصدیق کے بعد اجازت شدہ اقدامات
+	No changes allowed	کوئی تبدیلی کی اجازت نہیں
+	Annotations, form fill-in, and digital signatures	تشریحات، فارم پُر کرنا، اور ڈیجیٹل دستخط
+	Form fill-in and digital signatures	فارم پُر کرنا اور ڈیجیٹل دستخط
+	The key is in the macOS Keychain, which may ask to allow PdfCraft to use it.	کلید macOS Keychain میں ہے، جو Rehman-PDF کو اسے استعمال کرنے کی اجازت مانگ سکتا ہے۔
+	The key is in the Windows certificate store, which may ask to allow PdfCraft to use it.	کلید Windows سرٹیفکیٹ اسٹور میں ہے، جو Rehman-PDF کو اسے استعمال کرنے کی اجازت مانگ سکتا ہے۔
+	Digital ID password	ڈیجیٹل ID کا پاس ورڈ
+	Back	پیچھے
+	Validate all	سب کی توثیق کریں
+	Sign this field…	اس فیلڈ پر دستخط کریں…
+	Signature is valid:	دستخط درست ہے:
+	Signature validity is UNKNOWN:	دستخط کی درستگی نامعلوم ہے:
+	Signature is INVALID:	دستخط غلط ہے:
+	Signature Details	دستخط کی تفصیلات
+	Reason	وجہ
+	Signing time	دستخط کا وقت
+	Algorithm	الگورتھم
+	Signer	دستخط کنندہ
+	Issued by	جاری کنندہ
+	Valid	درست
+	Field	فیلڈ
+	Field: {field} on page {p}	فیلڈ: صفحہ {p} پر {field}
+	Add to trusted certificates	قابل اعتماد سرٹیفکیٹس میں شامل کریں
+	View signed version	دستخط شدہ ورژن دیکھیں
+	Show certificate…	سرٹیفکیٹ دکھائیں…
+	Export certificate…	سرٹیفکیٹ برآمد کریں…
+	Certificate Viewer	سرٹیفکیٹ ویوور
+	This dialog shows the details of a certificate and its chain.	یہ ڈائیلاگ سرٹیفکیٹ اور اس کی چین کی تفصیلات دکھاتا ہے۔
+	Trust	اعتماد
+	Issued to	جاری کردہ برائے
+	Valid from	درست از
+	Valid to	درست تا
+	Intended usage	مطلوبہ استعمال
+	Any	کوئی بھی
+	Version	ورژن
+	Serial number	سیریل نمبر
+	Issuer	جاری کنندہ
+	Validity starts	درستگی کا آغاز
+	Validity ends	درستگی کا اختتام
+	Public key	عوامی کلید
+	Key usage	کلید کا استعمال
+	Not present	موجود نہیں
+	Self-signed	خود دستخط شدہ
+	Edit Action	ایکشن میں ترمیم کریں
+	New Action	نیا ایکشن
+	Action name:	ایکشن کا نام:
+	Description:	تفصیل:
+	Steps	مراحل
+	Add the steps this action runs, in order.	وہ مراحل شامل کریں جو یہ ایکشن ترتیب سے چلاتا ہے۔
+	Add Step	مرحلہ شامل کریں
+	An action with this name already exists.	اس نام کا ایکشن پہلے سے موجود ہے۔
+	New Action…	نیا ایکشن…
+	Edit…	ترمیم کریں…
+	Add watermark	واٹر مارک شامل کریں
+	Add header	ہیڈر شامل کریں
+	Add footer	فوٹر شامل کریں
+	Set document title	دستاویز کا عنوان سیٹ کریں
+	Run a JavaScript	JavaScript چلائیں
+	Prepare for Distribution	تقسیم کے لیے تیار کریں
+	Remove hidden information and flatten comments and form fields, so recipients see only the pages.	پوشیدہ معلومات ہٹائیں اور تبصرے اور فارم فیلڈز فلیٹ کریں، تاکہ وصول کنندگان صرف صفحات دیکھیں۔
+	Optimize Scanned Documents	اسکین شدہ دستاویزات بہتر بنائیں
+	Make scans searchable, then make them smaller.	اسکینز کو تلاش کے قابل بنائیں، پھر انہیں چھوٹا کریں۔
+	Add Page Numbers	صفحے کے نمبر شامل کریں
+	Number every page in the footer.	فوٹر میں ہر صفحے کو نمبر دیں۔
+	Mark as Confidential	خفیہ کے طور پر نشان زد کریں
+	A diagonal CONFIDENTIAL watermark on every page.	ہر صفحے پر ترچھا CONFIDENTIAL واٹر مارک۔
+	Sanitize Documents	دستاویزات صاف کریں
+	Remove hidden information, metadata, scripts and embedded content, and rewrite the files.	پوشیدہ معلومات، میٹا ڈیٹا، اسکرپٹس اور ایمبیڈڈ مواد ہٹائیں، اور فائلیں دوبارہ لکھیں۔
+	Type text	متن ٹائپ کریں
+	Text to insert	داخل کرنے والا متن
+	Replacement text	متبادل متن
+	Edit text…	متن میں ترمیم کریں…
+	Add a sticky note here	یہاں اسٹکی نوٹ شامل کریں
+	{kind} Properties	{kind} کی خصوصیات
+	Appearance	ظاہری شکل
+	General	عام
+	Review History	جائزے کی تاریخ
+	This comment's appearance can't be changed yet.	اس تبصرے کی ظاہری شکل ابھی تبدیل نہیں ہو سکتی۔
+	Icon	آئیکن
+	Thickness	موٹائی
+	Modified	ترمیم شدہ
+	No status has been set.	کوئی حیثیت سیٹ نہیں کی گئی۔
+	Compare Files	فائلوں کا موازنہ کریں
+	Old file:	پرانی فائل:
+	Open the older version first	پہلے پرانا ورژن کھولیں
+	New file:	نئی فائل:
+	Text is compared word by word; the differences are shown on the new file.	متن کا لفظ بہ لفظ موازنہ کیا جاتا ہے؛ فرق نئی فائل پر دکھائے جاتے ہیں۔
+	Compare this file with an older version: Compare files… in All tools.	اس فائل کا پرانے ورژن سے موازنہ کریں: تمام ٹولز میں فائلوں کا موازنہ کریں…۔
+	No differences in the text.	متن میں کوئی فرق نہیں۔
+	{n} {kind}	{n} {kind}
+	Inserted	داخل کیا گیا
+	Deleted	حذف کیا گیا
+	Replaced	تبدیل کیا گیا
+	Visual	بصری
+	Mark as comments	تبصروں کے طور پر نشان زد کریں
+	Report…	رپورٹ…
+	{kind} · page {p}	{kind} · صفحہ {p}
+	Set Alternate Text	متبادل متن سیٹ کریں
+	This document has no tagged figures.	اس دستاویز میں کوئی ٹیگ شدہ شکلیں نہیں ہیں۔
+	 on page {p}	  صفحہ {p} پر
+	Figure {i} of {n}{page}	شکل {i} از {n}{page}
+	No preview	کوئی پیش نظارہ نہیں
+	Alternate text	متبادل متن
+	Describe the figure	شکل کی وضاحت کریں
+	Decorative figure	آرائشی شکل
+	Previous figure	پچھلی شکل
+	Next figure	اگلی شکل
+	Save & Close	محفوظ کریں اور بند کریں
+	Accessibility Checker Options	رسائی چیکر کے اختیارات
+	Report Options	رپورٹ کے اختیارات
+	Create accessibility report	رسائی رپورٹ بنائیں
+	Page Range	صفحے کی حد
+	All pages in document	دستاویز کے تمام صفحات
+	Checking Options ({on} of 32 in all categories)	جانچ کے اختیارات (تمام کیٹیگریز میں 32 میں سے {on})
+	Show this dialog when the Checker starts	چیکر شروع ہونے پر یہ ڈائیلاگ دکھائیں
+	Select All	سب منتخب کریں
+	Clear All	سب صاف کریں
+	Start Checking	جانچ شروع کریں
+	This document hasn't been checked yet.	اس دستاویز کی ابھی جانچ نہیں ہوئی۔
+	No issues found	کوئی مسئلہ نہیں ملا
+	1 issue	1 مسئلہ
+	{n} issues	{n} مسائل
+	{label} (1 issue)	{label} (1 مسئلہ)
+	{label} ({n} issues)	{label} ({n} مسائل)
+	Check again	دوبارہ جانچیں
+	Report	رپورٹ
+	Show the accessibility report	رسائی رپورٹ دکھائیں
+	Collapse	سمیٹیں
+	Expand	پھیلائیں
+	{rule} - {status}	{rule} - {status}
+	Passed	کامیاب
+	Failed	ناکام
+	Needs manual check	دستی جانچ درکار ہے
+	Skipped	چھوڑا گیا
+	Fix	ٹھیک کریں
+	Skip Rule	قاعدہ چھوڑیں
+	Explain	وضاحت کریں
+	Check Again	دوبارہ جانچیں
+	Show Report	رپورٹ دکھائیں
+	Options…	اختیارات…
+	Go to the page	صفحے پر جائیں
+	Page Content	صفحے کا مواد
+	Forms	فارمز
+	Alternate Text	متبادل متن
+	Tables	ٹیبلز
+	Lists	فہرستیں
+	Headings	سرخیاں
+	Accessibility permission flag	رسائی کی اجازت کا جھنڈا
+	Accessibility permission flag is set	رسائی کی اجازت کا جھنڈا سیٹ ہے
+	Security settings must allow assistive technology to read the content ("Enable text access for screen reader devices"). Change the document's security to allow it.	سیکیورٹی ترتیبات کو معاون ٹیکنالوجی کو مواد پڑھنے کی اجازت دینی چاہیے (”اسکرین ریڈر ڈیوائسز کے لیے ٹیکسٹ رسائی فعال کریں“)۔ اس کی اجازت کے لیے دستاویز کی سیکیورٹی تبدیل کریں۔
+	Image-only PDF	صرف تصویری PDF
+	Document is not image-only PDF	دستاویز صرف تصویری PDF نہیں ہے
+	Pages that are only pictures of text can't be read aloud or searched. Recognize text (OCR) to add a text layer.	متن کی صرف تصویروں والے صفحات بلند آواز میں نہیں پڑھے جا سکتے اور نہ تلاش ہو سکتے ہیں۔ متن کی تہہ شامل کرنے کے لیے متن پہچانیں (OCR)۔
+	Document is tagged PDF	دستاویز ٹیگ شدہ PDF ہے
+	Tags give the document a logical structure that assistive technology follows. Tag the document (Automatically tag PDF).	ٹیگز دستاویز کو منطقی ساخت دیتے ہیں جس کی معاون ٹیکنالوجی پیروی کرتی ہے۔ دستاویز کو ٹیگ کریں (خودکار PDF ٹیگ لگائیں)۔
+	Logical Reading Order	منطقی پڑھنے کی ترتیب
+	Document structure provides a logical reading order	دستاویز کی ساخت منطقی پڑھنے کی ترتیب فراہم کرتی ہے
+	Check that the tags read in the order a sighted reader would. Use the Reading Order tool or the Tags panel to correct it.	جانچیں کہ ٹیگز اس ترتیب میں پڑھے جاتے ہیں جس میں دیکھنے والا قاری پڑھے گا۔ اسے درست کرنے کے لیے ریڈنگ آرڈر ٹول یا ٹیگز پینل استعمال کریں۔
+	Primary language	بنیادی زبان
+	Text language is specified	متن کی زبان متعین ہے
+	Screen readers choose their voice from the document's language. Set it in Document Properties > Advanced > Language.	اسکرین ریڈرز دستاویز کی زبان سے اپنی آواز منتخب کرتے ہیں۔ اسے دستاویز کی خصوصیات > جدید > زبان میں سیٹ کریں۔
+	Document title is showing in title bar	دستاویز کا عنوان ٹائٹل بار میں دکھ رہا ہے
+	The window should show a meaningful title rather than the file name. Set a title and Initial View > Show: Document Title.	ونڈو کو فائل کے نام کے بجائے بامعنی عنوان دکھانا چاہیے۔ عنوان سیٹ کریں اور ابتدائی منظر > دکھائیں: دستاویز کا عنوان۔
+	Bookmarks are present in large documents	بڑے دستاویزات میں بک مارکس موجود ہیں
+	Documents of more than 20 pages need bookmarks for navigation. Add bookmarks for the main sections.	20 سے زیادہ صفحات والے دستاویزات کو نیویگیشن کے لیے بک مارکس کی ضرورت ہوتی ہے۔ اہم حصوں کے لیے بک مارکس شامل کریں۔
+	Color contrast	رنگ کا تضاد
+	Document has appropriate color contrast	دستاویز میں مناسب رنگ کا تضاد ہے
+	Text must contrast enough with its background for people with low vision. Check the colours by eye or with a contrast tool.	متن کو کم بینائی والے افراد کے لیے اپنے پس منظر سے کافی تضاد ہونا چاہیے۔ رنگوں کو آنکھ سے یا کنٹراسٹ ٹول سے چیک کریں۔
+	Tagged content	ٹیگ شدہ مواد
+	All page content is tagged	تمام صفحے کا مواد ٹیگ شدہ ہے
+	Everything on a page must be tagged or marked as an artifact (decoration, headers, footers). Tag the untagged content.	صفحے کی ہر چیز ٹیگ شدہ ہونی چاہیے یا آرٹی فیکٹ (سجاوٹ، ہیڈرز، فوٹرز) کے طور پر نشان زد ہونی چاہیے۔ غیر ٹیگ شدہ مواد کو ٹیگ کریں۔
+	Tagged annotations	ٹیگ شدہ تشریحات
+	All annotations are tagged	تمام تشریحات ٹیگ شدہ ہیں
+	Comments, links and fields must be in the tag tree to be announced. Tag the annotations.	اعلان کے لیے تبصرے، لنکس اور فیلڈز ٹیگ ٹری میں ہونے چاہئیں۔ تشریحات کو ٹیگ کریں۔
+	Tab order	ٹیب کی ترتیب
+	Tab order is consistent with structure order	ٹیب کی ترتیب ساخت کی ترتیب سے مطابقت رکھتی ہے
+	Pages with links, comments or fields should tab in structure order. The fix sets each page's tab order to Use Document Structure.	لنکس، تبصروں یا فیلڈز والے صفحات کو ساخت کی ترتیب میں ٹیب ہونا چاہیے۔ اصلاح ہر صفحے کی ٹیب ترتیب کو دستاویز کی ساخت استعمال کریں پر سیٹ کرتی ہے۔
+	Character encoding	حروف کی انکوڈنگ
+	Reliable character encoding is provided	قابل اعتماد حروف کی انکوڈنگ فراہم کی گئی ہے
+	Fonts must map their characters to Unicode so text can be read and copied. Fix the fonts or recreate the PDF.	فونٹس کو اپنے حروف کو یونیکوڈ سے میپ کرنا چاہیے تاکہ متن پڑھا اور کاپی کیا جا سکے۔ فونٹس ٹھیک کریں یا PDF دوبارہ بنائیں۔
+	Tagged multimedia	ٹیگ شدہ ملٹی میڈیا
+	All multimedia objects are tagged	تمام ملٹی میڈیا آبجیکٹس ٹیگ شدہ ہیں
+	Video, sound and rich media must be tagged to be announced. Tag the multimedia annotations.	اعلان کے لیے ویڈیو، آواز اور رچ میڈیا ٹیگ شدہ ہونے چاہئیں۔ ملٹی میڈیا تشریحات کو ٹیگ کریں۔
+	Screen flicker	اسکرین کا جھلملانا
+	Page will not cause screen flicker	صفحہ اسکرین جھلملانے کا باعث نہیں بنے گا
+	Animation that flashes can cause seizures. Check scripts and media for flicker.	چمکنے والی اینیمیشن دورے کا باعث بن سکتی ہے۔ جھلملاہٹ کے لیے اسکرپٹس اور میڈیا چیک کریں۔
+	Scripts	اسکرپٹس
+	No inaccessible scripts	کوئی غیر قابل رسائی اسکرپٹس نہیں
+	Timed responses	وقت پر مبنی جوابات
+	Page does not require timed responses	صفحے کو وقت پر مبنی جوابات کی ضرورت نہیں
+	People may need more time to respond. Check that nothing has a time limit.	لوگوں کو جواب کے لیے مزید وقت درکار ہو سکتا ہے۔ چیک کریں کہ کسی چیز کی وقت کی حد نہ ہو۔
+	Navigation links	نیویگیشن لنکس
+	Navigation links are not repetitive	نیویگیشن لنکس دہرائے نہیں گئے
+	Repeated navigation links should be skippable. Check links that appear on every page.	دہرائے گئے نیویگیشن لنکس چھوڑنے کے قابل ہونے چاہئیں۔ ہر صفحے پر ظاہر ہونے والے لنکس چیک کریں۔
+	Tagged form fields	ٹیگ شدہ فارم فیلڈز
+	All form fields are tagged	تمام فارم فیلڈز ٹیگ شدہ ہیں
+	Form fields must be in the tag tree (Form tags) to be announced. Tag the form fields.	اعلان کے لیے فارم فیلڈز ٹیگ ٹری (فارم ٹیگز) میں ہونے چاہئیں۔ فارم فیلڈز کو ٹیگ کریں۔
+	Field descriptions	فیلڈ کی تفصیل
+	All form fields have description	تمام فارم فیلڈز کی تفصیل ہے
+	Each field needs a tooltip that says what to enter. Add one in Field Properties > General > Tooltip.	ہر فیلڈ کو ایک ٹول ٹپ چاہیے جو بتائے کہ کیا درج کرنا ہے۔ فیلڈ کی خصوصیات > عام > ٹول ٹپ میں ایک شامل کریں۔
+	Figures alternate text	شکلوں کا متبادل متن
+	Figures require alternate text	شکلوں کو متبادل متن درکار ہے
+	Pictures need alternate text that describes them, or must be marked decorative. Add alternate text to each figure.	تصویروں کو ان کی وضاحت کرنے والا متبادل متن چاہیے، یا انہیں آرائشی نشان زد کرنا چاہیے۔ ہر شکل میں متبادل متن شامل کریں۔
+	Nested alternate text	گھرا ہوا متبادل متن
+	Alternate text that will never be read	متبادل متن جو کبھی نہیں پڑھا جائے گا
+	Alternate text inside an element that already has alternate text is never read. Remove the inner alternate text.	ایسے عنصر کے اندر متبادل متن جس کا پہلے سے متبادل متن ہو کبھی نہیں پڑھا جاتا۔ اندرونی متبادل متن ہٹائیں۔
+	Associated with content	مواد سے منسلک
+	Alternate text must be associated with some content	متبادل متن کسی مواد سے منسلک ہونا چاہیے
+	Alternate text on an element without page content is never reached. Remove it or attach the element to content.	صفحے کے مواد کے بغیر عنصر پر متبادل متن کبھی نہیں پہنچتا۔ اسے ہٹائیں یا عنصر کو مواد سے جوڑیں۔
+	Hides annotation	تشریح چھپاتا ہے
+	Alternate text should not hide annotation	متبادل متن کو تشریح نہیں چھپانی چاہیے
+	Alternate text on an element that contains a link or field hides that annotation from assistive technology. Move the alternate text.	لنک یا فیلڈ والے عنصر پر متبادل متن اس تشریح کو معاون ٹیکنالوجی سے چھپاتا ہے۔ متبادل متن منتقل کریں۔
+	Other elements alternate text	دوسرے عناصر کا متبادل متن
+	Other elements that require alternate text	دوسرے عناصر جنہیں متبادل متن درکار ہے
+	Formulas and similar non-text elements need alternate text. Add alternate text to them.	فارمولوں اور اسی طرح کے غیر متنی عناصر کو متبادل متن درکار ہے۔ ان میں متبادل متن شامل کریں۔
+	Rows	قطاریں
+	TR must be a child of Table, THead, TBody, or TFoot	TR کو Table، THead، TBody یا TFoot کا بچہ ہونا چاہیے
+	Table cells belong in a row. Fix the table's tags.	ٹیبل کے سیل قطار میں ہونے چاہئیں۔ ٹیبل کے ٹیگز ٹھیک کریں۔
+	Headers	ہیڈرز
+	Tables should have headers	ٹیبلز میں ہیڈرز ہونے چاہئیں
+	Header cells (TH) tell listeners what each column or row holds. Mark the header cells.	ہیڈر سیل (TH) سننے والوں کو بتاتے ہیں کہ ہر کالم یا قطار میں کیا ہے۔ ہیڈر سیلز کو نشان زد کریں۔
+	Regularity	باقاعدگی
+	Tables must contain the same number of columns in each row and rows in each column	ٹیبلز میں ہر قطار میں کالموں کی اور ہر کالم میں قطاروں کی تعداد ایک جیسی ہونی چاہیے
+	Irregular tables confuse cell navigation. Give every row the same number of cells (counting spans).	بے قاعدہ ٹیبلز سیل نیویگیشن کو الجھاتے ہیں۔ ہر قطار کو سیلز کی ایک جیسی تعداد دیں (اسپینز گنتے ہوئے)۔
+	Summary	خلاصہ
+	Tables must have a summary	ٹیبلز کا خلاصہ ہونا چاہیے
+	A summary describes the table's purpose and layout. Add a Summary attribute to each table.	خلاصہ ٹیبل کے مقصد اور ترتیب کی وضاحت کرتا ہے۔ ہر ٹیبل میں Summary ایٹریبیوٹ شامل کریں۔
+	List items	فہرست کے آئٹمز
+	LI must be a child of L	LI کو L کا بچہ ہونا چاہیے
+	List items belong in a list. Fix the list's tags.	فہرست کے آئٹمز فہرست میں ہونے چاہئیں۔ فہرست کے ٹیگز ٹھیک کریں۔
+	Lbl and LBody	Lbl اور LBody
+	Lbl and LBody must be children of LI	Lbl اور LBody کو LI کے بچے ہونے چاہئیں
+	List labels and bodies belong in a list item. Fix the list's tags.	فہرست کے لیبلز اور باڈیز فہرست آئٹم میں ہونے چاہئیں۔ فہرست کے ٹیگز ٹھیک کریں۔
+	Appropriate nesting	مناسب گہرائی
+	Heading levels shouldn't skip (an H1 followed by an H3). Retag the headings.	سرخیوں کی سطحیں چھوڑنی نہیں چاہئیں (H1 کے بعد H3)۔ سرخیوں کو دوبارہ ٹیگ کریں۔
+	TH and TD	TH اور TD
+	TH and TD must be children of TR	TH اور TD کو TR کے بچے ہونے چاہئیں
+	Mark Page Range	صفحے کی حد نشان زد کریں
+	Pages from	صفحات از
+	Single word or phrase	واحد لفظ یا جملہ
+	Text to find	تلاش کرنے والا متن
+	Patterns	پیٹرنز
+	Phone Numbers	فون نمبرز
+	Email Addresses	ای میل پتے
+	Credit Cards	کریڈٹ کارڈز
+	Social Security Numbers	سوشل سیکیورٹی نمبرز
+	Dates	تاریخیں
+	Text in images isn't found; recognise text (OCR) first.	تصاویر میں متن نہیں ملتا؛ پہلے متن پہچانیں (OCR)۔
+	No matches.	کوئی میچ نہیں۔
+	Some bookmarks are not shown here: the panel lists a limited number, nested a limited depth.	کچھ بک مارکس یہاں نہیں دکھائے گئے: پینل محدود تعداد درج کرتا ہے، محدود گہرائی میں گہرے۔
+	{n} match(es) marked for redaction.	{n} میچ ریڈیکشن کے لیے نشان زد۔
+	Multiple words or phrases	متعدد الفاظ یا جملے
+	One word or phrase per line	ہر سطر میں ایک لفظ یا جملہ
+	Import list…	فہرست درآمد کریں…
+	{n} word(s) or phrase(s)	{n} لفظ یا جملے
+	{name} is too large for a word list (at most 1 MB).	{name} لفظوں کی فہرست کے لیے بہت بڑی ہے (زیادہ سے زیادہ 1 MB)۔
+	Redaction Tool Properties	ریڈیکشن ٹول کی خصوصیات
+	Redacted area fill colour:	ریڈیکٹ شدہ علاقے کا بھرنے والا رنگ:
+	Use overlay text	اوورلے متن استعمال کریں
+	Custom text:	اپنی مرضی کا متن:
+	Redaction code:	ریڈیکشن کوڈ:
+	Font:	فونٹ:
+	Font size:	فونٹ کا سائز:
+	Auto-size text to fit redaction region	ریڈیکشن کے علاقے میں فٹ ہونے کے لیے متن خودکار سائز کریں
+	Font colour:	فونٹ کا رنگ:
+	Repeat overlay text	اوورلے متن دہرائیں
+	Text alignment:	متن کی الائنمنٹ:
+	Center	درمیان میں
+	Apply redactions	ریڈیکشنز لاگو کریں
+	You are about to apply 1 redaction mark. Text, images and drawings under the marks, and comments and form fields that overlap them, are removed permanently.	آپ 1 ریڈیکشن نشان لاگو کرنے والے ہیں۔ نشانات کے نیچے متن، تصاویر اور بنائی ہوئی شکلیں، اور ان سے اوورلیپ ہونے والے تبصرے اور فارم فیلڈز، مستقل طور پر ہٹا دیے جاتے ہیں۔
+	You are about to apply {n} redaction marks. Text, images and drawings under the marks, and comments and form fields that overlap them, are removed permanently.	آپ {n} ریڈیکشن نشانات لاگو کرنے والے ہیں۔ نشانات کے نیچے متن، تصاویر اور بنائی ہوئی شکلیں، اور ان سے اوورلیپ ہونے والے تبصرے اور فارم فیلڈز، مستقل طور پر ہٹا دیے جاتے ہیں۔
+	Save the document afterwards: saving rewrites the whole file so no trace of the removed content stays in it.	اس کے بعد دستاویز محفوظ کریں: محفوظ کرنے سے پوری فائل دوبارہ لکھی جاتی ہے تاکہ ہٹائے گئے مواد کا کوئی نشان نہ رہے۔
+	Select the items to remove from this document.	اس دستاویز سے ہٹانے والے آئٹمز منتخب کریں۔
+	Metadata	میٹا ڈیٹا
+	File attachments	فائل منسلکات
+	Comments and markups	تبصرے اور مارک اپ
+	Hidden text	پوشیدہ متن
+	Hidden layers	پوشیدہ تہیں
+	Links, actions and JavaScripts	لنکس، اقدامات اور JavaScripts
+	Private data of other applications	دوسری ایپلی کیشنز کا نجی ڈیٹا
+	None found	کچھ نہیں ملا
+	Form fields are flattened: their values stay visible. Saving rewrites the whole file.	فارم فیلڈز فلیٹ ہیں: ان کی قدریں نظر آتی رہیں گی۔ محفوظ کرنے سے پوری فائل دوبارہ لکھی جاتی ہے۔
+	Remove	ہٹائیں
+	Sanitizing removes hidden information from the document: metadata, file attachments, comments, form fields (flattened), hidden text and layers, bookmarks, links, actions and scripts, and private application data.	صاف کرنے سے دستاویز سے پوشیدہ معلومات ہٹ جاتی ہیں: میٹا ڈیٹا، فائل منسلکات، تبصرے، فارم فیلڈز (فلیٹ شدہ)، پوشیدہ متن اور تہیں، بک مارکس، لنکس، اقدامات اور اسکرپٹس، اور نجی ایپلی کیشن ڈیٹا۔
+	Save the document afterwards; saving rewrites the whole file so nothing removed stays in it.	اس کے بعد دستاویز محفوظ کریں؛ محفوظ کرنے سے پوری فائل دوبارہ لکھی جاتی ہے تاکہ ہٹائی گئی کوئی چیز نہ رہے۔
+	Printer:	پرنٹر:
+	Save as PDF	PDF کے طور پر محفوظ کریں
+	{name} (default)	{name} (پہلے سے طے شدہ)
+	Copies:	کاپیاں:
+	Collate	کولیٹ
+	Print in grayscale	گرے اسکیل میں پرنٹ کریں
+	Two-sided:	دو طرفہ:
+	Off	بند
+	Flip on long edge	لمبے کنارے پر پلٹیں
+	Flip on short edge	چھوٹے کنارے پر پلٹیں
+	Paper:	کاغذ:
+	Pages to Print	پرنٹ کرنے والے صفحات
+	More options:	مزید اختیارات:
+	All pages in range	حد میں تمام صفحات
+	Odd pages only	صرف طاق صفحات
+	Even pages only	صرف جفت صفحات
+	Reverse pages	صفحات الٹیں
+	Page Sizing & Handling	صفحے کا سائز اور ہینڈلنگ
+	Size	سائز
+	Poster	پوسٹر
+	Multiple	متعدد
+	Booklet	کتابچہ
+	Fit	فٹ
+	Shrink oversized pages	بڑے صفحات چھوٹے کریں
+	Custom scale:	اپنی مرضی کا پیمانہ:
+	Tile scale:	ٹائل کا پیمانہ:
+	Overlap:	اوورلیپ:
+	Cut marks	کٹ کے نشانات
+	Pages per sheet:	فی شیٹ صفحات:
+	Page order:	صفحے کی ترتیب:
+	Horizontal	افقی
+	Horizontal reversed	افقی الٹی
+	Vertical	عمودی
+	Vertical reversed	عمودی الٹی
+	Print page border	صفحے کا بارڈر پرنٹ کریں
+	Auto-rotate pages	صفحات خودکار گھمائیں
+	Booklet subset:	کتابچے کا ذیلی سیٹ:
+	Both sides	دونوں طرف
+	Front side only	صرف سامنے کی طرف
+	Back side only	صرف پچھلی طرف
+	Binding:	بائنڈنگ:
+	Left	بائیں
+	Right	دائیں
+	Orientation:	رخ:
+	Auto portrait/landscape	خودکار پورٹریٹ / لینڈ اسکیپ
+	Portrait	پورٹریٹ
+	Landscape	لینڈ اسکیپ
+	Comments & Forms	تبصرے اور فارمز
+	Document	دستاویز
+	Document and markups	دستاویز اور مارک اپ
+	Document and stamps	دستاویز اور اسٹیمپس
+	Form fields only	صرف فارم فیلڈز
+	Previous sheet	پچھلی شیٹ
+	Next sheet	اگلی شیٹ
+	No sheets	کوئی شیٹس نہیں
+	Sheet {s} of {n}	شیٹ {s} از {n}
+	Removed 1 hidden item. Save to remove them from the file.	1 پوشیدہ آئٹم ہٹایا گیا۔ فائل سے ہٹانے کے لیے محفوظ کریں۔
+	Removed {n} hidden items. Save to remove them from the file.	{n} پوشیدہ آئٹمز ہٹائے گئے۔ فائل سے ہٹانے کے لیے محفوظ کریں۔
+	Document sanitized. Save to finish: saving rewrites the whole file.	دستاویز صاف کر دی گئی۔ مکمل کرنے کے لیے محفوظ کریں: محفوظ کرنے سے پوری فائل دوبارہ لکھی جاتی ہے۔
+	Applied 1 redaction mark. Save to remove the content from the file.	1 ریڈیکشن نشان لاگو کیا گیا۔ مواد کو فائل سے ہٹانے کے لیے محفوظ کریں۔
+	Applied {n} redaction marks. Save to remove the content from the file.	{n} ریڈیکشن نشانات لاگو کیے گئے۔ مواد کو فائل سے ہٹانے کے لیے محفوظ کریں۔
+	JavaScript Console	JavaScript کنسول
+	JavaScript is turned off (Preferences ▸ JavaScript).	JavaScript بند ہے (ترجیحات ▸ JavaScript)۔
+	Output appears here.	آؤٹ پٹ یہاں ظاہر ہوتا ہے۔
+	Script Name:	اسکرپٹ کا نام:
+	This document has no document-level scripts.	اس دستاویز میں دستاویز کی سطح کے کوئی اسکرپٹس نہیں ہیں۔
+	No form fields were detected	کوئی فارم فیلڈز کا پتہ نہیں چلا
+	Detected 1 form field	1 فارم فیلڈ کا پتہ چلا
+	Detected {n} form fields	{n} فارم فیلڈز کا پتہ چلا
+	{field}: {e}	{field}: {e}
+	Current page	موجودہ صفحہ
+	Selected pages	منتخب صفحات
+	Document language	دستاویز کی زبان
+	Output	آؤٹ پٹ
+	Searchable Image (Exact)	تلاش کے قابل تصویر (بالکل)
+	Adds invisible text over each word; the page image is not changed	ہر لفظ پر غیر نمایاں متن شامل کرتا ہے؛ صفحے کی تصویر تبدیل نہیں ہوتی
+	Downsample to	ڈاؤن سیمپل کریں تا
+	Also recognize pages that already have text	ان صفحات کو بھی پہچانیں جن میں پہلے سے متن ہے
+	Pictures on those pages are recognized too; words already in the page's text are not added again	ان صفحات کی تصویریں بھی پہچانی جاتی ہیں؛ صفحے کے متن میں پہلے سے موجود الفاظ دوبارہ شامل نہیں ہوتے
+	Text recognition isn't installed: its model files are missing. Reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them.	متن کی پہچان انسٹال نہیں ہے: اس کی ماڈل فائلیں غائب ہیں۔ Rehman-PDF دوبارہ انسٹال کریں، یا PDFCRAFT_MODELS کو اس فولڈر پر سیٹ کریں جس میں وہ ہیں۔
+	Settings	ترتیبات
+	Optional	اختیاری
+	Planned · {m}	منصوبہ بند · {m}
+	Planned for milestone {m} — open to see what it will include	سنگ میل {m} کے لیے منصوبہ بند — دیکھنے کے لیے کھولیں کہ اس میں کیا شامل ہوگا
+	Coming in milestone {m}. Items marked Ready work today.	سنگ میل {m} میں آ رہا ہے۔ تیار نشان زد آئٹمز آج کام کرتے ہیں۔
+	1 mark	1 نشان
+	{n} marks	{n} نشانات
+	Dynamic	متحرک
+	Sign Here	یہاں دستخط کریں
+	Standard Business	معیاری کاروبار
+	Choose a stamp, then click on the page to place it.	اسٹیمپ منتخب کریں، پھر اسے رکھنے کے لیے صفحے پر کلک کریں۔
+	Note	نوٹ
+	Polyline	پولی لائن
+	Attachment	منسلکہ
+	Callout	کال آؤٹ
+	Typewriter	ٹائپ رائٹر
+	Checked	چیک شدہ
+	Unchecked	غیر چیک شدہ
+	Marked	نشان زد
+	Locked	مقفل
+	Search comments	تبصرے تلاش کریں
+	Add a comment	تبصرہ شامل کریں
+	No comments yet.	ابھی کوئی تبصرے نہیں۔
+	Pick a tool in the quick bar, or type above.	کوئیک بار میں ٹول منتخب کریں، یا اوپر ٹائپ کریں۔
+	No comments match.	کوئی تبصرے مماثل نہیں۔
+	Unknown author	نامعلوم مصنف
+	No colour	کوئی رنگ نہیں
+	Remove checkmark	چیک مارک ہٹائیں
+	Mark with checkmark	چیک مارک سے نشان زد کریں
+	Reply	جواب
+	Add a reply	جواب شامل کریں
+	Post	پوسٹ کریں
+	Page {label}	صفحہ {label}
+	{kind} — click to show it on the page	{kind} — صفحے پر دکھانے کے لیے کلک کریں
+	Set status	حیثیت سیٹ کریں
+	Copy text	متن کاپی کریں
+	Properties…	خصوصیات…
+	Make Current Properties Default	موجودہ خصوصیات کو پہلے سے طے شدہ بنائیں
+	More options	مزید اختیارات
+	Sort by	ترتیب دیں بذریعہ
+	Author	مصنف
+	Type	قسم
+	Colour	رنگ
+	Show all comments	تمام تبصرے دکھائیں
+	Create PDF comment summary…	PDF تبصرے کا خلاصہ بنائیں…
+	Export all to data file…	سب ڈیٹا فائل میں برآمد کریں…
+	Filter comments	تبصرے فلٹر کریں
+	Status	حیثیت
+	Accepted	قبول شدہ
+	Rejected	مسترد شدہ
+	Cancelled	منسوخ شدہ
+	Completed	مکمل شدہ
+	Show all	سب دکھائیں
+	Yellow	پیلا
+	Orange	نارنجی
+	Red	سرخ
+	Pink	گلابی
+	Purple	جامنی
+	Blue	نیلا
+	Light blue	ہلکا نیلا
+	Green	سبز
+	Gray	سرمئی
+	Black	سیاہ
+	Bookmark options	بک مارک کے اختیارات
+	Expand all bookmarks	تمام بک مارکس پھیلائیں
+	Expand top-level bookmarks	اوپری سطح کے بک مارکس پھیلائیں
+	Collapse all bookmarks	تمام بک مارکس سمیٹیں
+	New bookmark ({key})	نیا بک مارک ({key})
+	This document has no bookmarks.	اس دستاویز میں کوئی بک مارکس نہیں ہیں۔
+	This document has no layers.	اس دستاویز میں کوئی تہیں نہیں ہیں۔
+	This document has no attachments.	اس دستاویز میں کوئی منسلکات نہیں ہیں۔
+	Hide layer	تہہ چھپائیں
+	Show layer	تہہ دکھائیں
+	Set layer visibility	تہہ کی نمائش سیٹ کریں
+	on page {label}	صفحہ {label} پر
+	Save attachment…	منسلکہ محفوظ کریں…
+	Open in a new tab	نئے ٹیب میں کھولیں
+	This document has no pages.	اس دستاویز میں کوئی صفحات نہیں ہیں۔
+	Find text	متن تلاش کریں
+	No matches	کوئی میچ نہیں
+	Searching… {s}/{p}	تلاش ہو رہی ہے… {s}/{p}
+	{c} of {n}{more}	{n} میں سے {c}{more}
+	Previous ({key})	پچھلا ({key})
+	Next ({key})	اگلا ({key})
+	Find options	تلاش کے اختیارات
+	Whole words only	صرف پورے الفاظ
+	Case-sensitive	کیس حساس
+	Close (Esc)	بند کریں (Esc)
+	Align	سیدھ کریں
+	Top	اوپر
+	Bottom	نیچے
+	Center horizontally	افقی طور پر درمیان میں
+	Center vertically	عمودی طور پر درمیان میں
+	Distribute	تقسیم کریں
+	Horizontally	افقی طور پر
+	Vertically	عمودی طور پر
+	Set Fields to Same Size	فیلڈز کو ایک ہی سائز پر سیٹ کریں
+	Height	اونچائی
+	Width	چوڑائی
+	Both	دونوں
+	Duplicate…	نقل بنائیں…
+	All pages	تمام صفحات
+	Odd pages	طاق صفحات
+	Even pages	جفت صفحات
+	Landscape pages	لینڈ اسکیپ صفحات
+	Portrait pages	پورٹریٹ صفحات
+	Move earlier	پہلے منتقل کریں
+	Move later	بعد میں منتقل کریں
+	Back to the document	دستاویز پر واپس
+	Protect Using Password	پاس ورڈ سے محفوظ کریں
+	Requires user to enter a password for:	صارف کو اس کے لیے پاس ورڈ درج کرنا ہوگا:
+	Viewing	دیکھنے
+	Editing	ترمیم
+	Type Password	پاس ورڈ ٹائپ کریں
+	Re-type Password	پاس ورڈ دوبارہ ٹائپ کریں
+	Strength: {s}	مضبوطی: {s}
+	Strong	مضبوط
+	Medium	درمیانہ
+	Weak	کمزور
+	Advanced Options {chevron}	جدید اختیارات {chevron}
+	Compatibility	مطابقت
+	Acrobat X and later (256-bit AES)	Acrobat X اور بعد کے (256-bit AES)
+	Acrobat 7.0 and later (128-bit AES)	Acrobat 7.0 اور بعد کے (128-bit AES)
+	Acrobat 5.0 and later (128-bit RC4)	Acrobat 5.0 اور بعد کے (128-bit RC4)
+	Acrobat 3.0 and later (40-bit RC4)	Acrobat 3.0 اور بعد کے (40-bit RC4)
+	Encrypt	انکرپٹ کریں
+	All document contents	دستاویز کا تمام مواد
+	All document contents except metadata	میٹا ڈیٹا کے علاوہ دستاویز کا تمام مواد
+	Printing allowed	پرنٹنگ کی اجازت ہے
+	Low Resolution (150 dpi)	کم ریزولوشن (150 dpi)
+	Changes allowed	تبدیلیوں کی اجازت ہے
+	Inserting, deleting, and rotating pages	صفحات داخل کرنا، حذف کرنا اور گھمانا
+	Filling in form fields and signing existing signature fields	فارم فیلڈز پُر کرنا اور موجودہ دستخطی فیلڈز پر دستخط کرنا
+	Commenting, filling in form fields, and signing existing signature fields	صفحات نکالنے کے علاوہ کوئی بھی
+	Any except extracting pages	متن، تصاویر اور دیگر مواد کی کاپی فعال کریں
+	Enable copying of text, images, and other content	بصارت سے محروم افراد کے لیے اسکرین ریڈر ڈیوائسز کے لیے ٹیکسٹ رسائی فعال کریں
+	Enable text access for screen reader devices for the visually impaired	پاس ورڈ ٹائپ کریں۔
+	Type a password.	پاس ورڈ مماثل نہیں ہیں۔
+	The passwords don't match.	پاس ورڈ مماثل نہیں ہیں۔
+	This compatibility level supports only plain ASCII passwords.	یہ مطابقت کی سطح صرف سادہ ASCII پاس ورڈز کی حمایت کرتی ہے۔
+	Anyone opening the document will need this password. It's applied when you save.	دستاویز کھولنے والے ہر شخص کو یہ پاس ورڈ درکار ہوگا۔ یہ محفوظ کرنے پر لاگو ہوتا ہے۔
+	The document opens without a password; this password is needed to change the restrictions. It's applied when you save.	دستاویز بغیر پاس ورڈ کے کھلتی ہے؛ پابندیاں تبدیل کرنے کے لیے یہ پاس ورڈ درکار ہے۔ یہ محفوظ کرنے پر لاگو ہوتا ہے۔
+	Recover unsaved documents?	غیر محفوظ شدہ دستاویزات بحال کریں؟
+	PdfCraft didn't shut down normally. These documents had changes that were autosaved:	Rehman-PDF عام طور پر بند نہیں ہوا۔ ان دستاویزات میں تبدیلیاں تھیں جو خودکار محفوظ ہوئیں:
+	just now	ابھی
+	{n} min ago	{n} منٹ پہلے
+	{n} h ago	{n} گھنٹے پہلے
+	 · password-protected	  · پاس ورڈ سے محفوظ
+	Recover	بحال کریں
+	Discard	ترک کریں
+	Version {v}	ورژن {v}
+	A clean-room, open-source PDF application written in Rust. MIT OR Apache-2.0.	کلین روم، اوپن سورس PDF ایپلی کیشن جو Rust میں لکھی گئی ہے۔ MIT OR Apache-2.0۔
+	Part of	کا حصہ
+	Summarize Options	خلاصے کے اختیارات
+	Choose a layout:	ترتیب منتخب کریں:
+	Comments only	صرف تبصرے
+	Sort comments by:	تبصرے ترتیب دیں بذریعہ:
+	Create PDF Comment Summary	PDF تبصرے کا خلاصہ بنائیں
+	Revert to the previously saved version of “{name}”? Changes since then can't be undone afterwards.	”{name}“ کے پہلے محفوظ شدہ ورژن پر واپس جائیں؟ اس کے بعد کی تبدیلیاں بعد میں کالعدم نہیں ہو سکتیں۔
+	Number pages	صفحات کو نمبر دیں
+	Style	انداز
+	None (prefix only)	کوئی نہیں (صرف سابقہ)
+	Prefix	سابقہ
+	Start	شروعات
+	Labels: {preview}. Later pages keep their labels.	لیبلز: {preview}۔ بعد کے صفحات اپنے لیبلز برقرار رکھتے ہیں۔
+	Even and Odd Pages	جفت اور طاق صفحات
+	Even Pages Only	صرف جفت صفحات
+	Odd Pages Only	صرف طاق صفحات
+	Landscape and Portrait Pages	لینڈ اسکیپ اور پورٹریٹ صفحات
+	Landscape Pages	لینڈ اسکیپ صفحات
+	Portrait Pages	پورٹریٹ صفحات
+	Duplicate Field	فیلڈ کی نقل بنائیں
+	Duplicate "{name}" onto:	”{name}“ کی نقل اس پر بنائیں:
+	1 page selected.	1 صفحہ منتخب۔
+	{n} pages selected.	{n} صفحات منتخب۔
+	Delete pages after extracting	نکالنے کے بعد صفحات حذف کریں
+	Extract pages as separate files	صفحات الگ فائلوں کے طور پر نکالیں
+	Rotate Pages	صفحات گھمائیں
+	Direction:	سمت:
+	Clockwise 90 degrees	گھڑی کی سمت میں 90 ڈگری
+	Counterclockwise 90 degrees	گھڑی کی مخالف سمت میں 90 ڈگری
+	180 degrees	180 ڈگری
+	Pages:	صفحات:
+	All	تمام
+	Selection	انتخاب
+	From	از
+	Rotate:	گھمائیں:
+	Repairs	مرمتیں
+	Repair log	مرمت کا لاگ
+	Split document	دستاویز تقسیم کریں
+	Number of pages	صفحات کی تعداد
+	Pages per file	فی فائل صفحات
+	File size	فائل کا سائز
+	At most	زیادہ سے زیادہ
+	Top-level bookmarks ({n})	اوپری سطح کے بک مارکس ({n})
+	Before each selected page (select pages in Organize)	ہر منتخب صفحے سے پہلے (ترتیب میں صفحات منتخب کریں)
+	Creates 1 file from {n} pages.	{n} صفحات سے 1 فائل بناتا ہے۔
+	Creates {f} files from {n} pages.	{n} صفحات سے {f} فائلیں بناتا ہے۔
+	Each file holds as many of the {n} pages as fit.	ہر فائل میں {n} صفحات میں سے جتنے فٹ ہوں رکھتا ہے۔
+	Replace Pages	صفحات تبدیل کریں
+	Original: replace pages	اصل: صفحات تبدیل کریں
+	to	تا
+	to {n}	{n} تا
+	Replacement: pages of {name}	متبادل: {name} کے صفحات
+	of {name}	{name} کا
+	Only the page content changes: links, comments, form fields and bookmarks on the original pages stay.	صرف صفحے کا مواد بدلتا ہے: اصل صفحات پر لنکس، تبصرے، فارم فیلڈز اور بک مارکس برقرار رہتے ہیں۔
+	The replacement file doesn't have that many pages.	متبادل فائل میں اتنے صفحات نہیں ہیں۔
+	Tagged PDF	ٹیگ شدہ PDF
+	Document Properties	دستاویز کی خصوصیات
+	Description	تفصیل
+	Initial View	ابتدائی منظر
+	Security	سیکیورٹی
+	Fonts	فونٹس
+	Advanced	جدید
+	Title	عنوان
+	Subject	موضوع
+	Keywords	کلیدی الفاظ
+	Application	ایپلی کیشن
+	PDF producer	PDF پروڈیوسر
+	Layout and Magnification	ترتیب اور میگنیفیکیشن
+	Navigation tab	نیویگیشن ٹیب
+	Page Only	صرف صفحہ
+	Bookmarks Panel and Page	بک مارکس پینل اور صفحہ
+	Pages Panel and Page	صفحات کا پینل اور صفحہ
+	Attachments Panel and Page	منسلکات کا پینل اور صفحہ
+	Layers Panel and Page	تہوں کا پینل اور صفحہ
+	Page layout	صفحے کی ترتیب
+	Default	پہلے سے طے شدہ
+	Single Page	واحد صفحہ
+	Single Page Continuous	واحد صفحہ مسلسل
+	Two-Up (Facing)	دو صفحے (آمنے سامنے)
+	Two-Up Continuous (Facing)	دو صفحے مسلسل (آمنے سامنے)
+	Two-Up (Cover Page)	دو صفحے (سرورق)
+	Two-Up Continuous (Cover Page)	دو صفحے مسلسل (سرورق)
+	Magnification	میگنیفیکیشن
+	Actual Size	اصل سائز
+	Fit Page	صفحے کے مطابق فٹ
+	Fit Width	چوڑائی کے مطابق فٹ
+	Fit Height	اونچائی کے مطابق فٹ
+	Fit Visible	نظر آنے والے حصے کے مطابق فٹ
+	Open to page	صفحے پر کھولیں
+	of {pages}	{pages} کا
+	Window Options	ونڈو کے اختیارات
+	Resize window to initial page	ونڈو کو ابتدائی صفحے کے مطابق سائز دیں
+	Center window on screen	ونڈو کو اسکرین پر درمیان میں رکھیں
+	Open in Full Screen mode	مکمل اسکرین موڈ میں کھولیں
+	Show:	دکھائیں:
+	File Name	فائل کا نام
+	Document Title	دستاویز کا عنوان
+	User Interface Options	یوزر انٹرفیس کے اختیارات
+	Hide menu bar	مینیو بار چھپائیں
+	Hide toolbars	ٹول بارز چھپائیں
+	Hide window controls	ونڈو کنٹرولز چھپائیں
+	Security method	سیکیورٹی کا طریقہ
+	No security	کوئی سیکیورٹی نہیں
+	Restrictions	پابندیاں
+	None — everything is allowed	کوئی نہیں — سب کچھ کی اجازت ہے
+	Password security	پاس ورڈ سیکیورٹی
+	Encryption	انکرپشن
+	Opened with	کھولا گیا بذریعہ
+	— (protection is applied when you save)	— (تحفظ محفوظ کرنے پر لاگو ہوتا ہے)
+	Owner password (no restrictions apply)	مالک کا پاس ورڈ (کوئی پابندی لاگو نہیں)
+	User password	صارف کا پاس ورڈ
+	Change settings…	ترتیبات تبدیل کریں…
+	Printing	پرنٹنگ
+	Not allowed	اجازت نہیں
+	Allowed	اجازت ہے
+	High resolution	اعلی ریزولوشن
+	Low resolution	کم ریزولوشن
+	Changing the document	دستاویز تبدیل کرنا
+	Document assembly	دستاویز کی اسمبلی
+	Content copying	مواد کی کاپی
+	Content copying for accessibility	رسائی کے لیے مواد کی کاپی
+	Commenting	تبصرہ کرنا
+	Filling of form fields	فارم فیلڈز پُر کرنا
+	No fonts are referenced by the pages.	صفحات کسی فونٹ کا حوالہ نہیں دیتے۔
+	PDF version	PDF ورژن
+	Location	مقام
+	Page size	صفحے کا سائز
+	Yes	جی ہاں
+	No	نہیں
+	Revisions	نظرثانیاں
+	View revision {n}	نظرثانی {n} دیکھیں
+	Open the file as it was saved then	فائل کو ویسے کھولیں جیسی وہ اس وقت محفوظ تھی
+	Binding	بائنڈنگ
+	Left Edge	بایاں کنارہ
+	Right Edge	دایاں کنارہ
+	Language	زبان
+	Saved {place}: {before} → {after} ({pct}% smaller){detail}	محفوظ شدہ {place}: {before} → {after} ({pct}% چھوٹا){detail}
+	This file is already as small as it can be made ({size}). No copy was saved.	یہ فائل پہلے ہی اتنی چھوٹی ہے جتنی بنائی جا سکتی ہے ({size})۔ کوئی کاپی محفوظ نہیں ہوئی۔
+	Saved {place}: {before} → {after} (not smaller){detail}	محفوظ شدہ {place}: {before} → {after} (چھوٹی نہیں){detail}
+	Couldn't save the image: {e}	تصویر محفوظ نہیں ہو سکی: {e}
+	Adding images arrives on the web with file pickers for images	تصاویر شامل کرنا ویب پر تصاویر کے لیے فائل پکرز کے ساتھ آتا ہے
+	Replacing images on page {p} arrives on the web with image pickers ({i})	صفحہ {p} پر تصاویر تبدیل کرنا ویب پر امیج پکرز ({i}) کے ساتھ آتا ہے
+	{name}: choosing images arrives on the web with file pickers for images	{name}: تصاویر کا انتخاب ویب پر تصاویر کے لیے فائل پکرز کے ساتھ آتا ہے
+	Replacing images arrives on the web with image file pickers	تصاویر تبدیل کرنا ویب پر امیج فائل پکرز کے ساتھ آتا ہے
+	Couldn't create a PDF: {e}	PDF نہیں بن سکی: {e}
+	The clipboard has no image or text	کلپ بورڈ میں کوئی تصویر یا متن نہیں ہے
+	On the web, open or drop an image to convert it	ویب پر، تبدیل کرنے کے لیے تصویر کھولیں یا ڈراپ کریں
+	Couldn't optimize the file: {e}	فائل بہتر نہیں بن سکی: {e}
+	Couldn't write {path}: {e}	{path} نہیں لکھ سکا: {e}
+	The form asks to be submitted to {u}; PdfCraft doesn't send form data. Save the document to keep your entries.	فارم {u} کو جمع کرانے کا کہتا ہے؛ Rehman-PDF فارم ڈیٹا نہیں بھیجتا۔ اپنی اندراجات برقرار رکھنے کے لیے دستاویز محفوظ کریں۔
+	This PDF uses the unsupported {s} action.	یہ PDF غیر تعاون یافتہ {s} ایکشن استعمال کرتی ہے۔
+	{name}: the {other} action isn't supported yet	{name}: {other} ایکشن ابھی تعاون یافتہ نہیں ہے
+	{name} submits the form to {url}; PdfCraft doesn't send form data. Save the document to keep your entries.	{name} فارم {url} کو جمع کراتا ہے؛ Rehman-PDF فارم ڈیٹا نہیں بھیجتا۔ اپنی اندراجات برقرار رکھنے کے لیے دستاویز محفوظ کریں۔
+	Export stopped: {e}	برآمد رک گئی: {e}
+	Exported 1 image	1 تصویر برآمد ہوئی
+	Exported {n} images	{n} تصاویر برآمد ہوئیں
+	 ({s} not exported: {first})	  ({s} برآمد نہیں ہوئی: {first})
+	Exported the text of 1 page	1 صفحے کا متن برآمد ہوا
+	Exported the text of {n} pages	{n} صفحات کا متن برآمد ہوا
+	{msg} to {dir}	{msg} تا {dir}
+	Exporting… {d} of {t}	برآمد ہو رہا ہے… {t} میں سے {d}
+	Choose a folder for the exported files	برآمد شدہ فائلوں کے لیے فولڈر منتخب کریں
+	New {tool} comments will look like this one	نئے {tool} تبصرے اس جیسے نظر آئیں گے
+	This document can't be checked: it couldn't be read for editing	اس دستاویز کی جانچ نہیں ہو سکتی: اسے ترمیم کے لیے پڑھا نہیں جا سکا
+	The checker found no problems in this document.	چیکر کو اس دستاویز میں کوئی مسئلہ نہیں ملا۔
+	The checker found 1 problem which may prevent the document from being fully accessible.	چیکر کو 1 مسئلہ ملا جو دستاویز کو مکمل طور پر قابل رسائی ہونے سے روک سکتا ہے۔
+	The checker found {n} problems which may prevent the document from being fully accessible.	چیکر کو {n} مسائل ملے جو دستاویز کو مکمل طور پر قابل رسائی ہونے سے روک سکتے ہیں۔
+	The text is the same	متن ایک جیسا ہے
+	1 difference found	1 فرق ملا
+	{n} differences found	{n} فرق ملے
+	Added 1 comment	1 تبصرہ شامل کیا گیا
+	Added {n} comments	{n} تبصرے شامل کیے گئے
+	Choose a folder for the results	نتائج کے لیے فولڈر منتخب کریں
+	Files for {name}	{name} کے لیے فائلیں
+	An action is already running	ایک ایکشن پہلے سے چل رہا ہے
+	Running action… file {d} of {t}	ایکشن چل رہا ہے… فائل {t} میں سے {d}
+	No unlinked web addresses were found in the text	متن میں کوئی غیر منسلک ویب پتے نہیں ملے
+	Created 1 link	1 لنک بنایا گیا
+	Created {n} links	{n} لنکس بنائے گئے
+	Text recognition is already running	متن کی پہچان پہلے سے چل رہی ہے
+	Optimizing… removing user data	بہتر بنایا جا رہا ہے… صارف کا ڈیٹا ہٹایا جا رہا ہے
+	Optimizing… image {d} of {t}	بہتر بنایا جا رہا ہے… تصویر {t} میں سے {d}
+	Optimizing… cleaning up	بہتر بنایا جا رہا ہے… صاف کیا جا رہا ہے
+	Optimizing… merging identical objects	بہتر بنایا جا رہا ہے… ایک جیسی اشیاء ضم کی جا رہی ہیں
+	Optimizing… writing the copy	بہتر بنایا جا رہا ہے… کاپی لکھی جا رہی ہے
+	Cancelling…	منسوخ ہو رہا ہے…
+	Optimization is already running	آپٹیمائزیشن پہلے سے چل رہی ہے
+	Optimization cancelled	آپٹیمائزیشن منسوخ کر دی گئی
+	Couldn't optimize the file	فائل بہتر نہیں بن سکی
+	Recognizing text… file {d} of {t}	متن پہچانا جا رہا ہے… فائل {t} میں سے {d}
+	Recognizing text… page {d} of {t}	متن پہچانا جا رہا ہے… صفحہ {t} میں سے {d}
+	Recognized 1 word	1 لفظ پہچانا گیا
+	Recognized {n} words	{n} الفاظ پہچانے گئے
+	{words} on {pages}	{pages} پر {words}
+	; 1 page already had text	؛ 1 صفحے میں پہلے سے متن تھا
+	; {n} pages already had text	؛ {n} صفحات میں پہلے سے متن تھا
+	Recognized {w} words in 1 file	1 فائل میں {w} الفاظ پہچانے گئے
+	Recognized {w} words in {n} files	{n} فائلوں میں {w} الفاظ پہچانے گئے
+	; failed: {list}	؛ ناکام: {list}
+	1 file done	1 فائل ہو گئی
+	{n} files done	{n} فائلیں ہو گئیں
+	The selected area has been copied ({w} × {h} pixels)	منتخب علاقہ کاپی ہو گیا ہے ({w} × {h} پکسلز)
+	Couldn't take the snapshot: {e}	اسنیپ شاٹ نہیں لے سکے: {e}
+	Couldn't recover {name}: {e}	{name} بحال نہیں ہو سکا: {e}
+	The document now conforms to {level}; save it to keep the changes	دستاویز اب {level} کے مطابق ہے؛ تبدیلیاں برقرار رکھنے کے لیے اسے محفوظ کریں
+	Fixed what could be fixed; 1 problem remains	جو ٹھیک ہو سکتا تھا ٹھیک کر دیا؛ 1 مسئلہ باقی ہے
+	Fixed what could be fixed; {n} problems remain	جو ٹھیک ہو سکتا تھا ٹھیک کر دیا؛ {n} مسائل باقی ہیں
+	Custom stamps arrive on the web with file pickers for images	اپنی مرضی کے اسٹیمپس ویب پر تصاویر کے لیے فائل پکرز کے ساتھ آتے ہیں
+	{file} is too large for a stamp (at most {n} MB)	{file} اسٹیمپ کے لیے بہت بڑی ہے (زیادہ سے زیادہ {n} MB)
+	Sent to {printer}	{printer} کو بھیج دیا گیا
+	Sent to {printer}: {msg}	{printer} کو بھیج دیا گیا: {msg}
+	Looking for printers…	پرنٹرز تلاش ہو رہے ہیں…
+	Sending to {printer}…	{printer} کو بھیجا جا رہا ہے…
+	Choose a folder for the searchable files	تلاش کے قابل فائلوں کے لیے فولڈر منتخب کریں
+	Files are combined from top to bottom. Leave Pages empty to take every page.	فائلیں اوپر سے نیچے یکجا ہوتی ہیں۔ ہر صفحہ لینے کے لیے Pages خالی چھوڑیں۔
+	Unlock…	ان لاک کریں…
+	Select a password-protected file first	پہلے پاس ورڈ سے محفوظ فائل منتخب کریں
+	Enter the permissions password to allow combining	یکجا کرنے کی اجازت کے لیے اجازتوں کا پاس ورڈ درج کریں
+	Enter the password that opens it	وہ پاس ورڈ درج کریں جو اسے کھولتا ہے
+	Unlock {name}	{name} ان لاک کریں
+	Unlock {n} files	{n} فائلیں ان لاک کریں
+	The same password is tried on each file.	ہر فائل پر ایک ہی پاس ورڈ آزمایا جاتا ہے۔
+	Hide password	پاس ورڈ چھپائیں
+	Show password	پاس ورڈ دکھائیں
+	Wrong password	پاس ورڈ غلط ہے
+	The password is only used to read the file; it isn't saved.	پاس ورڈ صرف فائل پڑھنے کے لیے استعمال ہوتا ہے؛ یہ محفوظ نہیں ہوتا۔
+	Unlock	ان لاک کریں
+	Opened, but its security settings don't allow combining. Enter the permissions password.	کھل گئی، لیکن اس کی سیکیورٹی ترتیبات یکجا کرنے کی اجازت نہیں دیتیں۔ اجازتوں کا پاس ورڈ درج کریں۔
+	Unlocked: the combined file won't be password-protected	ان لاک ہو گئی: یکجا شدہ فائل پاس ورڈ سے محفوظ نہیں ہوگی
+	Unlocked {n} of {m} files	{m} فائلوں میں سے {n} ان لاک ہوئیں
+	Drop PDFs, images, text files or folders here, or choose them.	یہاں PDFs، تصاویر، ٹیکسٹ فائلیں یا فولڈرز ڈراپ کریں، یا انہیں منتخب کریں۔
+	Add folder…	فولڈر شامل کریں…
+	Add folder and subfolders…	فولڈر اور ذیلی فولڈرز شامل کریں…
+	More ways to add files	فائلیں شامل کرنے کے مزید طریقے
+	Every PDF, image and text file in the folder	فولڈر میں ہر PDF، تصویر اور ٹیکسٹ فائل
+	Every PDF, image and text file in the folder and the folders inside it	فولڈر اور اس کے اندر کے فولڈرز میں ہر PDF، تصویر اور ٹیکسٹ فائل
+	Add folder	فولڈر شامل کریں
+	Add folder and subfolders	فولڈر اور ذیلی فولڈرز شامل کریں
+	No PDFs, images or text files found in {folder}	{folder} میں کوئی PDFs، تصاویر یا ٹیکسٹ فائلیں نہیں ملیں
+	Added the first {n} files in {folder}	{folder} میں پہلی {n} فائلیں شامل کی گئیں
+	Click to sort, drag to move the column. Drag its edge to resize it.	ترتیب کے لیے کلک کریں، منتقل کرنے کے لیے کالم گھسیٹیں۔ سائز تبدیل کرنے کے لیے اس کا کنارہ گھسیٹیں۔
+	Reset columns	کالمز ری سیٹ کریں
+	Remove {n} files	{n} فائلیں ہٹائیں
+	{n} selected	{n} منتخب
+	sorted ascending	صعودی ترتیب میں
+	sorted descending	نزولی ترتیب میں
+	Protected: the combined file won't keep its security settings	محفوظ: یکجا شدہ فائل اپنی سیکیورٹی ترتیبات برقرار نہیں رکھے گی
+	Add open documents	کھلے دستاویزات شامل کریں
+	All open documents	تمام کھلے دستاویزات
+	No documents are open	کوئی دستاویزات کھلے نہیں ہیں
+	Select a file first	پہلے فائل منتخب کریں
+	1 file	1 فائل
+	{n} files	{n} فائلیں
+	1 file needs attention	1 فائل کو توجہ درکار ہے
+	{n} files need attention	{n} فائلوں کو توجہ درکار ہے
+	{name} can't be combined: {why}	{name} یکجا نہیں ہو سکتی: {why}
+	Check the pages of {name}: {why}	{name} کے صفحات چیک کریں: {why}
+	Add the files to combine	یکجا کرنے والی فائلیں شامل کریں
+	File name	فائل کا نام
+	Warnings	تنبیہات
+	Drag to reorder	دوبارہ ترتیب کے لیے گھسیٹیں
+	{k} of {n}	{n} میں سے {k}
+	? of {n}	{n} میں سے ؟
+	Added more than once	ایک سے زیادہ بار شامل کی گئی
+	yesterday	کل
+	{n} days ago	{n} دن پہلے
+	No pages selected	کوئی صفحات منتخب نہیں
+	Password-protected	پاس ورڈ سے محفوظ
+	Its security settings don't allow copying pages	اس کی سیکیورٹی ترتیبات صفحات کاپی کرنے کی اجازت نہیں دیتیں
+	Can't be read: {e}	پڑھی نہیں جا سکتی: {e}
+	Leave out files that can't be read?	جو فائلیں پڑھی نہیں جا سکتیں انہیں چھوڑ دیں؟
+	These files can't be read, so they won't be in the combined PDF:	یہ فائلیں پڑھی نہیں جا سکتیں، اس لیے وہ یکجا شدہ PDF میں نہیں ہوں گی:
+	Combine the rest	باقی یکجا کریں
+	and {n} more	اور {n} مزید
+	Includes unsaved changes	غیر محفوظ شدہ تبدیلیاں شامل ہیں
+	Pages of {name} to combine, e.g. 1-3, 6	یکجا کرنے کے لیے {name} کے صفحات، مثلاً 1-3، 6
+	Remove {name}	{name} ہٹائیں
+	Add files…	فائلیں شامل کریں…
+	Add at least two files	کم از کم دو فائلیں شامل کریں
+	Couldn't add {name}: {e}	{name} شامل نہیں ہو سکی: {e}
+	Couldn't combine files: {e}	فائلیں یکجا نہیں ہو سکیں: {e}
+	Export comments	تبصرے برآمد کریں
+	Export form data	فارم ڈیٹا برآمد کریں
+	Comment and form data	تبصرہ اور فارم ڈیٹا
+	Export	برآمد کریں
+	Select data files to merge	ضم کرنے کے لیے ڈیٹا فائلیں منتخب کریں
+	Form data and PDF forms	فارم ڈیٹا اور PDF فارمز
+	Save the spreadsheet	اسپریڈ شیٹ محفوظ کریں
+	Save the accessibility report	رسائی رپورٹ محفوظ کریں
+	Save image	تصویر محفوظ کریں
+	Export certificate	سرٹیفکیٹ برآمد کریں
+	Choose a folder for the extracted pages	نکالے گئے صفحات کے لیے فولڈر منتخب کریں
+	Choose a folder for the split files	تقسیم شدہ فائلوں کے لیے فولڈر منتخب کریں
+	Couldn't use {name}: {e}	{name} استعمال نہیں ہو سکی: {e}
+	Couldn't extract pages: {e}	صفحات نہیں نکال سکے: {e}
+	Couldn't write {name}: {e}	{name} نہیں لکھ سکا: {e}
+	Wrote 1 file to {dir}	{dir} میں 1 فائل لکھی گئی
+	Wrote {n} files to {dir}	{dir} میں {n} فائلیں لکھی گئیں
+	No pages match those choices	ان انتخابوں سے کوئی صفحات مماثل نہیں
+	Couldn't split: {e}	تقسیم نہیں ہو سکی: {e}
+	Couldn't summarize comments: {e}	تبصروں کا خلاصہ نہیں بن سکا: {e}
+	Couldn't open the result: {e}	نتیجہ نہیں کھل سکا: {e}
+	Importing data arrives on the web with file pickers for data files	ڈیٹا درآمد کرنا ویب پر ڈیٹا فائلوں کے لیے فائل پکرز کے ساتھ آتا ہے
+	Exported to {path}	{path} میں برآمد ہو گئی
+	Merging data files needs the desktop app	ڈیٹا فائلوں کو ضم کرنے کے لیے ڈیسک ٹاپ ایپ درکار ہے
+	Merged 1 file into {path}	1 فائل {path} میں ضم ہوئی
+	Merged {n} files into {path}	{n} فائلیں {path} میں ضم ہوئیں
+	Combined {n} files	{n} فائلیں یکجا ہوئیں
+	Extracted 1 page	1 صفحہ نکالا گیا
+	Extracted {n} pages	{n} صفحات نکالے گئے
+	Created a comment summary	تبصرے کا خلاصہ بنایا گیا
+	Couldn't open {name}: {e}	{name} نہیں کھل سکی: {e}
+	Couldn't read {name}: {e}	{name} پڑھی نہیں جا سکی: {e}
+	Portable mode is off: {folder} can't be written ({error}). Settings are kept in your user folder instead.	پورٹیبل موڈ بند ہے: {folder} نہیں لکھی جا سکتی ({error})۔ ترتیبات اس کے بجائے آپ کے یوزر فولڈر میں رکھی جاتی ہیں۔
+	PdfCraft is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	Rehman-PDF گرافکس پروسیسر کے بغیر ڈرا کر رہا ہے، اس لیے یہ سست ہو سکتا ہے۔ گرافکس ڈرائیور اپ ڈیٹ کرنے سے مدد مل سکتی ہے۔
+	Couldn't save: {e}	محفوظ نہیں ہو سکا: {e}
+	Downloading attachments on the web arrives with M3.10 ({n} bytes ready)	ویب پر منسلکات ڈاؤن لوڈ کرنا M3.10 ({n} بائٹس تیار) کے ساتھ آتا ہے
+	`{command}` {when}	`{command}` {when}
+	ships in milestone {m}	سنگ میل {m} میں آتا ہے
+	needs an AI provider (off by default)	AI فراہم کنندہ درکار ہے (پہلے سے بند ہے)
+	is available	دستیاب ہے
+	is not available yet	ابھی دستیاب نہیں ہے
+	{label} failed: {e}	{label} ناکام: {e}
+	Undid {label}	{label} کالعدم کیا گیا
+	Redid {label}	{label} دوبارہ کیا گیا
+	A document needs at least one page: copy instead	دستاویز کو کم از کم ایک صفحہ درکار ہے: اس کے بجائے کاپی کریں
+	Cut {what}	{what} کاٹیں
+	Copied {what}	{what} کاپی کیا گیا
+	1 page	1 صفحہ
+	{n} pages	{n} صفحات
+	Copy or cut pages first	پہلے صفحات کاپی یا کاٹیں
+	Couldn't save {name}: {e}	{name} محفوظ نہیں ہو سکی: {e}
+	Saved {name}	{name} محفوظ ہو گئی
+	Saved, but reopening failed: {e}	محفوظ ہو گئی، لیکن دوبارہ کھولنا ناکام: {e}
+	Downloaded {name}	{name} ڈاؤن لوڈ ہو گئی
+	Couldn't download {name}: {e}	{name} ڈاؤن لوڈ نہیں ہو سکی: {e}
+	Reverted to the last saved version	آخری محفوظ شدہ ورژن پر واپس
+	That didn't work: an internal error stopped it ({m}). Your documents are unchanged.	وہ کام نہیں کیا: اندرونی خرابی نے اسے روک دیا ({m})۔ آپ کے دستاویزات غیر تبدیل شدہ ہیں۔
+	Nothing to undo	کالعدم کرنے کے لیے کچھ نہیں
+	Nothing to redo	دوبارہ کرنے کے لیے کچھ نہیں
+	This document has no form fields you can fill in	اس دستاویز میں کوئی فارم فیلڈز نہیں ہیں جنہیں آپ پُر کر سکیں
+	This document has no comments to flatten	اس دستاویز میں فلیٹ کرنے کے لیے کوئی تبصرے نہیں ہیں
+	This document has no form fields to flatten	اس دستاویز میں فلیٹ کرنے کے لیے کوئی فارم فیلڈز نہیں ہیں
+	There are no redaction marks (mark text, areas or pages first)	کوئی ریڈیکشن نشانات نہیں ہیں (پہلے متن، علاقوں یا صفحات کو نشان زد کریں)
+	This document has no {kind} to change	اس دستاویز میں تبدیل کرنے کے لیے کوئی {kind} نہیں ہے
+	header or footer	ہیڈر یا فوٹر
+	watermark	واٹر مارک
+	background	پس منظر
+	This document isn't password-protected	یہ دستاویز پاس ورڈ سے محفوظ نہیں ہے
+	Enter permissions password…	اجازتوں کا پاس ورڈ درج کریں…
+	Permissions password	اجازتوں کا پاس ورڈ
+	“{name}” has security restrictions. Enter its permissions password to lift them.	”{name}“ میں سیکیورٹی پابندیاں ہیں۔ انہیں ہٹانے کے لیے اس کا اجازتوں کا پاس ورڈ درج کریں۔
+	Restrictions lifted	پابندیاں ہٹا دی گئیں
+	Couldn't unlock {name}: {e}	{name} ان لاک نہیں ہو سکی: {e}
+	This document has no restrictions to lift	اس دستاویز میں ہٹانے کے لیے کوئی پابندیاں نہیں ہیں
+	The document's security settings don't allow this change	دستاویز کی سیکیورٹی ترتیبات اس تبدیلی کی اجازت نہیں دیتیں
+	The document's security settings don't allow copying text and images	دستاویز کی سیکیورٹی ترتیبات متن اور تصاویر کاپی کرنے کی اجازت نہیں دیتیں
+	Open a document first	پہلے دستاویز کھولیں
+	Security will be removed when you save	محفوظ کرنے پر سیکیورٹی ہٹا دی جائے گی
+	Click text or an image to edit it	ترمیم کے لیے متن یا تصویر پر کلک کریں
+	Drag a rectangle to create a link; double-click a link to edit it	لنک بنانے کے لیے مستطیل گھسیٹیں؛ ترمیم کے لیے لنک پر ڈبل کلک کریں
+	There are no redaction marks to apply	لاگو کرنے کے لیے کوئی ریڈیکشن نشانات نہیں ہیں
+	Drag to draw the area where the signature should appear.	وہ علاقہ بنانے کے لیے گھسیٹیں جہاں دستخط ظاہر ہونا چاہیے۔
+	Couldn't fit the visible content: {e}	نظر آنے والا مواد فٹ نہیں ہو سکا: {e}
+	Drag a rectangle around the area to copy	کاپی کرنے والا علاقہ بنانے کے لیے مستطیل گھسیٹیں
+	Click on the page to add a {tool}, or drag to set its size	{tool} شامل کرنے کے لیے صفحے پر کلک کریں، یا اس کا سائز سیٹ کرنے کے لیے گھسیٹیں
+	Drag a rectangle on a page to crop it; double-click a page for Set Page Boxes	اسے کراپ کرنے کے لیے صفحے پر مستطیل گھسیٹیں؛ صفحے کے باکسز سیٹ کرنے کے لیے صفحے پر ڈبل کلک کریں
+	Keep tool selected: on	ٹول منتخب رکھیں: آن
+	Keep tool selected	ٹول منتخب رکھیں
+	Opacity	شفافیت
+	Line thickness	لکیر کی موٹائی
+	What word or phrase would you like to search for?	آپ کون سا لفظ یا جملہ تلاش کرنا چاہیں گے؟
+	Searching… {s} of {p} pages	تلاش ہو رہی ہے… {p} صفحات میں سے {s}
+	 (searching… {s} of {p} pages)	  (تلاش ہو رہی ہے… {p} صفحات میں سے {s})
+	1 instance	1 مثال
+	{n} instances	{n} مثالیں
+	Go to this result	اس نتیجے پر جائیں
+	Highlight	ہائی لائٹ
+	Draw	بنائیں
+	Polygon	کثیرالاضلاع
+	Connected lines	جڑی ہوئی لکیریں
+	Eraser	مٹانے والا
+	Sign	دستخط کریں
+	Certified by {by}	{by} کی تصدیق شدہ
+	At least one signature is invalid.	کم از کم ایک دستخط غلط ہے۔
+	Signed and all signatures are valid.	دستخط شدہ اور تمام دستخط درست ہیں۔
+	At least one signature has problems.	کم از کم ایک دستخط میں مسائل ہیں۔
+	This document is secured. Some changes are restricted by its security settings.	یہ دستاویز محفوظ ہے۔ اس کی سیکیورٹی ترتیبات سے کچھ تبدیلیاں محدود ہیں۔
+	This is a dynamic XFA form, which PdfCraft can't display yet. What you see is the file's placeholder page.	یہ ایک متحرک XFA فارم ہے، جسے Rehman-PDF ابھی دکھا نہیں سکتا۔ جو آپ دیکھتے ہیں وہ فائل کا پلیس ہولڈر صفحہ ہے۔
+	This form's scripts are turned off because one ran too long. Reopen the document to run them again.	اس فارم کے اسکرپٹس بند ہیں کیونکہ ایک بہت دیر چلا۔ انہیں دوبارہ چلانے کے لیے دستاویز دوبارہ کھولیں۔
+	This form also contains XFA data, which PdfCraft doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	اس فارم میں XFA ڈیٹا بھی ہے، جسے Rehman-PDF ابھی پڑھتا نہیں۔ آپ اس کے فیلڈز پُر کر سکتے ہیں، لیکن Acrobat اس کے بجائے XFA قدریں دکھا سکتا ہے۔
+	This document contains {n} interactive form fields.	اس دستاویز میں {n} انٹرایکٹو فارم فیلڈز ہیں۔
+	This file was damaged and has been repaired. Saving keeps the repaired version.	یہ فائل خراب تھی اور اس کی مرمت کر دی گئی ہے۔ محفوظ کرنے سے مرمت شدہ ورژن برقرار رہتا ہے۔
+	Dismiss	مسترد کریں
+	Hide field highlights	فیلڈ ہائی لائٹس چھپائیں
+	Highlight fields	فیلڈز ہائی لائٹ کریں
+	Security settings	سیکیورٹی ترتیبات
+	Details	تفصیلات
+	Select (V)	منتخب کریں (V)
+	Hand (H)	ہاتھ (H)
+	Delete pages (Delete)	صفحات حذف کریں (Delete)
+	Insert a blank page after the selection	انتخاب کے بعد خالی صفحہ داخل کریں
+	Insert pages from a file…	فائل سے صفحات داخل کریں…
+	Extract pages to a new document	صفحات نئے دستاویز میں نکالیں
+	Split into files…	فائلوں میں تقسیم کریں…
+	Select pages	صفحات منتخب کریں
+	Cut	کاٹیں
+	Copy	کاپی کریں
+	Paste after	بعد میں چسپاں کریں
+	Rename	نام تبدیل کریں
+	Set to current page ({n})	موجودہ صفحے ({n}) پر سیٹ کریں
+	Move up	اوپر منتقل کریں
+	Move down	نیچے منتقل کریں
+	Indent	انڈینٹ
+	Outdent	آؤٹ ڈینٹ
+	This document has no form fields.	اس دستاویز میں کوئی فارم فیلڈز نہیں ہیں۔
+	Tab order: move a field with its arrows.	ٹیب کی ترتیب: فیلڈ کو اس کے تیروں سے منتقل کریں۔
+	Unplaced	غیر رکھا ہوا
+	Has JavaScript actions (run in M6)	JavaScript ایکشنز ہیں (M6 میں چلیں)
+	Page	صفحہ
+	None	کوئی نہیں
+	Delete selected fields	منتخب فیلڈز حذف کریں
+	Diagnostic details	تشخیصی تفصیلات
+	The operation failed.	آپریشن ناکام ہو گیا۔
+	no such document	ایسی کوئی دستاویز نہیں
+	nothing to undo	کالعدم کرنے کے لیے کچھ نہیں
+	nothing to redo	دوبارہ کرنے کے لیے کچھ نہیں
+	this document is signed: rewriting it would invalidate its signatures (save it incrementally instead)	یہ دستاویز دستخط شدہ ہے: اسے دوبارہ لکھنے سے اس کے دستخط باطل ہو جائیں گے (اسے اس کے بجائے بتدریج محفوظ کریں)
+	the document is protected by a password	دستاویز پاس ورڈ سے محفوظ ہے
+	the password is incorrect	پاس ورڈ غلط ہے
+	the document has no page tree	دستاویز میں صفحے کا درخت نہیں ہے
+	a document must keep at least one page	دستاویز کو کم از کم ایک صفحہ رکھنا چاہیے
+	a bookmark cannot be moved inside itself	بک مارک خود کے اندر منتقل نہیں ہو سکتا
+	the title must not be empty	عنوان خالی نہیں ہونا چاہیے
+	the document has no form fields	دستاویز میں کوئی فارم فیلڈز نہیں ہیں
+	there are no redaction marks to apply	لاگو کرنے کے لیے کوئی ریڈیکشن نشانات نہیں ہیں
+	there are no pages to print	پرنٹ کرنے کے لیے کوئی صفحات نہیں ہیں
+	the document has no tags	دستاویز میں کوئی ٹیگز نہیں ہیں
+	{0}: {1}	{0}: {1}
+	the text recognition models are not installed (reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them)	متن کی پہچان کے ماڈلز انسٹال نہیں ہیں (Rehman-PDF دوبارہ انسٹال کریں، یا PDFCRAFT_MODELS کو اس فولڈر پر سیٹ کریں جس میں وہ ہیں)
+	the image is empty	تصویر خالی ہے
+	this file isn't XFDF, FDF, XML or text form data	یہ فائل XFDF، FDF، XML یا ٹیکسٹ فارم ڈیٹا نہیں ہے
+	nothing in the file matches this document	فائل میں کچھ بھی اس دستاویز سے مماثل نہیں
+	This page couldn't be displayed.\n{e}	یہ صفحہ دکھایا نہیں جا سکا۔\n{e}
+	Go to page {p}	صفحہ {p} پر جائیں
+	{s} action	{s} ایکشن
+	Page {p} of {n}	صفحہ {p} از {n}
+	1 page selected	1 صفحہ منتخب
+	{n} pages selected	{n} صفحات منتخب
+	{name} — unsaved changes	{name} — غیر محفوظ شدہ تبدیلیاں
+	{kind} field	{kind} فیلڈ
+	Select a file for the stamp	اسٹیمپ کے لیے فائل منتخب کریں
+	JavaScript, e.g. getField("total").value	JavaScript، مثلاً getField("total").value
+	Font: Helvetica	فونٹ: Helvetica
+	e.g. en-US	مثلاً en-US
+	Rendering: hayro (bootstrap) · UI: egui · Icons: Lucide (ISC) · Fonts: Inter, JetBrains Mono, Dancing Script (OFL)	رینڈرنگ: hayro (bootstrap) · UI: egui · Icons: Lucide (ISC) · Fonts: Inter، JetBrains Mono، Dancing Script (OFL)
+	CheckBox	چیک باکس
+	Radio	ریڈیو
+	PushButton	پش بٹن
+	Combo	کومبو
+	List	فہرست
+	Unknown	نامعلوم
+	The document has no XMP metadata	دستاویز میں کوئی XMP میٹا ڈیٹا نہیں ہے
+	The title in the metadata and the document information differ	میٹا ڈیٹا اور دستاویز کی معلومات میں عنوان مختلف ہے
+	The document is encrypted	دستاویز انکرپٹ شدہ ہے
+	Device colour is used, but there is no PDF/A output intent	ڈیوائس رنگ استعمال ہوا ہے، لیکن کوئی PDF/A آؤٹ پٹ ارادہ نہیں ہے
+	DeviceCMYK is used: it needs a CMYK output intent (not added automatically)	DeviceCMYK استعمال ہوا ہے: اسے CMYK آؤٹ پٹ ارادہ درکار ہے (خودکار طور پر شامل نہیں ہوتا)
+	The document has additional actions (/AA)	دستاویز میں اضافی ایکشنز ہیں (/AA)
+	The document has document-level JavaScript	دستاویز میں دستاویز کی سطح کا JavaScript ہے
+	The form asks viewers to make appearances (NeedAppearances)	فارم دیکھنے والوں سے ظاہری شکلیں بنانے کو کہتا ہے (NeedAppearances)
+	A form field has additional actions	فارم فیلڈ میں اضافی ایکشنز ہیں
+	A stream uses LZW compression	اسٹریم LZW کمپریشن استعمال کرتی ہے
+	A stream refers to an external file	اسٹریم بیرونی فائل کا حوالہ دیتی ہے
+	An image asks to be interpolated	تصویر انٹرپولیشن مانگتی ہے
+	An image has alternates or OPI information	تصویر میں متبادل یا OPI معلومات ہیں
+	PostScript XObjects aren't allowed	PostScript XObjects کی اجازت نہیں ہے
+	Embedded files must be PDF/A files themselves (use PDF/A-3 for others)	ایمبیڈڈ فائلیں خود PDF/A فائلیں ہونی چاہئیں (دوسروں کے لیے PDF/A-3 استعمال کریں)
+	An embedded file has no AFRelationship	ایمبیڈڈ فائل میں AFRelationship نہیں ہے
+	Select Icon	آئیکن منتخب کریں
+	Choose images	تصاویر منتخب کریں
+	{dpi} pixels/inch	{dpi} پکسلز/انچ
+	Type your {what}.	اپنا {what} ٹائپ کریں۔
+	Draw your {what} below.	اپنا {what} نیچے بنائیں۔
+	Your name	آپ کا نام
+	Images and text (converted to PDF)	تصاویر اور متن (PDF میں تبدیل شدہ)
+	Images and text	تصاویر اور متن
+	Check Box Style:	چیک باکس کا انداز:
+	Button Style:	بٹن کا انداز:
+	Check	چیک
+	Circle	دائرہ
+	Diamond	ہیرا
+	Square	مربع
+	Star	ستارہ
+	{month} {y}	{month} {y}
+	Change {key}	{key} تبدیل کریں
+	Insert pages from {name}	{name} سے صفحات داخل کریں
+	Insert pages from {name} — 1 field renamed	{name} سے صفحات داخل کریں — 1 فیلڈ کا نام تبدیل
+	Insert pages from {name} — fields renamed	{name} سے صفحات داخل کریں — فیلڈز کے نام تبدیل
+	Fill in {name}	{name} پُر کریں
+	Set the image of {name}	{name} کی تصویر سیٹ کریں
+	Edit script of {name}	{name} کا اسکرپٹ ترمیم کریں
+	Import {name}	{name} درآمد کریں
+	Add bookmark	بک مارک شامل کریں
+	Rename bookmark	بک مارک کا نام تبدیل کریں
+	Delete bookmark	بک مارک حذف کریں
+	Move bookmark	بک مارک منتقل کریں
+	Set bookmark destination	بک مارک کی منزل سیٹ کریں
+	Add stamp	اسٹیمپ شامل کریں
+	Delete comment	تبصرہ حذف کریں
+	Edit comment	تبصرہ ترمیم کریں
+	Erase	مٹائیں
+	Lock comment	تبصرہ مقفل کریں
+	Unlock comment	تبصرہ ان لاک کریں
+	Move comment	تبصرہ منتقل کریں
+	Resize comment	تبصرے کا سائز تبدیل کریں
+	Change comment properties	تبصرے کی خصوصیات تبدیل کریں
+	Add field	فیلڈ شامل کریں
+	Change field properties	فیلڈ کی خصوصیات تبدیل کریں
+	Delete field	فیلڈ حذف کریں
+	Duplicate field	فیلڈ کی نقل بنائیں
+	Set tab order	ٹیب کی ترتیب سیٹ کریں
+	Change initial view	ابتدائی منظر تبدیل کریں
+	Set alternate text	متبادل متن سیٹ کریں
+	Mark figure as decorative	شکل کو آرائشی نشان زد کریں
+	Run JavaScript	JavaScript چلائیں
+	Delete document JavaScript	دستاویز کا JavaScript حذف کریں
+	Edit document JavaScript	دستاویز کا JavaScript ترمیم کریں
+	Edit text	متن ترمیم کریں
+	Load document font	دستاویز کا فونٹ لوڈ کریں
+	Move image	تصویر منتقل کریں
+	Rotate image	تصویر گھمائیں
+	Flip image	تصویر پلٹیں
+	Delete image	تصویر حذف کریں
+	Add header & footer	ہیڈر اور فوٹر شامل کریں
+	Update header & footer	ہیڈر اور فوٹر اپ ڈیٹ کریں
+	Update watermark	واٹر مارک اپ ڈیٹ کریں
+	Add background	پس منظر شامل کریں
+	Update background	پس منظر اپ ڈیٹ کریں
+	Add image	تصویر شامل کریں
+	Edit content	مواد ترمیم کریں
+	Delete content	مواد حذف کریں
+	Remove redaction marks	ریڈیکشن کے نشانات ہٹائیں
+	Add link	لنک شامل کریں
+	Change link properties	لنک کی خصوصیات تبدیل کریں
+	Delete link	لنک حذف کریں
+	Create link	لنک بنائیں
+	Flatten	فلیٹ کریں
+	Add sticky note	اسٹکی نوٹ شامل کریں
+	Add highlight	ہائی لائٹ شامل کریں
+	Add underline	انڈر لائن شامل کریں
+	Add strikethrough	اسٹرائیک تھرو شامل کریں
+	Add squiggly underline	لہردار انڈر لائن شامل کریں
+	Add rectangle	مستطیل شامل کریں
+	Add oval	بیضوی شامل کریں
+	Add arrow	تیر شامل کریں
+	Add line	لکیر شامل کریں
+	Add drawing	ڈرائنگ شامل کریں
+	Add text box	ٹیکسٹ باکس شامل کریں
+	Add checkmark	چیک مارک شامل کریں
+	Add cross	کراس شامل کریں
+	Add dot	نقطہ شامل کریں
+	Add signature	دستخط شامل کریں
+	Add redaction mark	ریڈیکشن نشان شامل کریں
+	Add cloud	بادل شامل کریں
+	Add polygon	کثیرالاضلاع شامل کریں
+	Add connected lines	جڑی ہوئی لکیریں شامل کریں
+	Add callout	کال آؤٹ شامل کریں
+	Add inserted text	داخل شدہ متن شامل کریں
+	Add file attachment	فائل منسلکہ شامل کریں
+	Set status Accepted	حیثیت قبول شدہ سیٹ کریں
+	Set status Rejected	حیثیت مسترد شدہ سیٹ کریں
+	Set status Cancelled	حیثیت منسوخ شدہ سیٹ کریں
+	Set status Completed	حیثیت مکمل شدہ سیٹ کریں
+	Set status None	حیثیت کوئی نہیں سیٹ کریں
+	Set status Unmarked	حیثیت غیر نشان زد سیٹ کریں
+	Save as PDF/A-1b	PDF/A-1b کے طور پر محفوظ کریں
+	Save as PDF/A-2b	PDF/A-2b کے طور پر محفوظ کریں
+	Save as PDF/A-3b	PDF/A-3b کے طور پر محفوظ کریں
+	Fill & Sign: change signature	پُر کریں اور دستخط کریں: دستخط تبدیل کریں
+	Fill & Sign: change initials	پُر کریں اور دستخط کریں: ابتدائی دستخط تبدیل کریں
+	Fill & Sign: remove saved signature	پُر کریں اور دستخط کریں: محفوظ شدہ دستخط ہٹائیں
+	Fill & Sign: remove saved initials	پُر کریں اور دستخط کریں: محفوظ شدہ ابتدائی دستخط ہٹائیں
+	Change signature	دستخط تبدیل کریں
+	Change initials	ابتدائی دستخط تبدیل کریں
+	Measure distance	فاصلہ ناپیں
+	Measure perimeter	دائرہ ناپیں
+	Measure area	رقبہ ناپیں
+	Set measurement scale	پیمائش کا پیمانہ سیٹ کریں
+	Measurement information	پیمائش کی معلومات
+	Measurement snapping	پیمائش کی اسنیپنگ
+	Export measurements as CSV	پیمائشیں CSV کے طور پر برآمد کریں
+	Distance	فاصلہ
+	Perimeter	دائرہ
+	Area	رقبہ
+	Drawing scale	ڈرائنگ کا پیمانہ
+	Snapping	اسنیپنگ
+	Export measurements	پیمائشیں برآمد کریں
+	Open a PDF to measure it.	ناپنے کے لیے PDF کھولیں۔
+	Click vertices. Enter or double-click finishes a perimeter or area. Click the first point to close an area.	ورٹیکسز پر کلک کریں۔ Enter یا ڈبل کلک دائرہ یا رقبہ مکمل کرتا ہے۔ رقبہ بند کرنے کے لیے پہلے نقطے پر کلک کریں۔
+	Shift constrains to 45 degrees. Backspace removes a vertex. Escape cancels.	Shift 45 ڈگری تک محدود کرتا ہے۔ Backspace ورٹیکس ہٹاتا ہے۔ Escape منسوخ کرتا ہے۔
+	Angle	زاویہ
+	Click the first point to begin.	شروع کرنے کے لیے پہلے نقطے پر کلک کریں۔
+	Snap to drawing	ڈرائنگ سے اسنیپ کریں
+	Endpoints	اختتامی نقطے
+	Midpoints	درمیانی نقطے
+	Intersections	تقاطع
+	Paths	راہیں
+	Sensitivity	حساسیت
+	Unit	اکائی
+	Decimals	اعشاریے
+	Calibrate from two points	دو نقطوں سے کیلیبریٹ کریں
+	Entire page	پورا صفحہ
+	Viewport rectangle in page points (x, y, width, height)	صفحے کے پوائنٹس میں ویو پورٹ مستطیل (x، y، چوڑائی، اونچائی)
+	Viewport	ویو پورٹ
+	Apply scale	پیمانہ لاگو کریں
+	Saved measurements	محفوظ شدہ پیمائشیں
+	Saved measurements.	محفوظ شدہ پیمائشیں۔
+	Endpoint	اختتامی نقطہ
+	Midpoint	درمیانی نقطہ
+	Intersection	تقاطع
+	Path	راہ
+	This drawing exceeds the snapping limit; only the first paths are used.	یہ ڈرائنگ اسنیپنگ کی حد سے بڑھ جاتی ہے؛ صرف پہلی راہیں استعمال ہوتی ہیں۔
+	Some page content couldn't be read; snapping uses the rest.	کچھ صفحے کا مواد پڑھا نہیں جا سکا؛ اسنیپنگ باقی استعمال کرتی ہے۔
+	Unsupported measurements	غیر تعاون یافتہ پیمائشیں
+	Label	لیبل
+	{n} measurements use an unsupported format and are left out.	{n} پیمائشیں غیر تعاون یافتہ فارمیٹ استعمال کرتی ہیں اور چھوڑ دی گئی ہیں۔
+	This area has too many overlapping paths; intersection snapping is limited.	اس علاقے میں بہت زیادہ اوورلیپنگ راہیں ہیں؛ تقاطع اسنیپنگ محدود ہے۔
+	This measurement needs at least {n} points.	اس پیمائش کو کم از کم {n} نقطے درکار ہیں۔
+	Switch to two-page view first to show the cover page	سرورق دکھانے کے لیے پہلے دو صفحات کے منظر پر جائیں
+	Page display: {layout}	صفحے کی نمائش: {layout}
+	Fit to width scrolling	چوڑائی کے مطابق فٹ اسکرولنگ
+	Fit one full page	ایک مکمل صفحہ فٹ کریں
+	Created a PDF from {n} files	{n} فائلوں سے PDF بنائی گئی
+	PDF, images and text	PDF، تصاویر اور متن
+	Insert a file before page {label}	صفحہ {label} سے پہلے فائل داخل کریں
+	Insert a file at the end	آخر میں فائل داخل کریں
+	Save pages	صفحات محفوظ کریں
+	Save these pages as one PDF	ان صفحات کو ایک PDF کے طور پر محفوظ کریں
+	No changes to save	محفوظ کرنے کے لیے کوئی تبدیلیاں نہیں
+	Created a PDF from {n} files; left out: {names}	{n} فائلوں سے PDF بنائی گئی؛ چھوڑ دی گئیں: {names}
+	Created a PDF from the first {n} files	پہلی {n} فائلوں سے PDF بنائی گئی
+	None of those files can be made into a PDF; use PDFs, images or .txt files	ان میں سے کوئی فائل PDF نہیں بن سکتی؛ PDFs، تصاویر یا .txt فائلیں استعمال کریں
+	Choose a PNG or JPEG image (up to 4 MiB). Transparency is preserved.	PNG یا JPEG تصویر منتخب کریں (4 MiB تک)۔ شفافیت برقرار رہتی ہے۔
+	Couldn't import the signature image: {e}	دستخط کی تصویر درآمد نہیں ہو سکی: {e}
+	Go to page…	صفحے پر جائیں…
+	For page sizes and margins.	صفحے کے سائز اور مارجنز کے لیے۔
+	Reopen the files that were open when PdfCraft last closed	Rehman-PDF آخری بار بند ہونے پر جو فائلیں کھلی تھیں انہیں دوبارہ کھولیں
+	The PDF text fonts can't draw “{c}” ({code}). Choose supported text.	PDF متن کے فونٹس ”{c}“ ({code}) نہیں بنا سکتے۔ تعاون یافتہ متن منتخب کریں۔
+	The standard fonts can't draw “{c}” ({code}). Only Western European characters can be added as text for now.	معیاری فونٹس ”{c}“ ({code}) نہیں بنا سکتے۔ فی الحال صرف مغربی یورپی حروف متن کے طور پر شامل ہو سکتے ہیں۔
+	This field's font can't draw “{c}” ({code}), so PdfCraft shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	اس فیلڈ کا فونٹ ”{c}“ ({code}) نہیں بنا سکتا، اس لیے Rehman-PDF اس کی جگہ ? دکھاتا ہے۔ قدر محفوظ ہے، اور دیگر PDF ویوورز فیلڈ کو اس سے دوبارہ بناتے ہیں۔
+	The fonts PdfCraft writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	Rehman-PDF جن فونٹس سے لکھتا ہے وہ ”{c}“ ({code}) نہیں بنا سکتے، اس لیے یہ ہر PDF ویوور میں ? کے طور پر دکھتا ہے۔ متن محفوظ ہے۔
+	Open arrow	کھلا تیر
+	Closed arrow	بند تیر
+	Butt	بٹ
+	Reverse open arrow	الٹا کھلا تیر
+	Reverse closed arrow	الٹا بند تیر
+	Slash	سلیش
+	Larger pages	بڑے صفحات
+	Smaller pages	چھوٹے صفحات
+	Reset page size	صفحے کا سائز ری سیٹ کریں
+	Date format	تاریخ کا فارمیٹ
+	Fill & Sign dates	پُر کریں اور دستخط کریں کی تاریخیں
+	Pattern	پیٹرن
+	Today: {date}	آج: {date}
+	yyyy or yy year · m or mm month · mmm or mmmm month name · d or dd day · ddd or dddd weekday. H, h, M, s and t are time letters and can't be used on their own: put {escape} before a letter to show it as is.	yyyy یا yy سال · m یا mm مہینہ · mmm یا mmmm مہینے کا نام · d یا dd دن · ddd یا dddd ہفتے کا دن۔ H، h، M، s اور t وقت کے حروف ہیں اور اکیلے استعمال نہیں ہو سکتے: حرف کو ویسے دکھانے کے لیے اس سے پہلے {escape} لگائیں۔
+	Same as interface ({language})	انٹرفیس جیسا ({language})
+	{chars} can't be written into the PDF yet: Fill & Sign text is Western European only. Pick a numeric format such as dd.mm.yyyy.	{chars} ابھی PDF میں نہیں لکھا جا سکتا: پُر کریں اور دستخط کریں کا متن صرف مغربی یورپی ہے۔ dd.mm.yyyy جیسا عددی فارمیٹ منتخب کریں۔
+	Opens the printer driver's preferences. They are saved for every print from this computer; the copies, two-sided, grayscale and paper chosen here still apply.	پرنٹر ڈرائیور کی ترجیحات کھولتا ہے۔ وہ اس کمپیوٹر سے ہر پرنٹ کے لیے محفوظ رہتی ہیں؛ یہاں منتخب کردہ کاپیاں، دو طرفہ، گرے اسکیل اور کاغذ اب بھی لاگو ہوتے ہیں۔
+	The printer driver's own settings for this print: paper tray, paper type, finishing and more.	اس پرنٹ کے لیے پرنٹر ڈرائیور کی اپنی ترتیبات: پیپر ٹرے، کاغذ کی قسم، فنشنگ اور مزید۔
+	Couldn't open the printer's preferences: {e}	پرنٹر کی ترجیحات نہیں کھل سکیں: {e}
+	Printer properties	پرنٹر کی خصوصیات
+	Reset to printer defaults	پرنٹر کے پہلے سے طے شدہ پر ری سیٹ کریں
+	This printer offers no settings of its own.	یہ پرنٹر اپنی کوئی ترتیبات پیش نہیں کرتا۔
+	% of all commits	تمام کمٹس کا %
+	+Bin	+Bin
+	+LOC	+LOC
+	@{login}: {prs} PRs, {commits} commits, +{added} / −{deleted} lines (Δ {delta}), +{bin_added} / −{bin_deleted} binary assets, {first} – {last}	@{login}: {prs} PRs، {commits} کمٹس، +{added} / −{deleted} لائنیں (Δ {delta})، +{bin_added} / −{bin_deleted} بائنری اثاثے، {first} – {last}
+	A button	ایک بٹن
+	A link	ایک لنک
+	A script	ایک اسکرپٹ
+	About	کے بارے میں
+	Add {what}	{what} شامل کریں
+	Align fields	فیلڈز سیدھ کریں
+	Another file dialog is still open. Finish with it first.	ایک اور فائل ڈائیلاگ ابھی کھلا ہے۔ پہلے اسے مکمل کریں۔
+	Basic constraints	بنیادی رکاوٹیں
+	Binary assets added	بائنری اثاثے شامل کیے گئے
+	Binary assets removed	بائنری اثاثے ہٹائے گئے
+	Change document properties	دستاویز کی خصوصیات تبدیل کریں
+	Change {what}	{what} تبدیل کریں
+	Commits	کمٹس
+	Company	کمپنی
+	Contributors	معاونین
+	Couldn't show the file picker. Please try again.	فائل پکر نہیں دکھا سکے۔ براہ کرم دوبارہ کوشش کریں۔
+	Create	بنائیں
+	Create PDF from images	تصاویر سے PDF بنائیں
+	Cut and stack	کاٹیں اور ڈھیر لگائیں
+	DPI sets the printed page size without resampling the image.	DPI تصویر کو دوبارہ سیمپل کیے بغیر چھپے ہوئے صفحے کا سائز سیٹ کرتا ہے۔
+	Default page display	پہلے سے طے شدہ صفحے کی نمائش
+	Default workspace mode	پہلے سے طے شدہ ورک اسپیس موڈ
+	Default zoom	پہلے سے طے شدہ زوم
+	Display name	ڈسپلے نام
+	Distribute fields	فیلڈز تقسیم کریں
+	Documents and view	دستاویزات اور منظر
+	Dynamic XFA form laid out from its template: {pages}, {fields}.	متحرک XFA فارم اس کے ٹیمپلیٹ سے ترتیب دیا گیا: {pages}، {fields}۔
+	Files are combined in this order. Leave Pages empty to take every page.	فائلیں اسی ترتیب میں یکجا ہوتی ہیں۔ ہر صفحہ لینے کے لیے Pages خالی چھوڑیں۔
+	First	پہلا
+	First commit	پہلا کمٹ
+	Grab bag	مختلف اشیاء
+	H / Space (hold)	H / Space (دبائے رکھیں)
+	Home / End	Home / End
+	Last	آخری
+	Last commit	آخری کمٹ
+	Line delta	لائن ڈیلٹا
+	Line ending	لائن کا اختتام
+	Lines +/−	لائنیں +/−
+	Lines added	شامل شدہ لائنیں
+	Lines deleted	حذف شدہ لائنیں
+	Mark differences	فرق نشان زد کریں
+	Mark for redaction	ریڈیکشن کے لیے نشان زد کریں
+	Mark pages for redaction	صفحات ریڈیکشن کے لیے نشان زد کریں
+	Match field sizes	فیلڈ کے سائز مماثل کریں
+	Merged PRs	ضم شدہ PRs
+	Model	ماڈل
+	Models	ماڈلز
+	Name (A–Z)	نام (A–Z)
+	No contributor data was built into this copy.	اس کاپی میں کوئی معاون ڈیٹا بنایا نہیں گیا تھا۔
+	No model credits were built into this copy.	اس کاپی میں کوئی ماڈل کریڈٹس بنائے نہیں گئے تھے۔
+	Only continue if you trust this document. An address can carry information from the document, such as what you typed into its form.	صرف اس صورت میں جاری رکھیں جب آپ اس دستاویز پر بھروسہ کرتے ہوں۔ پتہ دستاویز سے معلومات لے جا سکتا ہے، جیسے جو آپ نے اس کے فارم میں ٹائپ کیا۔
+	Open email app	ای میل ایپ کھولیں
+	Open link	لنک کھولیں
+	Open this web page?	یہ ویب صفحہ کھولیں؟
+	PRs	PRs
+	Place saved {what}	محفوظ شدہ {what} رکھیں
+	Print single-sided. Keep the sheets in order, cut at the marks, then stack the piles left to right, top to bottom.	واحد رخا پرنٹ کریں۔ شیٹس کو ترتیب میں رکھیں، نشانات پر کاٹیں، پھر ڈھیروں کو بائیں سے دائیں، اوپر سے نیچے ڈھیر لگائیں۔
+	Real name	اصل نام
+	Remove saved {what}	محفوظ شدہ {what} ہٹائیں
+	Reverse the order	ترتیب الٹیں
+	Run form script	فارم اسکرپٹ چلائیں
+	SHA-1 digest	SHA-1 ڈائجسٹ
+	SHA-256 digest	SHA-256 ڈائجسٹ
+	Scripted content must be usable with a keyboard and assistive technology. Check the document's scripts.	اسکرپٹ شدہ مواد کی بورڈ اور معاون ٹیکنالوجی سے قابل استعمال ہونا چاہیے۔ دستاویز کے اسکرپٹس چیک کریں۔
+	Scripts run in a sandbox without file or network access. A script that asks to open a web page needs your permission first. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	اسکرپٹس فائل یا نیٹ ورک رسائی کے بغیر سینڈ باکس میں چلتی ہیں۔ ویب صفحہ کھولنے والا اسکرپٹ پہلے آپ کی اجازت مانگتا ہے۔ JavaScript بند ہونے پر بھی، Acrobat کے معیاری فارمیٹ، validate اور calculate فنکشنز کام کرتے ہیں۔
+	Selected image files: {count}	منتخب تصویری فائلیں: {count}
+	Show	دکھائیں
+	Sign yourself	خود دستخط کریں
+	Sort	ترتیب دیں
+	Squiggly	لہردار
+	Table	ٹیبل
+	Table rows belong directly in a table or its head, body or foot. Fix the table's tags.	ٹیبل کی قطاریں براہ راست ٹیبل یا اس کے سر، باڈی یا پاؤں میں ہونی چاہئیں۔ ٹیبل کے ٹیگز ٹھیک کریں۔
+	Text recognition isn't installed: its models are missing (run `cargo xtask models`, or set PDFCRAFT_MODELS).	متن کی پہچان انسٹال نہیں ہے: اس کے ماڈلز غائب ہیں (`cargo xtask models` چلائیں، یا PDFCRAFT_MODELS سیٹ کریں)۔
+	That didn't work: an internal error stopped it ({m}).	وہ کام نہیں کیا: اندرونی خرابی نے اسے روک دیا ({m})۔
+	The Windows store's digital IDs couldn't be listed: {e}	Windows اسٹور کی ڈیجیٹل IDs درج نہیں ہو سکیں: {e}
+	The document changed while you were choosing a file, so nothing was changed.	آپ کے فائل منتخب کرنے کے دوران دستاویز بدل گئی، اس لیے کچھ بھی تبدیل نہیں ہوا۔
+	The document was closed before it could be saved.	محفوظ ہونے سے پہلے دستاویز بند کر دی گئی۔
+	The pages were extracted but not deleted, because the document changed while you were choosing a folder.	صفحات نکالے گئے لیکن حذف نہیں ہوئے، کیونکہ آپ کے فولڈر منتخب کرنے کے دوران دستاویز بدل گئی۔
+	This web address mixes letters from different alphabets, a common way to imitate another site's name.	یہ ویب پتہ مختلف حروف تہجی کے حروف ملاتا ہے، جو کسی دوسری سائٹ کے نام کی نقل کرنے کا عام طریقہ ہے۔
+	This web address uses letters from another alphabet, which can look like familiar ones.	یہ ویب پتہ دوسری حروف تہجی کے حروف استعمال کرتا ہے، جو مانوس حروف جیسے لگ سکتے ہیں۔
+	Use 72 DPI (one point per pixel)	72 DPI استعمال کریں (فی پکسل ایک پوائنٹ)
+	Use custom DPI	اپنی مرضی کا DPI استعمال کریں
+	Use each image's embedded DPI; use 72 DPI when it is absent.	ہر تصویر کا ایمبیڈڈ DPI استعمال کریں؛ نہ ہونے پر 72 DPI استعمال کریں۔
+	Use image resolution	تصویر کی ریزولوشن استعمال کریں
+	Use {what}	{what} استعمال کریں
+	Used when a PDF doesn't ask for a layout or zoom. Continuous scrolling never snaps between pages.	جب PDF ترتیب یا زوم نہ مانگے تو استعمال ہوتا ہے۔ مسلسل اسکرولنگ صفحات کے درمیان کبھی نہیں اچھلتی۔
+	Used when opening PDFs. An explicit launch or control mode takes precedence for the session.	PDFs کھولتے وقت استعمال ہوتا ہے۔ سیشن کے لیے واضح لانچ یا کنٹرول موڈ کو ترجیح حاصل ہے۔
+	Username	صارف نام
+	Write this email?	یہ ای میل لکھیں؟
+	XFA form: its fields and its XFA data are kept in step, so other viewers show what you fill in.	XFA فارم: اس کے فیلڈز اور اس کا XFA ڈیٹا ہم آہنگ رکھے جاتے ہیں، تاکہ دوسرے ویوورز وہ دکھائیں جو آپ پُر کرتے ہیں۔
+	{n} contributors · {c} commits	{n} معاونین · {c} کمٹس
+	{who} in this document tried to open an address PdfCraft won't open: {e}.	اس دستاویز میں {who} نے وہ پتہ کھولنے کی کوشش کی جو Rehman-PDF نہیں کھولے گا: {e}۔
+	{who} in this document tried to open an address PdfCraft won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	اس دستاویز میں {who} نے وہ پتہ کھولنے کی کوشش کی جو Rehman-PDF نہیں کھولے گا: {e}۔ دستاویزات سے صرف ویب (http، https) اور ای میل (mailto) لنکس کھلتے ہیں۔
+	{who} in this document wants to open this address in your browser:	اس دستاویز میں {who} آپ کے براؤزر میں یہ پتہ کھولنا چاہتا ہے:
+	{who} in this document wants to open your email app with this address:	اس دستاویز میں {who} اس پتے کے ساتھ آپ کی ای میل ایپ کھولنا چاہتا ہے:
+	ΔLOC	ΔLOC
+	−Bin	−Bin
+	−LOC	−LOC
+@plural	{n} field|{n} fields	{n} فیلڈ|{n} فیلڈز
+@plural	{n} field name collides with earlier files and will be renamed: {list}|{n} field names collide with earlier files and will be renamed: {list}	پہلی فائلوں سے ٹکرانے والے {n} فیلڈ کے نام تبدیل ہوں گے: {list}|پہلی فائلوں سے ٹکرانے والے {n} فیلڈز کے نام تبدیل ہوں گے: {list}
+@plural	{n} page|{n} pages	{n} صفحہ|{n} صفحات
+signature pad	Type	ٹائپ کریں
+	Flatten Fill & Sign when saving	محفوظ کرتے وقت پُر کریں اور دستخط کریں کو فلیٹ کریں
+	Text, marks and signatures become part of the page. Other comments stay editable.	متن، نشانات اور دستخط صفحے کا حصہ بن جاتے ہیں۔ دیگر تبصرے قابل ترمیم رہتے ہیں۔
+	Scroll tabs left	ٹیبز بائیں اسکرول کریں
+	Scroll tabs right	ٹیبز دائیں اسکرول کریں
+	Shared Field Properties	مشترکہ فیلڈ کی خصوصیات
+	{n} fields selected	{n} فیلڈز منتخب
+	Mixed	مخلوط
+	Custom font	اپنی مرضی کا فونٹ
+	Only checked properties will change. Mixed means the selected fields have different values.	صرف چیک شدہ خصوصیات تبدیل ہوں گی۔ مخلوط کا مطلب ہے منتخب فیلڈز کی قدریں مختلف ہیں۔
+	Shift- or Ctrl/Command-click to select several fields.	کئی فیلڈز منتخب کرنے کے لیے Shift- یا Ctrl/Command-کلک کریں۔
+	Font size 0 uses automatic sizing.	فونٹ سائز 0 خودکار سائزنگ استعمال کرتا ہے۔
+	Character limit:	حروف کی حد:
+	Character limit 0 means no limit. A comb of characters needs a limit.	حروف کی حد 0 کا مطلب کوئی حد نہیں۔ حروف کے کومب کو حد درکار ہے۔
+	To change locked fields, also set Locked to No.	مقفل فیلڈز تبدیل کرنے کے لیے، Locked کو No پر بھی سیٹ کریں۔
+	Comb of characters	حروف کا کومب
+	The document changed while you were editing field properties.	آپ کے فیلڈ کی خصوصیات ترمیم کرنے کے دوران دستاویز بدل گئی۔
+	The document is no longer open.	دستاویز اب کھلی نہیں ہے۔
+	The field properties dialog is no longer open.	فیلڈ کی خصوصیات کا ڈائیلاگ اب کھلا نہیں ہے۔
+	The field properties could not be changed.	فیلڈ کی خصوصیات تبدیل نہیں ہو سکیں۔
+	The selected fields could not be found. Select them again.	منتخب فیلڈز نہیں مل سکے۔ انہیں دوبارہ منتخب کریں۔
+	The field {name} no longer exists.	فیلڈ {name} اب موجود نہیں ہے۔
+	A selected field has no widget on any page, so the fields can't be edited together.	منتخب فیلڈ کا کسی صفحے پر کوئی وجٹ نہیں ہے، اس لیے فیلڈز کو ایک ساتھ ترمیم نہیں کیا جا سکتا۔
+	 ({n} at {dpi} dpi, the largest size they can be drawn at)	  ({n} بطور {dpi} dpi، سب سے بڑا سائز جس پر وہ بنائے جا سکتے ہیں)
+@plural	{n} object selected|{n} objects selected	{n} آبجیکٹ منتخب|{n} آبجیکٹس منتخب
+	Drag the selection to move it. Esc clears the selection.	منتخب کو منتقل کرنے کے لیے گھسیٹیں۔ Esc انتخاب صاف کرتا ہے۔
+	Shift-click to select several objects. Drag empty space to select an area.	کئی آبجیکٹس منتخب کرنے کے لیے Shift-کلک کریں۔ علاقہ منتخب کرنے کے لیے خالی جگہ گھسیٹیں۔
+	Select at most 1000 objects at a time.	ایک وقت میں زیادہ سے زیادہ 1000 آبجیکٹس منتخب کریں۔
+	Finish or discard the text being edited before selecting several objects.	کئی آبجیکٹس منتخب کرنے سے پہلے ترمیم ہو رہا متن مکمل یا ترک کریں۔
+	Move object	آبجیکٹ منتقل کریں
+	Move objects	آبجیکٹس منتقل کریں
+	Vertical text cannot be moved with this selection.	عمودی متن اس انتخاب سے منتقل نہیں ہو سکتا۔
+	Text used as a clipping path cannot be moved with this selection.	کلپنگ پاتھ کے طور پر استعمال شدہ متن اس انتخاب سے منتقل نہیں ہو سکتا۔
+	These objects could not be moved. Select them again and try a smaller move.	یہ آبجیکٹس منتقل نہیں ہو سکے۔ انہیں دوبارہ منتخب کریں اور چھوٹی حرکت آزمائیں۔
+	This page contains objects that cannot be selected together.	اس صفحے میں ایسے آبجیکٹس ہیں جنہیں ایک ساتھ منتخب نہیں کیا جا سکتا۔
+	Fill colour	بھرنے کا رنگ
+	No fill	کوئی بھراؤ نہیں
+	Fill colour: none	بھرنے کا رنگ: کوئی نہیں
+key	Ctrl	Ctrl
+key	Shift	Shift
+key	Delete	Delete
+key	Esc	Esc
+key	Home	Home
+key	End	End
+key	Space	سپیس
+	Grid view	گرڈ منظر
+	List view	فہرست منظر
+	Files are combined in the order shown. Drag them to change it.	فائلیں دکھائی گئی ترتیب میں یکجا ہوتی ہیں۔ اسے تبدیل کرنے کے لیے انہیں گھسیٹیں۔
+	Preview unavailable: {e}	پیش نظارہ دستیاب نہیں: {e}
+	Pages: {k} of {n}	صفحات: {n} میں سے {k}
+	Check the pages	صفحات چیک کریں
+	Switch to List view to change the pages it takes.	اس کے صفحات تبدیل کرنے کے لیے فہرست منظر پر جائیں۔
+	Expand all	سب پھیلائیں
+	Collapse all	سب سمیٹیں
+	Remove page	صفحہ ہٹائیں
+	Remove {n} pages	{n} صفحات ہٹائیں
+	Reset panel layout	پینل کی ترتیب ری سیٹ کریں
+	Float panel	پینل تیرائیں
+	Move to group	گروپ میں منتقل کریں
+	Panels	پینلز
+	Resize panels	پینلز کا سائز تبدیل کریں
+	Resize panel window	پینل ونڈو کا سائز تبدیل کریں
+	Tools	ٹولز
+	Inspector	انسپکٹر
+	PDF page: {size}	PDF صفحہ: {size}
+	Match page at 100%	100% پر صفحہ مماثل کریں
+	PDF scale: {scale}%	PDF پیمانہ: {scale}%
+	Printer paper and scaling may differ. Check driver settings.	پرنٹر کا کاغذ اور پیمانہ مختلف ہو سکتا ہے۔ ڈرائیور کی ترتیبات چیک کریں۔
+	Drawing scale changes. Use Actual size for full-scale plans.	ڈرائنگ کا پیمانہ بدلتا ہے۔ مکمل پیمانے کے منصوبوں کے لیے اصل سائز استعمال کریں۔
+	Reload documents when their files change on disk	ڈسک پر فائلیں بدلنے پر دستاویزات دوبارہ لوڈ کریں
+	This file changed on disk. Reload it to see the new version; your unsaved changes will be lost.	یہ فائل ڈسک پر بدل گئی ہے۔ نیا ورژن دیکھنے کے لیے اسے دوبارہ لوڈ کریں؛ آپ کی غیر محفوظ شدہ تبدیلیاں ضائع ہو جائیں گی۔
+	Reload	دوبارہ لوڈ کریں
+	Couldn't reload {name}: {e}	{name} دوبارہ لوڈ نہیں ہو سکی: {e}
+	Select page {label}	صفحہ {label} منتخب کریں
+	Rotate page {label} counterclockwise	صفحہ {label} گھڑی کی مخالف سمت میں گھمائیں
+	Rotate page {label} clockwise	صفحہ {label} گھڑی کی سمت میں گھمائیں
+	Delete page {label}	صفحہ {label} حذف کریں
+	Mouse wheel scroll speed	ماؤس وہیل اسکرول کی رفتار
+scroll speed	Slow	آہستہ
+scroll speed	Normal	عام
+scroll speed	Fast	تیز
+	Animation effects	اینیمیشن اثرات
+animation effects	On	آن
+animation effects	Off	آف
+	Enhance camera image	کیمرے کی تصویر بہتر بنائیں
+	Drag the corners onto the document's edges, then choose Enhance page.	کونوں کو دستاویز کے کناروں پر گھسیٹیں، پھر صفحہ بہتر بنائیں منتخب کریں۔
+	Enhance page	صفحہ بہتر بنائیں
+	Done adding text	متن شامل کرنا مکمل
+	Discard this text (Esc)	یہ متن ترک کریں (Esc)
+	Clean-up	صاف کریں
+	Original	اصل
+	Greyscale	گرے اسکیل
+	Black and white	سیاہ اور سفید
+	Reading colours	پڑھنے کے رنگ
+	Replace document colours	دستاویز کے رنگ تبدیل کریں
+	Black on white	سفید پر سیاہ
+	White on black	سیاہ پر سفید
+	Yellow on black	سیاہ پر پیلا
+	Green on black	سیاہ پر سبز
+	Page background	صفحے کا پس منظر
+	Only change the colour of black text or line art	صرف سیاہ متن یا لائن آرٹ کا رنگ تبدیل کریں
+	Change the colour of line art as well as text	متن کے ساتھ ساتھ لائن آرٹ کا رنگ بھی تبدیل کریں
+	Colours are remapped while rendering; the document itself never changes.	رنگ رینڈرنگ کے دوران دوبارہ میپ ہوتے ہیں؛ دستاویز خود کبھی نہیں بدلتی۔
+	This printer's driver doesn't take two-sided settings from other programs, so its own setting applies. Change it in Properties…	اس پرنٹر کا ڈرائیور دوسرے پروگرامز سے دو طرفہ ترتیبات نہیں لیتا، اس لیے اس کی اپنی ترتیب لاگو ہوتی ہے۔ اسے تبدیل کریں: خصوصیات…
+	Browser's print dialog	براؤزر کا پرنٹ ڈائیلاگ
+	Copies, two-sided printing and colour are chosen in the browser's print dialog.	کاپیاں، دو طرفہ پرنٹنگ اور رنگ براؤزر کے پرنٹ ڈائیلاگ میں منتخب ہوتے ہیں۔
+	Preparing {n} sheets for printing…	پرنٹنگ کے لیے {n} شیٹس تیار ہو رہی ہیں…
+	Preparing sheet {done} of {total} for printing…	پرنٹنگ کے لیے {total} میں سے شیٹ {done} تیار ہو رہی ہے…
+	Opening the browser's print dialog…	براؤزر کا پرنٹ ڈائیلاگ کھل رہا ہے…
+	Couldn't print from the browser ({e}); downloaded {name} to print instead	براؤزر سے پرنٹ نہیں ہو سکا ({e})؛ اس کے بجائے {name} ڈاؤن لوڈ کر کے پرنٹ کریں
+	Tools panel side	ٹولز پینل کی سمت
+	Add comment	تبصرہ شامل کریں
+	Change tag properties	ٹیگ کی خصوصیات تبدیل کریں
+	Tags panel	ٹیگز پینل
+	Tags	ٹیگز
+	Tag type	ٹیگ کی قسم
+	Actual text	اصل متن
+	Find a tag	ٹیگ تلاش کریں
+	Collapse tag	ٹیگ سمیٹیں
+	Expand tag	ٹیگ پھیلائیں
+	Revert changes	تبدیلیاں واپس لیں
+	Save tag properties	ٹیگ کی خصوصیات محفوظ کریں
+	This document has no editable structure tags.	اس دستاویز میں کوئی قابل ترمیم ساخت کے ٹیگز نہیں ہیں۔
+	{n} tags	{n} ٹیگز
+	Save or revert changes before selecting another tag.	دوسرا ٹیگ منتخب کرنے سے پہلے تبدیلیاں محفوظ یا واپس لیں۔
+	Left out: {names}	چھوڑ دی گئیں: {names}
+	already a PDF	پہلے سے PDF ہے
+	no unused output name	کوئی غیر استعمال شدہ آؤٹ پٹ نام نہیں
+	no output folder was chosen	کوئی آؤٹ پٹ فولڈر منتخب نہیں ہوا
+@plural	Downloaded {n} PDF|Downloaded {n} PDFs	{n} PDF ڈاؤن لوڈ ہوئی|{n} PDFs ڈاؤن لوڈ ہوئیں
+	Scan	اسکین کریں
+	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: PdfCraft finds the signature and removes the paper.	سفید کاغذ کی شیٹ پر دستخط کریں اور روشن، یکساں روشنی میں اس کی تصویر لیں (فلیش استعمال کریں)۔ تصویر منتخب کریں یا یہاں ڈراپ کریں: Rehman-PDF دستخط تلاش کرتا ہے اور کاغذ ہٹاتا ہے۔
+	Choose photo…	تصویر منتخب کریں…
+	No photo chosen	کوئی تصویر منتخب نہیں
+	Photo	تصویر
+	Ink sensitivity	سیاہی کی حساسیت
+	No signature was found in the frame. Move the frame over the signature or raise the ink sensitivity.	فریم میں کوئی دستخط نہیں ملا۔ فریم کو دستخط پر منتقل کریں یا سیاہی کی حساسیت بڑھائیں۔
+	Couldn't use the photo: {e}	تصویر استعمال نہیں ہو سکی: {e}
+	Close Tab	ٹیب بند کریں
+	Reopen Closed Tab	بند شدہ ٹیب دوبارہ کھولیں
+	Reveal in Finder	Finder میں ظاہر کریں
+	Reveal in File Explorer	فائل ایکسپلورر میں ظاہر کریں
+	Other colour…	دوسرا رنگ…
+	Recent colours	حالیہ رنگ
+	Couldn't follow linked PDF: {reason}	منسلک PDF کی پیروی نہیں ہو سکی: {reason}
+	The linked PDF opened, but its named destination was not applied.	منسلک PDF کھل گئی، لیکن اس کی نامزد منزل لاگو نہیں ہوئی۔
+	The linked PDF opened, but its page destination was out of range.	منسلک PDF کھل گئی، لیکن اس کے صفحے کی منزل حد سے باہر تھی۔
+	Local cross-PDF links require the desktop app	مقامی کراس-PDF لنکس کے لیے ڈیسک ٹاپ ایپ درکار ہے
+	Minimize	چھوٹا کریں
+	Maximize	بڑا کریں
+	Restore	بحال کریں
+	Use system title bar	سسٹم ٹائٹل بار استعمال کریں
+	Show a basic title bar for the window buttons instead of the tab strip. GNOME doesn't draw title bars for apps, so this one doesn't follow its theme.	ٹیب پٹی کے بجائے ونڈو بٹنوں کے لیے بنیادی ٹائٹل بار دکھائیں۔ GNOME ایپس کے لیے ٹائٹل بار نہیں بناتا، اس لیے یہ اس کی تھیم کی پیروی نہیں کرتا۔
+	Allow	اجازت دیں
+	Only allow this if you trust the source document.	صرف اس صورت میں اجازت دیں جب آپ ماخذ دستاویز پر بھروسہ کرتے ہوں۔
+	Open this local PDF?	یہ مقامی PDF کھولیں؟
+	This document is trying to open a local file:	یہ دستاویز مقامی فائل کھولنے کی کوشش کر رہی ہے:
+	Move tag earlier	ٹیگ پہلے منتقل کریں
+	Move tag later	ٹیگ بعد میں منتقل کریں
+	Rehman-PDF project page	Rehman-PDF پروجیکٹ صفحہ
+	Rehman-PDF on GitHub	GitHub پر Rehman-PDF
+	rehmanahmad.com	rehmanahmad.com
+	Rehman-PDF on the web	ویب پر Rehman-PDF
+	Project page, source code and the author's site.	پروجیکٹ صفحہ، سورس کوڈ اور مصنف کی سائٹ۔

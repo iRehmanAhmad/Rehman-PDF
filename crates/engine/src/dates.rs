@@ -54,9 +54,13 @@ const ZH_DAYS: [&str; 7] = ["星期日", "星期一", "星期二", "星期三", 
 const AR_MONTHS: [&str; 12] = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
 const AR_DAYS: [&str; 7] = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
+const UR_MONTHS: [&str; 12] =
+    ["جنوری", "فروری", "مارچ", "اپریل", "مئی", "جون", "جولائی", "اگست", "ستمبر", "اکتوبر", "نومبر", "دسمبر"];
+const UR_DAYS: [&str; 7] = ["اتوار", "پیر", "منگل", "بدھ", "جمعرات", "جمعہ", "ہفتہ"];
+
 /// The languages month and weekday names can be written in (Preferences ▸ Date format ▸ Language):
 /// the interface languages, in the same order and with the same names.
-pub static DATE_LANGUAGES: [DateLanguage; 22] = [
+pub static DATE_LANGUAGES: [DateLanguage; 23] = [
     DateLanguage {
         code: "en",
         name: "English",
@@ -360,6 +364,16 @@ pub static DATE_LANGUAGES: [DateLanguage; 22] = [
         days: ["sekmadienis", "pirmadienis", "antradienis", "trečiadienis", "ketvirtadienis", "penktadienis", "šeštadienis"],
         days_short: ["sk", "pr", "an", "tr", "kt", "pn", "št"],
     },
+    // Urdu; the interface language, in the same position as in `LANGUAGES`.
+    DateLanguage {
+        code: "ur",
+        name: "اردو",
+        months: UR_MONTHS,
+        months_with_day: None,
+        months_short: UR_MONTHS,
+        days: UR_DAYS,
+        days_short: UR_DAYS,
+    },
 ];
 
 /// The date language for `code` (any case), or `None` when there's none.
@@ -640,6 +654,7 @@ mod tests {
         assert_eq!(in_lang("ddd d mmm", "it"), "sab 7 mar");
         assert_eq!(in_lang("dddd, d mmmm", "te"), "శనివారం, 7 మార్చి");
         assert_eq!(in_lang("dddd, d mmmm", "ar"), "السبت, 7 مارس");
+        assert_eq!(in_lang("dddd, d mmmm yyyy", "ur"), "ہفتہ, 7 مارچ 2026");
         assert_eq!(in_lang("yyyy\\年mmmmd\\日 dddd", "ja"), "2026年3月7日 土曜日");
         assert_eq!(in_lang("yyyy\\年mmmmd\\日 dddd", "zh-hans"), "2026年三月7日 星期六");
         assert_eq!(in_lang("ddd", "zh-hant"), "週六");

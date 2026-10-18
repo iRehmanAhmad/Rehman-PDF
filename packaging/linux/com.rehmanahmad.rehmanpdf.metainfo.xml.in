@@ -2,13 +2,13 @@
 <!-- AppStream metadata (software centres, Flathub). Template: package.sh and the Flatpak
      manifest substitute @VERSION@ and @DATE@ from Cargo.toml and the build date. -->
 <component type="desktop-application">
-  <id>ai.storyteller.pdfcraft</id>
+  <id>com.rehmanahmad.rehmanpdf</id>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>MIT OR Apache-2.0</project_license>
   <name>PdfCraft</name>
   <summary>Read, organize, combine, split and secure PDFs</summary>
-  <developer id="ai.storyteller">
-    <name>Learning Machines LLC</name>
+  <developer id="com.rehmanahmad">
+    <name>Rehman Ahmad</name>
   </developer>
   <description>
     <p>
@@ -16,13 +16,13 @@
       organize, combine and split pages; edit, redact, protect and export documents.
     </p>
   </description>
-  <launchable type="desktop-id">ai.storyteller.pdfcraft.desktop</launchable>
-  <icon type="stock">ai.storyteller.pdfcraft</icon>
+  <launchable type="desktop-id">com.rehmanahmad.rehmanpdf.desktop</launchable>
+  <icon type="stock">com.rehmanahmad.rehmanpdf</icon>
   <!-- Only url types known to appstream 0.15 (Ubuntu 22.04, where CI validates): no vcs-browser. -->
-  <url type="homepage">https://getartcraft.com/apps/pdfcraft</url>
-  <url type="bugtracker">https://github.com/storytold/pdfcraft/issues</url>
-  <url type="help">https://github.com/storytold/pdfcraft</url>
-  <url type="contact">https://discord.gg/artcraft</url>
+  <url type="homepage">https://github.com/iRehmanAhmad/Rehman-PDF</url>
+  <url type="bugtracker">https://github.com/iRehmanAhmad/Rehman-PDF/issues</url>
+  <url type="help">https://github.com/iRehmanAhmad/Rehman-PDF</url>
+  <url type="contact">https://github.com/iRehmanAhmad/Rehman-PDF/issues</url>
   <categories>
     <category>Office</category>
     <category>Viewer</category>

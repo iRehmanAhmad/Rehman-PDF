@@ -318,6 +318,24 @@ mod tests {
     }
 
     #[test]
+    fn urdu_sentences_digits_and_punctuation_round_trip() {
+        // Urdu-specific letters (ے ھ ٹ ڈ ڑ ں), Urdu punctuation (، ۔) and Extended
+        // Arabic-Indic digits (۰-۹) must survive the visual round trip like Arabic does.
+        for logical in [
+            "اردو ہماری قومی زبان ہے۔",
+            "کلاس 5 کے 32 طلبہ نے English Grammar کا ٹیسٹ دیا۔",
+            "پیر، منگل، بدھ۔ ۱۲۳",
+            "آج کی تاریخ 18 اکتوبر 2026 ہے۔",
+            "ٹھیک ہے، ڈاکٹر صاحب (شکریہ)",
+        ] {
+            let visual = drawn(logical);
+            assert_ne!(visual, logical, "{logical:?} should be reordered");
+            assert_eq!(to_visual(&to_logical(&visual)), visual, "{logical:?} drawn as {visual:?}");
+            assert_eq!(to_logical(&visual), logical, "{logical:?} drawn as {visual:?}");
+        }
+    }
+
+    #[test]
     fn ambiguous_lines_still_draw_back_the_same() {
         // "abc 12 םולש" is both "abc שלום 12" and "abc 12 שלום"; either must draw the same.
         for logical in ["abc שלום 12", "שלום 12 abc", "a (ב) c", "דוח Report 2026", "(1) שלום"] {

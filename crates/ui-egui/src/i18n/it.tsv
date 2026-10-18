@@ -92,7 +92,6 @@
 	Side panels	Pannelli laterali
 	Enable Acrobat JavaScript	Abilita JavaScript di Acrobat
 	OK	OK
-	Join our Discord	Unisciti al nostro Discord
 	Close	Chiudi
 	Next / previous match	Risultato successivo/precedente
 	Copy selected text	Copia testo selezionato
@@ -160,8 +159,6 @@
 	Current page — type a page number or label (such as iv) and press Enter	Pagina corrente: digita un numero o un'etichetta di pagina (ad esempio iv) e premi Invio
 	Welcome to PdfCraft	Benvenuto in PdfCraft
 	An open-source PDF workbench — local, private, and scriptable.	Un banco di lavoro PDF open source: locale, riservato e programmabile.
-	Join the ArtCraft community	Unisciti alla community di ArtCraft
-	Get help, share feedback and follow development on Discord.	Chiedi aiuto, condividi commenti e segui lo sviluppo su Discord.
 	Recommended tools	Strumenti consigliati
 	Use now	Usa ora
 	Open file	Apri file
@@ -306,10 +303,6 @@
 	Split document…	Dividi documento…
 	Number pages…	Numera pagine…
 	Keyboard shortcuts	Scorciatoie da tastiera
-	Join the ArtCraft Discord	Unisciti al Discord di ArtCraft
-	PdfCraft web page	Pagina web di PdfCraft
-	PdfCraft on GitHub	PdfCraft su GitHub
-	ArtCraft website	Sito web di ArtCraft
 	Check for updates…	Verifica aggiornamenti…
 	About PdfCraft	Informazioni su PdfCraft
 	Export a PDF	Esporta un PDF
@@ -2363,3 +2356,8 @@ animation effects	Off	Disattivati
 	This document is trying to open a local file:	Questo documento sta tentando di aprire un file locale:
 	Move tag earlier	Sposta tag prima
 	Move tag later	Sposta tag dopo
+	Rehman-PDF project page	Pagina del progetto Rehman-PDF
+	Rehman-PDF on GitHub	Rehman-PDF su GitHub
+	rehmanahmad.com	rehmanahmad.com
+	Rehman-PDF on the web	Rehman-PDF sul web
+	Project page, source code and the author's site.	Pagina del progetto, codice sorgente e sito dell'autore.

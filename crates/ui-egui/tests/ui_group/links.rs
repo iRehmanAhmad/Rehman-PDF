@@ -1,5 +1,5 @@
-//! Community links: the Discord button is one click away everywhere; Help menu, About dialog and
-//! home screen open the ArtCraft and PdfCraft pages.
+//! Project links: the project-page button is one click away everywhere; Help menu, About dialog
+//! and home screen open the Rehman-PDF pages.
 
 use egui_kittest::Harness;
 use egui_kittest::kittest::Queryable;
@@ -18,24 +18,19 @@ fn harness(setup: impl FnOnce(&mut PdfCraftApp) + 'static) -> Harness<'static, P
 }
 
 #[test]
-fn discord_button_in_the_top_bar_opens_discord() {
+fn project_button_in_the_top_bar_opens_the_project_page() {
     let mut h = harness(|_| {});
-    h.get_by_label("Discord").click();
+    h.get_by_label("Rehman-PDF").click();
     h.run_steps(2);
-    assert_eq!(h.state().last_opened_url.as_deref(), Some(links::DISCORD));
-    assert_eq!(links::DISCORD, "https://discord.gg/artcraft");
+    assert_eq!(h.state().last_opened_url.as_deref(), Some(links::APP_PAGE));
+    assert_eq!(links::APP_PAGE, "https://github.com/iRehmanAhmad/Rehman-PDF");
 }
 
 #[test]
 fn home_screen_links() {
-    for (label, url) in [
-        ("Join our Discord", links::DISCORD),
-        ("PdfCraft web page", "https://getartcraft.com/apps/pdfcraft"),
-        ("PdfCraft on GitHub", "https://github.com/storytold/pdfcraft"),
-        ("ArtCraft website", "https://getartcraft.com"),
-    ] {
+    for (label, url) in [("Rehman-PDF project page", links::APP_PAGE), ("Rehman-PDF on GitHub", links::GITHUB), ("rehmanahmad.com", links::WEBSITE)] {
         let mut h = harness(|_| {});
-        h.get_by_label("Join the ArtCraft community");
+        h.get_by_label("Rehman-PDF on the web");
         h.get_by_label(label).click();
         h.run_steps(2);
         assert_eq!(h.state().last_opened_url.as_deref(), Some(url), "{label}");
@@ -43,17 +38,16 @@ fn home_screen_links() {
 }
 
 #[test]
-fn about_dialog_shows_the_brand_and_links() {
+fn about_dialog_shows_project_links() {
     let pdf = b"%PDF-1.7\n1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj\n2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj\n3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 200 200] >> endobj\ntrailer << /Root 1 0 R >>\n%%EOF";
     // With a document open, so the home screen's own links are not on screen.
     let mut h = harness(move |app| {
         app.open_bytes("one.pdf", None, pdf.to_vec()).unwrap();
         app.dialog = Some(Dialog::About);
     });
-    assert!(h.query_all_by_label("ArtCraft").count() >= 2, "the mark and the wordmark (alt text)");
-    h.get_by_label("Join our Discord").click();
+    h.get_by_label("Rehman-PDF project page").click();
     h.run_steps(2);
-    assert_eq!(h.state().last_opened_url.as_deref(), Some(links::DISCORD));
+    assert_eq!(h.state().last_opened_url.as_deref(), Some(links::APP_PAGE));
 }
 
 #[test]
@@ -83,7 +77,7 @@ fn settled<'a>(h: &'a mut Harness<'static, PdfCraftApp>, label: &'a str) -> egui
         }
         last = now;
     }
-    panic!("{label:?} never appeared or never stopped moving");
+    panic!("{label:?} never appeared or never stopped moving")
 }
 
 #[test]

@@ -1,17 +1,7 @@
-<p align="center">
-  <a href="https://getartcraft.com/">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="docs/brand/artcraft-logo-white.svg">
-      <img alt="ArtCraft" src="docs/brand/artcraft-logo.svg" width="200">
-    </picture>
-  </a>
-</p>
-
-
-<h1 align="center">PdfCraft</h1>
+<h1 align="center">Rehman-PDF</h1>
 
 <p align="center">
-  <b>The PDF workbench; an open-source, clean-room reimplementation of Adobe Acrobat, rebuilt in pure Rust.</b><br>
+  <b>The Urdu-first PDF workbench</b><br>
   Read, organize, combine, split and secure PDFs in a fast, native app, written in Rust from the ground up.<br>
   macOS · Windows · Linux · FreeBSD · the web
 </p>
@@ -24,28 +14,14 @@
 </p>
 
 <p align="center">
-  <a href="https://discord.gg/artcraft"><img alt="Join the ArtCraft community on Discord" src="https://img.shields.io/badge/Join%20us%20on%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" height="40"></a>
-</p>
-
-<p align="center">
-  <a href="https://getartcraft.com/apps/pdfcraft"><b>PdfCraft on getartcraft.com</b></a> ·
-  <a href="https://getartcraft.com/">ArtCraft</a> ·
-  <a href="https://getartcraft.com/apps">All Crafting Apps</a>
-</p>
-
-<br>
-
-<p align="center">
-  <img src="docs/images/pdfcraft-viewer.png" alt="PdfCraft with the PdfCraft Showcase cover page open, the All tools panel on the left and 20 threaded comments on the right" width="100%">
+  <img src="docs/images/pdfcraft-viewer.png" alt="Rehman-PDF with the 13-page showcase PDF open, the All tools panel on the left and threaded comments on the right" width="100%">
   <br>
-  <sub>The PdfCraft Showcase, a 13-page specimen PDF, open with the All tools panel and threaded comments.</sub>
+  <sub>The 13-page showcase PDF (built with <code>cargo xtask demo-pdf</code>), open with the All tools panel and threaded comments.</sub>
 </p>
 
-> [!NOTE]
-> **ArtCraft is a community of artists from all walks of life.** Digital, generative, music,
-> games &mdash; if you make things, you're one of us. **[Come say hi on Discord](https://discord.gg/artcraft).**
-
 <p align="center">
+  <a href="#urdu-mein">اردو</a> ·
+  <a href="#about-this-fork">About</a> ·
   <a href="#highlights">Highlights</a> ·
   <a href="#read-anything-beautifully">Read</a> ·
   <a href="#find-it-select-it-copy-it">Find</a> ·
@@ -58,21 +34,43 @@
   <a href="#how-its-built">How it's built</a> ·
   <a href="#get-started">Get started</a> ·
   <a href="#whats-next">What's next</a> ·
-  <a href="#downloads">Downloads</a> ·
-  <a href="#the-crafting-apps">Crafting Apps</a>
+  <a href="#license-and-credits">License</a>
 </p>
 
 ---
 
+## اردو میں بھی
+
+<div dir="rtl" lang="ur">
+
+**ریحمان پی ڈی ایف اردو بولنے والوں کے لیے بنایا گیا پی ڈی ایف ورک بینچ ہے۔** پی ڈی ایف پڑھیں، صفحے ترتیب دیں، فائلیں جوڑیں یا الگ کریں، فارم پُر کریں اور تبصرے شامل کریں — سب کچھ اردو میں، آپ کی اپنی زبان میں۔ یہاں نہ کوئی اکاؤنٹ چاہیے، نہ انٹرنیٹ؛ آپ کی فائلیں آپ کے کمپیوٹر سے باہر نہیں جاتیں۔
+
+- **اردو انٹرفیس** — مینو، بٹن اور رہنمائی ہر چیز اردو میں، تاکہ ہر استاد، ہر طالب علم اور ہر دفتر کے لیے آسان ہو۔
+- **اردو متن کی درست نکاسی** — نستعلیق اور دیگر اردو فونٹس والی پی ڈی ایف سے متن صحیح پڑھنے کی ترتیب میں نکالیں۔
+- **دائیں سے بائیں ترمیم** — اردو متن میں ترمیم بھی اتنی ہی درست ہو، جتنی انگریزی میں۔
+- **صفحے جوڑیں، الگ کریں، گھمائیں** — سب کچھ آسانی کے ساتھ۔
+- **مکمل نجی** — کوئی اکاؤنٹ نہیں، کوئی ٹیلی میٹری نہیں، آپ کا ڈیٹا آپ کے پاس۔
+- **میک، ونڈوز، لینکس** — اور ویب براؤزر میں بھی۔
+
+</div>
+
+---
+
+## About this fork
+
+Rehman-PDF is a **fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft)'s open-source PDF engine** (dual-licensed MIT OR Apache-2.0), pinned at its **v0.8.0** release. It is not a rebrand of an unrelated product: every page you render, every combine and split, runs on PdfCraft's Rust engine, with full credit to its authors.
+
+What makes this fork different is its **Urdu-first direction**:
+
+- **Urdu (`ur`) interface localization** — the whole UI in Urdu, following the same i18n pattern the engine already uses for its 22 interface languages (including Arabic with full right-to-left layout).
+- **Right-to-left text editing** — the engine's own roadmap admits editing right-to-left text is a real gap; this fork works on closing it.
+- **Urdu text extraction** — reading-order-correct extraction from real Urdu PDFs, including Nastaleeq faces, with a committed test corpus so regressions stay fixed.
+
+This is **alpha software**: honest about what it can and cannot do yet, like the engine it is built on. See [What's next](#whats-next).
+
 ## Community
 
-PdfCraft is part of [ArtCraft](https://getartcraft.com). Come say hello, get help and follow development:
-
-- **Discord: [discord.gg/artcraft](https://discord.gg/artcraft)**. This is the fastest way to get help and share feedback. The app has a Discord button in its title bar.
-- **Web page:** [getartcraft.com/apps/pdfcraft](https://getartcraft.com/apps/pdfcraft)
-- **Source:** [github.com/storytold/pdfcraft](https://github.com/storytold/pdfcraft)
-
-The ArtCraft name and logos in `docs/brand/` are trademarks of the ArtCraft Team and are not open source. They may be used only unmodified, and only as part of PdfCraft (see `docs/brand/LICENSE-brand.txt`). Forks and modified versions must remove them.
+Rehman-PDF is maintained in the open at **[github.com/iRehmanAhmad/Rehman-PDF](https://github.com/iRehmanAhmad/Rehman-PDF)**. The fastest way to get help, report a bug or follow development is the repo's issue tracker. The engine this fork builds on comes from [storytold/pdfcraft](https://github.com/storytold/pdfcraft), and bug fixes useful to everyone flow back upstream.
 
 ## Highlights
 
@@ -81,7 +79,7 @@ The ArtCraft name and logos in `docs/brand/` are trademarks of the ArtCraft Team
 <td width="33%" valign="top">
 
 ### Faithful
-Real-world typography: world scripts, vertical Japanese, colour emoji, gradients, soft masks and transparency. All of it renders the way the author intended.
+Real-world typography: Urdu and Arabic scripts, complex scripts, colour emoji, gradients, soft masks and transparency. All of it renders the way the author intended.
 
 </td>
 <td width="33%" valign="top">
@@ -103,7 +101,7 @@ No account, no telemetry, no cloud. It works offline and opens instantly. The en
 
 ## Read anything, beautifully
 
-PdfCraft renders PDFs with care for the details that make a page feel right: kerning and ligatures, right-to-left and complex scripts, vertical CJK, colour emoji, shadings, blend modes, soft masks and optional content.
+Rehman-PDF renders PDFs with care for the details that make a page feel right: kerning and ligatures, right-to-left and complex scripts, colour emoji, shadings, blend modes, soft masks and optional content.
 
 <p align="center">
   <img src="docs/images/pdfcraft-scripts.png" alt="The Scripts of the World page: Arabic, Hebrew, Devanagari, Thai, Greek, Cyrillic, Chinese, Korean, IPA, Armenian, Georgian and Tamil samples, with vertical Japanese in the right margin" width="100%">
@@ -129,7 +127,7 @@ PdfCraft renders PDFs with care for the details that make a page feel right: ker
 
 ## Find it, select it, copy it
 
-Search the whole document as you type, step through matches with <kbd>⌘G</kbd>, and select text that comes out in the right reading order. That holds for columns, right-to-left runs and CJK too.
+Search the whole document as you type, step through matches with <kbd>⌘G</kbd>, and select text that comes out in the right reading order. That holds for columns, right-to-left runs and Urdu too.
 
 ## Navigate long documents
 
@@ -176,7 +174,7 @@ Open **Organize pages** to see every page at once:
 
 When open documents exceed the window width, scroll over the tab strip with the mouse wheel or trackpad, or use its horizontal scrollbar. Opening or switching to a document brings its tab into view.
 
-Unsaved documents carry a dot on their tab, and closing or quitting asks before anything is lost. Changes are autosaved every minute. If PdfCraft ever quits unexpectedly, it offers to recover your work the next time it opens. Encrypted documents stay encrypted on disk.
+Unsaved documents carry a dot on their tab, and closing or quitting asks before anything is lost. Changes are autosaved every minute. If the app ever quits unexpectedly, it offers to recover your work the next time it opens. Encrypted documents stay encrypted on disk.
 
 </td>
 <td width="50%" valign="top"><img src="docs/images/pdfcraft-split.png" alt="The Split document dialog over the organize view, set to one page per file and reporting that it creates 13 files from 13 pages"><br><sub>Split document: one page per file makes 13 files.</sub></td>
@@ -207,12 +205,12 @@ pdfcraft-cli split   report.pdf --every 10 --out-dir parts/
 
 ## Open protected documents and respect their rules
 
-PdfCraft implements the PDF standard security handler completely:
+The engine implements the PDF standard security handler completely:
 - every revision, from 40-bit RC4 to AES-256;
 - user and owner passwords, including Unicode passwords normalised with SASLprep;
 - crypt filters and attachment-only encryption.
 
-Documents restricted by their author show a clear notice, and PdfCraft honours their permissions. Enter the owner password and the restrictions lift. Edits to encrypted documents are saved encrypted, under the same keys.
+Documents restricted by their author show a clear notice, and the app honours their permissions. Enter the owner password and the restrictions lift. Edits to encrypted documents are saved encrypted, under the same keys.
 
 <table>
 <tr>
@@ -249,7 +247,7 @@ Press <kbd>⌘K</kbd> to search every tool and command, or browse the **All tool
 <table>
 <tr>
 <td width="50%"><img src="docs/images/pdfcraft-palette.png" alt="The command palette searching for 'page', listing Page grid, Page labels, Rotate pages, Insert pages, Delete pages, Extract pages and more, each with the tool it belongs to"></td>
-<td width="50%"><img src="docs/images/pdfcraft-tools.png" alt="The Welcome to PdfCraft home screen with recommended tools, a recent file, a privacy note, and the full tool catalogue in the side panel"></td>
+<td width="50%"><img src="docs/images/pdfcraft-tools.png" alt="The Welcome to Rehman-PDF home screen with recommended tools, a recent file, a privacy note, and the full tool catalogue in the side panel"></td>
 </tr>
 <tr>
 <td align="center"><sub>The <kbd>⌘K</kbd> command palette</sub></td>
@@ -289,10 +287,10 @@ Every engine feature is reachable without the GUI, through one table of JSON-Sch
 
   With `--root`, every file the script's steps read or write stays in that directory, including the PNG a step saves with `"out"` (the script itself is read from wherever you name it).
 
-- **An MCP server**, for AI agents such as Claude. **It is opt-in:** PdfCraft never starts it on its own, and it opens no network port. It runs only while an agent launches `pdfcraft-cli mcp`, talks over stdin/stdout, and stops when the agent disconnects. To enable it, add it to your agent's MCP configuration:
+- **An MCP server**, for AI agents such as Claude. **It is opt-in:** the app never starts it on its own, and it opens no network port. It runs only while an agent launches `pdfcraft-cli mcp`, talks over stdin/stdout, and stops when the agent disconnects. To enable it, add it to your agent's MCP configuration:
 
   ```json
-  { "mcpServers": { "pdfcraft": { "command": "pdfcraft-cli", "args": ["mcp", "--root", "/path/to/your/pdfs"] } } }
+  { "mcpServers": { "rehman-pdf": { "command": "pdfcraft-cli", "args": ["mcp", "--root", "/path/to/your/pdfs"] } } }
   ```
 
   `--compact` shrinks the tool list the agent has to read: `tools/list` returns about ten core tools plus `tool_search` and `tool_call`, which find and run every other tool, so the list costs far fewer tokens. Every tool still works.
@@ -322,24 +320,13 @@ pdfcraft-cli ui --control ~/.pdfcraft-control.json inspect focused=true
 pdfcraft-cli ui --control ~/.pdfcraft-control.json quit
 ```
 
-`ui.dock` arranges the `tools` and `inspector` panels; `canvas` is the protected document view.
-Each per-panel request requires a `panel` ID and an `operation`: `open`, `close`,
-`activate`, `float` with `rect: [x, y, width, height]`, or `move` with `target` and
-`zone: center|left|right|top|bottom`. For example,
-`{"operation":"float","panel":"tools","rect":[100,100,320,440]}` floats Tools.
-`ui.dock.reset` restores the default
-arrangement. The control channel accepts these methods directly; `ui.command` also accepts
-`{"id":"ui.dock","params":{...}}`. Saved preferences retain groups, active tabs, visibility
-and floating geometry. Invalid requests return an error without changing the document or layout.
-
-
-`resize` requests a native inner-window size in logical points (each dimension must be between 320 and 8192); the window manager may constrain it. `state` reports the observed `window.width`, `window.height` and `window.pixels_per_point`. `focus` accepts exactly one widget `id` or unique enabled, focusable `label`; subsequent `key` requests traverse or activate the actual widgets. `inspect` includes focusability and accepts a `focused` filter. `quit` takes no parameters: clean documents exit normally, while unsaved edits or typing open the existing Save/Don't save/Cancel prompt and return `quitting: false, needs_confirmation: true`. It never silently discards work. Window resizing and application quit are native-only.
+See the engine's README section upstream for the full `ui.dock` panel operations reference.
 
 ---
 
 ## How it's built
 
-PdfCraft is a Cargo workspace of focused crates, layered so the core never depends on the UI:
+Rehman-PDF inherits a Cargo workspace of focused crates, layered so the core never depends on the UI:
 
 | Crate | What it does |
 |---|---|
@@ -367,15 +354,15 @@ On top of those, two corpus sweeps run over real-world files:
 
 The output is verified with independent tools: hayro, qpdf and poppler.
 
-PdfCraft is a clean-room implementation. Its behaviour comes from the ISO 32000 specification and black-box observation, never from anyone else's code. Every icon, font and image is openly licensed and listed in [ATTRIBUTION.md](ATTRIBUTION.md).
+The engine is a clean-room implementation. Its behaviour comes from the ISO 32000 specification and black-box observation, never from anyone else's code. Every icon, font and image is openly licensed and listed in [ATTRIBUTION.md](ATTRIBUTION.md).
 
 ## Get started
 
 Building needs Rust 1.95 or later.
 
 ```sh
-git clone https://github.com/storytold/pdfcraft
-cd pdfcraft
+git clone https://github.com/iRehmanAhmad/Rehman-PDF
+cd Rehman-PDF
 cargo xtask models                                # fetch the OCR models Scan & OCR needs (release builds include them)
 cargo run --release -p pdfcraft -- some.pdf     # desktop app
 cargo xtask demo-pdf                              # build the showcase PDF used in these screenshots
@@ -384,47 +371,27 @@ cargo xtask screenshots                           # regenerate every screenshot 
 
 The interface language is chosen in **Menu → Edit → Preferences…** (Command-comma on macOS,
 Ctrl-comma elsewhere, also with no document open; Auto follows the system language;
-see [docs/localization.md](docs/localization.md)) and saved. Japanese covers commands,
-dialogs, panels and keyboard shortcuts. Command search accepts the translated label, the
-English label and the stable command id; filenames, PDF contents, author names, custom
-action names and error details from the engine or the operating system keep their own text.
+see [docs/localization.md](docs/localization.md)) and saved. The engine already ships 22 interface
+languages, including Arabic with full right-to-left layout; the fork's goal is to add **Urdu**
+to that same list.
 
-Japanese fonts come from [craft-fonts](https://github.com/storytold/craft-fonts), an optional build
-input that every release includes. To build with them (Japanese interface text, and Japanese text in
-edited PDFs):
-
-```sh
-git clone https://github.com/storytold/craft-fonts ../craft-fonts
-CRAFT_FONTS_DIR=../craft-fonts cargo run --release -p pdfcraft -- some.pdf
-```
-
-Each [GitHub release](https://github.com/storytold/pdfcraft/releases) has ready-made builds for macOS,
-Windows, Linux (AppImage, Flatpak, `.deb`, `.rpm` and a tarball), FreeBSD and the web; see
-[Downloads](#downloads). On Gentoo, the community [::snakebyte
-overlay](https://github.com/switch87/snakebyte-overlay) packages the Linux release as
-`app-text/pdfcraft-bin` (not maintained by the PdfCraft team):
-
-```sh
-eselect repository add snakebyte git https://github.com/switch87/snakebyte-overlay.git
-emaint sync -r snakebyte
-echo 'app-text/pdfcraft-bin ~amd64' >> /etc/portage/package.accept_keywords/pdfcraft
-emerge --ask app-text/pdfcraft-bin
-```
+> [!NOTE]
+> In this pinned v0.8.0 build the binaries are still named `pdfcraft` and `pdfcraft-cli` (the upstream names); a rename ships with the first Rehman-PDF release. All CLI examples on this page use those names and work as written.
 
 Logs, environment variables and other development notes are in [docs/development.md](docs/development.md).
 
 ## What's next
 
-PdfCraft is young and moving fast. The aim is a workbench where you can view, organize, annotate, fill, sign and edit PDFs, at parity with Acrobat Pro.
+Rehman-PDF is young and moving fast. The aim is the PDF workbench Pakistani teachers, students and offices actually reach for: view, organize, annotate, fill, sign and edit PDFs — **in Urdu, first**.
 
-**Where it stands (October 2026), honestly:** PdfCraft is **alpha**. Most of Acrobat Pro's offline features exist in some form (57% of all tracked features, 94% of the must-haves). For everyday work (viewing, commenting, filling and signing forms, organizing pages) it is about 55% of the way to replacing Acrobat; against all of Acrobat Pro, about 49%; for someone who only needs the essentials, about 66%. Every everyday workflow can be completed, but converting and sharing is weak: no Office-to-PDF, and Word export that loses layout.
+**Where it stands (October 2026), honestly:** this fork is **alpha**, inheriting the engine's state. Most of Acrobat Pro's offline features exist in some form (57% of all tracked features, 94% of the must-haves). For everyday work (viewing, commenting, filling and signing forms, organizing pages) it is about 55% of the way to replacing Acrobat; against all of Acrobat Pro, about 49%; for someone who only needs the essentials, about 66%. Every everyday workflow can be completed, but converting and sharing is weak: no Office-to-PDF, and Word export that loses layout.
 
 - **Good today:** viewing and search; organizing, combining and splitting; most kinds of comment; filling and authoring forms (with sandboxed JavaScript); passwords, redaction and sanitizing; basic digital signatures; printing; the Accessibility Checker; agent control through the CLI and MCP.
 - **Still borrowed:** pages are drawn by the `hayro` crate while our own renderer is built.
-- **Thin or missing:** reliable editing of existing text (especially CJK and right-to-left), OCR beyond Latin script, Office import/export, signature tokens and online long-term validation, Preflight and PDF/X/UA, printing from the web build, physical printer fidelity, and full XFA forms.
+- **Thin or missing:** reliable editing of existing text (especially CJK and right-to-left — the gap this fork exists to close), OCR beyond Latin script, Office import/export, signature tokens and online long-term validation, Preflight and PDF/X/UA, printing from the web build, physical printer fidelity, and full XFA forms.
 - **Hardening:** fuzzing still turns up crashes and hangs on hostile files; each one is fixed with a regression test. Quality has not yet been compared with Acrobat side by side.
 
-**Next, in order:** Office-to-PDF and a Word export that keeps layout, the reported bugs and the Chinese interface font, a fidelity harness against Acrobat and the renderer, editing existing content, then the Pro workflows (OCR, Office, Preflight, signatures, accessibility tagging) and 1.0 polish.
+**Next, in order:** the Urdu interface locale, right-to-left text-editing fixes with regression tests, Urdu text-extraction parity on a committed test corpus, then the engine's own roadmap order: Office-to-PDF and a Word export that keeps layout, the reported bugs, a fidelity harness, and 1.0 polish.
 
 The summary is in **[ROADMAP.md](ROADMAP.md)**; the full assessment by dimension and area is in [docs/target-app-parity.md](docs/target-app-parity.md), the ranked gaps in [docs/gaps.md](docs/gaps.md), and the milestones in [docs/roadmap.md](docs/roadmap.md).
 
@@ -432,144 +399,18 @@ The summary is in **[ROADMAP.md](ROADMAP.md)**; the full assessment by dimension
 
 ## Downloads
 
-**New to PdfCraft?** Download it from the [PdfCraft page on getartcraft.com](https://getartcraft.com/apps/pdfcraft). That's the easiest way to install it.
-
-**Want a specific build or format?** On GitHub, the [latest release](https://github.com/storytold/pdfcraft/releases/latest) has every build listed below, and [all releases](https://github.com/storytold/pdfcraft/releases) has earlier versions and their notes. `<ver>` in the file names is the version number, and `SHA256SUMS.txt` lists a checksum for every file.
-
-### Windows
-
-| Build | Installer | Portable |
-|---|---|---|
-| x64 (64-bit Intel/AMD) | `pdfcraft-<ver>-windows-x64.msi` | `pdfcraft-<ver>-windows-x64-portable.zip` |
-| arm64 (Snapdragon and other ARM PCs) | `pdfcraft-<ver>-windows-arm64.msi` | `pdfcraft-<ver>-windows-arm64-portable.zip` |
-| x86 (32-bit) | `pdfcraft-<ver>-windows-x86.msi` | `pdfcraft-<ver>-windows-x86-portable.zip` |
-
-Installers and executables are code-signed.
-
-The portable zip runs from any folder, a USB stick included. Its `portable.txt` keeps the settings,
-logs and crash recovery in a `PdfCraftData` folder next to `pdfcraft.exe`, so nothing is written to
-`%APPDATA%`; delete that file to use the normal per-user folders.
-
-The MSI installs for all users and requires administrator privileges. It adds "Edit with PdfCraft"
-to the right-click menu of PDF files in File Explorer (on Windows 11, under "Show more options"),
-without changing which app opens PDFs by default. For unattended deployment without a desktop
-shortcut, run from an elevated terminal:
-
-```powershell
-msiexec /i "pdfcraft-<ver>-windows-x64.msi" /qn /norestart INSTALLDESKTOPSHORTCUT=0
-```
-
-Add `INSTALLPDFCONTEXTMENU=0` to leave out the right-click menu entry. Pass both on upgrades too,
-since each install applies its own choices. Use the MSI for your architecture. Per-user
-installation overrides are not supported.
-
-### macOS
-
-| Build | File | Notes |
-|---|---|---|
-| App, universal (Apple silicon + Intel) | `pdfcraft-<ver>-macos-universal.dmg` | Signed and notarized |
-| Command-line tool, universal | `pdfcraft-cli-<ver>-macos-universal.zip` | Signed and notarized |
-
-### Linux
-
-| Format | x86_64 | aarch64 (ARM64) | Notes |
-|---|---|---|---|
-| AppImage | `pdfcraft-<ver>-linux-x86_64.AppImage` | `pdfcraft-<ver>-linux-aarch64.AppImage` | Runs anywhere; updates itself with [AppImageUpdate](https://github.com/AppImageCommunity/AppImageUpdate) (`.zsync` files) |
-| Flatpak | `pdfcraft-<ver>-linux-x86_64.flatpak` | `pdfcraft-<ver>-linux-aarch64.flatpak` | Sandboxed; `flatpak install --user <file>` |
-| Debian/Ubuntu | `pdfcraft-<ver>-linux-x86_64.deb` | `pdfcraft-<ver>-linux-aarch64.deb` | |
-| Fedora/RHEL/openSUSE | `pdfcraft-<ver>-linux-x86_64.rpm` | `pdfcraft-<ver>-linux-aarch64.rpm` | |
-| Tarball | `pdfcraft-<ver>-linux-x86_64.tar.gz` | `pdfcraft-<ver>-linux-aarch64.tar.gz` | Unpack anywhere |
-| Command-line tool | `pdfcraft-cli-<ver>-linux-x86_64.tar.gz` | `pdfcraft-cli-<ver>-linux-aarch64.tar.gz` | `pdfcraft-cli` alone (and its opt-in MCP server), for servers, CI and agents |
-
-RISC-V (riscv64) builds come as tarballs only: `pdfcraft-<ver>-linux-riscv64.tar.gz` and `pdfcraft-cli-<ver>-linux-riscv64.tar.gz`. They are cross-compiled and need glibc 2.39 or newer (Ubuntu 24.04+, Debian 13+).
-
-Every other Linux build needs glibc 2.35 or newer (Ubuntu 22.04+, Debian 12+, Fedora 36+, RHEL 10).
-
-### FreeBSD
-
-| Build | File |
-|---|---|
-| x86_64 | `pdfcraft-<ver>-freebsd-x86_64.tar.gz` |
-
-### Web (WebAssembly)
-
-| Build | File | Notes |
-|---|---|---|
-| Static site | `pdfcraft-web-<ver>.zip` | Runs in a modern browser; host it on any static server |
-
----
-
-## The Crafting Apps
-
-PdfCraft is one of the **Crafting Apps**: free, open-source creative tools from the
-[ArtCraft](https://getartcraft.com/) team, each written from scratch in Rust and each able to
-stand on its own.
-
-| | App | What it's for | Code | Learn more |
-|:-:|---|---|---|---|
-| <img src="https://raw.githubusercontent.com/storytold/photocraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.photocraft.png" alt="" width="32" height="32"> | **PhotoCraft** | Image editing: layers, masks, type and real PSD files | [GitHub](https://github.com/storytold/photocraft) | [Website](https://getartcraft.com/apps/photocraft) |
-| <img src="https://raw.githubusercontent.com/storytold/vectorcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.vectorcraft.png" alt="" width="32" height="32"> | **VectorCraft** | Vector illustration | [GitHub](https://github.com/storytold/vectorcraft) | [Website](https://getartcraft.com/apps/vectorcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/filmcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.filmcraft.png" alt="" width="32" height="32"> | **FilmCraft** | Video editing, color and sound | [GitHub](https://github.com/storytold/filmcraft) | [Website](https://getartcraft.com/apps/filmcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/lightcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.lightcraft.png" alt="" width="32" height="32"> | **LightCraft** | Photo library and raw development | [GitHub](https://github.com/storytold/lightcraft) | [Website](https://getartcraft.com/apps/lightcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/pdfcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.pdfcraft.png" alt="" width="32" height="32"> | **PdfCraft** | **Reading, organizing and protecting PDFs · you are here** | [GitHub](https://github.com/storytold/pdfcraft) | [Website](https://getartcraft.com/apps/pdfcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/effectcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.effectcraft.png" alt="" width="32" height="32"> | **EffectCraft** | Motion graphics and visual effects | [GitHub](https://github.com/storytold/effectcraft) | [Website](https://getartcraft.com/apps/effectcraft) |
-| <img src="https://raw.githubusercontent.com/storytold/designcraft/main/assets/app-icon/hicolor/64x64/apps/ai.storyteller.designcraft.png" alt="" width="32" height="32"> | **DesignCraft** | Page layout and publishing | [GitHub](https://github.com/storytold/designcraft) | [Website](https://getartcraft.com/apps/designcraft) |
-
-And [**ArtCraft**](https://getartcraft.com/) itself, our AI image and video studio for artists who want real control.
-
-<br>
-
-<p align="center">
-  <a href="https://discord.gg/artcraft"><img alt="Join the ArtCraft community on Discord" src="https://img.shields.io/badge/Join%20us%20on%20Discord-5865F2?style=for-the-badge&logo=discord&logoColor=white" height="40"></a>
-</p>
-
-<h3 align="center">Come make things with us</h3>
-
-<p align="center">
-  Our Discord is where artists of every kind hang out: people who paint, shoot, draw, cut film,
-  set type, and people still figuring out what they like to make. Share what you're working on,
-  ask for help, tell us what's broken, or tell us what you wish these tools could do.
-  Whatever your medium and however long you've been at it, you're welcome here.
-</p>
-
-<p align="center">
-  <a href="https://discord.gg/artcraft"><b>discord.gg/artcraft</b></a> ·
-  <a href="https://getartcraft.com/">getartcraft.com</a> ·
-  <a href="https://getartcraft.com/apps">The Crafting Apps</a> ·
-  <a href="https://getartcraft.com/apps/pdfcraft">PdfCraft</a>
-</p>
-
----
+**Want to try it?** Rehman-PDF does not publish installers or release builds yet — it is alpha, and the first release is a Phase 2 decision. To use it today, **build from source** with the steps under [Get started](#get-started). Release artifacts (signed installers and portable builds for each platform) come later, announced in this repo's releases.
 
 ## License and credits
 
-PdfCraft is dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option.
+Rehman-PDF is dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option, inherited from the upstream engine.
 Copyright (c) 2026 ArtCraft Team and the PdfCraft contributors. Required notices are in [NOTICE](NOTICE).
+
+Rehman-PDF is a fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft) (pinned at v0.8.0), rebranded and extended toward an Urdu-first PDF workbench by Rehman Ahmad Chaudhary. Per the upstream trademark terms, the ArtCraft name, logos and brand assets were removed from this fork; the engine code remains under the same open license.
 
 Bundled fonts, icons, images and other assets keep their own open licenses; each one is listed
 with its author, source and license in [ATTRIBUTION.md](ATTRIBUTION.md). Release builds also embed
 the Japanese fonts of [craft-fonts](https://github.com/storytold/craft-fonts/blob/main/ATTRIBUTION.md)
 (SIL Open Font License 1.1).
 
-The ArtCraft name, wordmark and logos in [`docs/brand/`](docs/brand/) are trademarks of the
-ArtCraft Team and are not covered by this license. They may be used only unmodified, and only as
-part of this repository and PdfCraft, under [`docs/brand/LICENSE-brand.txt`](docs/brand/LICENSE-brand.txt).
-Forks and modified versions must remove them.
-
-<sub>Adobe, Photoshop, Illustrator, Premiere Pro, Lightroom, Acrobat, After Effects and InDesign are trademarks or registered trademarks of Adobe Inc. in the United States and/or other countries. PdfCraft is an independent, open-source project and is not affiliated with, sponsored by or endorsed by Adobe Inc.; these names are used only to describe the workflows it is compatible with.</sub>
-
-<p align="center">
-  <a href="https://getartcraft.com/"><img alt="ArtCraft" src="docs/brand/artcraft-mark.svg" width="28"></a><br>
-  <sub>Made by the <a href="https://getartcraft.com/">ArtCraft</a> team and community.</sub>
-</p>
-
-Tools and Inspector panels can be dragged into tab groups, split beside the PDF, or floated within the app window. Read and full-screen modes keep their existing focused document view. Drag a panel header to a target edge or another header. Its context menu offers Float panel, Move to group, and Close panel. Existing panel toggles reopen panels at their saved location; Reset Panel Layout restores the app layout. Floating panels remain inside the current app window.
-
-Advanced `ui.dock` operations use the same validated transaction as pointer gestures:
-`moveFloating` updates `rect`, `resizeSplit` accepts a boolean child `path` and
-`size` (`{"Ratio":0.5}`, `{"FixedFirst":280}`, or `{"FixedSecond":280}`),
-`setStackOpen` takes `open`, and `resizeStack` takes a point `height` or null.
-A center `move` can include `before` (panel ID or null to append) for tab order.
-The equivalent `{"action": ...}` form accepts a serialized shared docking action;
-this is also the form emitted by the renderer. Protected-canvas and app-specific panel
-rules apply equally to both forms.
+<sub>Adobe, Photoshop, Illustrator, Premiere Pro, Lightroom, Acrobat, After Effects and InDesign are trademarks or registered trademarks of Adobe Inc. in the United States and/or other countries. Rehman-PDF is an independent, open-source project and is not affiliated with, sponsored by or endorsed by Adobe Inc.; these names are used only to describe the workflows it is compatible with.</sub>

@@ -4,13 +4,13 @@
 #
 #   curl -fsSLO https://raw.githubusercontent.com/flatpak/flatpak-builder-tools/master/cargo/flatpak-cargo-generator.py
 #   python3 flatpak-cargo-generator.py Cargo.lock -o packaging/linux/flatpak/cargo-sources.json
-#   flatpak-builder --user --install --force-clean build-flatpak packaging/linux/flatpak/ai.storyteller.pdfcraft.yml
-#   flatpak run ai.storyteller.pdfcraft
+#   flatpak-builder --user --install --force-clean build-flatpak packaging/linux/flatpak/com.rehmanahmad.rehmanpdf.yml
+#   flatpak run com.rehmanahmad.rehmanpdf
 #
 # For Flathub, replace the `dir` source with a `git` source pinned to a release tag and commit.
-# The single-file .flatpak attached to each release comes from ai.storyteller.pdfcraft.bundle.yml,
+# The single-file .flatpak attached to each release comes from com.rehmanahmad.rehmanpdf.bundle.yml,
 # which repackages the prebuilt release binaries. Keep runtime-version and finish-args identical.
-id: ai.storyteller.pdfcraft
+id: com.rehmanahmad.rehmanpdf
 runtime: org.freedesktop.Platform
 runtime-version: '25.08'
 sdk: org.freedesktop.Sdk
@@ -48,14 +48,14 @@ modules:
     build-commands:
       - cargo --offline build --release --locked -p pdfcraft
       - install -Dm755 target/release/pdfcraft /app/bin/pdfcraft
-      - install -Dm644 packaging/linux/ai.storyteller.pdfcraft.desktop /app/share/applications/ai.storyteller.pdfcraft.desktop
-      - install -Dm644 packaging/linux/ai.storyteller.pdfcraft.mime.xml /app/share/mime/packages/ai.storyteller.pdfcraft.xml
+      - install -Dm644 packaging/linux/com.rehmanahmad.rehmanpdf.desktop /app/share/applications/com.rehmanahmad.rehmanpdf.desktop
+      - install -Dm644 packaging/linux/com.rehmanahmad.rehmanpdf.mime.xml /app/share/mime/packages/com.rehmanahmad.rehmanpdf.xml
       - mkdir -p /app/share/icons && cp -R assets/app-icon/hicolor /app/share/icons/
       - >-
         version=$(awk '/^\[/{p=($0=="[workspace.package]");next} p&&$1=="version"{gsub(/[" ]/,"",$3);print $3;exit}' Cargo.toml);
         install -d /app/share/metainfo;
         sed -e "s/@VERSION@/$version/" -e "s/@DATE@/$(date -u +%Y-%m-%d)/"
-        packaging/linux/ai.storyteller.pdfcraft.metainfo.xml.in > /app/share/metainfo/ai.storyteller.pdfcraft.metainfo.xml
+        packaging/linux/com.rehmanahmad.rehmanpdf.metainfo.xml.in > /app/share/metainfo/com.rehmanahmad.rehmanpdf.metainfo.xml
     sources:
       - type: dir
         path: ../../..

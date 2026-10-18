@@ -147,7 +147,7 @@ fn plural_sl(n: u64) -> usize {
 }
 
 /// The registry. English first: it is the fallback and the source language.
-pub static LANGUAGES: [LangInfo; 22] = [
+pub static LANGUAGES: [LangInfo; 23] = [
     LangInfo { code: "en", name: "English", source: "", plural: plural_one_other, rtl: false, catalog: OnceLock::new() },
     LangInfo { code: "ja", name: "日本語", source: include_str!("ja.tsv"), plural: plural_none, rtl: false, catalog: OnceLock::new() },
     // Simplified Chinese; `zh`, `zh-CN`, `zh-SG` and `zh-Hans-*` locales resolve here (see `candidates`).
@@ -207,6 +207,9 @@ pub static LANGUAGES: [LangInfo; 22] = [
     LangInfo { code: "tr", name: "Türkçe", source: include_str!("tr.tsv"), plural: plural_none, rtl: false, catalog: OnceLock::new() },
     // Lithuanian; every `lt-*` locale (`lt-LT`, `lt_LT.UTF-8`) resolves here. Three plural forms (one, few, other).
     LangInfo { code: "lt", name: "Lietuvių", source: include_str!("lt.tsv"), plural: plural_lithuanian, rtl: false, catalog: OnceLock::new() },
+    // Urdu; every `ur-*` locale (`ur-PK`, `ur_PK.UTF-8`) resolves here. Right to left:
+    // see `LangInfo::rtl`. Singular for 1, plural for everything else.
+    LangInfo { code: "ur", name: "اردو", source: include_str!("ur.tsv"), plural: plural_one_other, rtl: true, catalog: OnceLock::new() },
 ];
 
 impl LangInfo {
@@ -793,7 +796,7 @@ mod tests {
         let error = pdfcraft_engine::ocr::OcrError::NoModels.to_string();
         let notice = "Text recognition isn't installed: its model files are missing. Reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them.";
         assert!(include_str!("../ocr_ui.rs").contains(notice), "keep in step with ocr_ui.rs");
-        for code in ["bg", "cs", "de", "es", "fr", "hu", "ja", "ru", "te", "uk", "zh-hans", "zh-hant"] {
+        for code in ["bg", "cs", "de", "es", "fr", "hu", "ja", "ru", "te", "uk", "ur", "zh-hans", "zh-hant"] {
             let lang = Lang::from_code(code).expect("registered");
             assert!(has(lang, notice) && has(lang, &error), "{code}");
         }
@@ -856,7 +859,7 @@ mod tests {
             labels.insert(label.to_string());
         }
         assert!(labels.len() > 20 && labels.contains("Comb of characters"), "the scan found the dialog's labels: {labels:?}");
-        for code in ["bg", "cs", "de", "es", "fr", "hu", "it", "ja", "pt-br", "ru", "te", "tr", "uk", "zh-hans", "zh-hant"] {
+        for code in ["bg", "cs", "de", "es", "fr", "hu", "it", "ja", "pt-br", "ru", "te", "tr", "uk", "ur", "zh-hans", "zh-hant"] {
             let lang = Lang::from_code(code).expect("registered");
             let missing: Vec<_> = labels.iter().filter(|l| !has(lang, l)).collect();
             assert!(missing.is_empty(), "{code} lacks Shared Field Properties labels: {missing:#?}");
@@ -1367,6 +1370,13 @@ mod tests {
             "ΔLOC",
             "+Bin",
             "−Bin",
+            // A domain name is identical in every language.
+            "rehmanahmad.com",
+            // Brand strings: the Rehman-PDF name stays as-is in every language.
+            "Rehman-PDF project page",
+            "Rehman-PDF on GitHub",
+            "Rehman-PDF on the web",
+            "Project page, source code and the author's site.",
         ];
         let (entries, errors) = parse_entries(cs.0.source, cs.0.plural_forms());
         assert!(errors.is_empty(), "{errors:?}");
@@ -1477,6 +1487,13 @@ mod tests {
             "ΔLOC",
             "+Bin",
             "−Bin",
+            // A domain name is identical in every language.
+            "rehmanahmad.com",
+            // Brand strings: the Rehman-PDF name stays as-is in every language.
+            "Rehman-PDF project page",
+            "Rehman-PDF on GitHub",
+            "Rehman-PDF on the web",
+            "Project page, source code and the author's site.",
             "Model",
             "Home / End",
         ];
@@ -2694,6 +2711,13 @@ mod tests {
             "ΔLOC",
             "+Bin",
             "−Bin",
+            // A domain name is identical in every language.
+            "rehmanahmad.com",
+            // Brand strings: the Rehman-PDF name stays as-is in every language.
+            "Rehman-PDF project page",
+            "Rehman-PDF on GitHub",
+            "Rehman-PDF on the web",
+            "Project page, source code and the author's site.",
         ];
         let unchanged: Vec<_> = entries
             .iter()
@@ -2772,6 +2796,13 @@ mod tests {
             "ΔLOC",
             "+Bin",
             "−Bin",
+            // A domain name is identical in every language.
+            "rehmanahmad.com",
+            // Brand strings: the Rehman-PDF name stays as-is in every language.
+            "Rehman-PDF project page",
+            "Rehman-PDF on GitHub",
+            "Rehman-PDF on the web",
+            "Project page, source code and the author's site.",
         ];
         let unchanged: Vec<_> = entries
             .iter()
@@ -2925,7 +2956,9 @@ mod tests {
         let ar = arabic();
         assert_eq!(ar.name(), "العربية");
         assert!(ar.rtl());
-        assert!(Lang::all().filter(|l| l.rtl()).eq([ar]), "Arabic is the only right-to-left language");
+        let ur = Lang::from_code("ur").expect("ur registered");
+        assert!(ur.rtl());
+        assert!(Lang::all().filter(|l| l.rtl()).eq([ar, ur]), "Arabic and Urdu are the right-to-left languages");
         assert_eq!(normalize_pref("AR"), Some("ar"));
         for tag in ["ar", "ar-MA", "ar_EG.UTF-8", "AR-sa", "ar_DZ@variant"] {
             assert_eq!(lang_from_tag(tag), Some(ar), "{tag}");
@@ -3040,6 +3073,76 @@ mod tests {
                 assert!(missing.is_empty(), "{build}: {id:?} lacks Arabic label glyphs {missing:?}");
             }
         }
+    }
+
+    fn urdu() -> Lang {
+        Lang::from_code("ur").expect("ur registered")
+    }
+
+    #[test]
+    fn urdu_is_registered_and_persists() {
+        let ur = urdu();
+        assert_eq!(ur.name(), "اردو");
+        assert!(ur.rtl());
+        assert_eq!(normalize_pref("UR"), Some("ur"));
+        for tag in ["ur", "ur-PK", "ur_PK.UTF-8", "UR-pk", "ur_PK@variant"] {
+            assert_eq!(lang_from_tag(tag), Some(ur), "{tag}");
+        }
+        assert_eq!(first_supported("ur-PK\r\nen-US"), Some(ur));
+        // Single words are unaffected by the right-to-left display transform.
+        assert_eq!(tr(ur, "File"), "فائل");
+        assert_eq!(tr(ur, "Edit"), "ترمیم");
+        assert_eq!(tr(ur, "Bookmarks"), "مارکس بک");
+        assert_eq!(tr(ur, "Undo"), "کالعدم");
+        assert_eq!(tr(ur, "رپورٹ.pdf"), "رپورٹ.pdf", "user file names are never translated");
+        // Urdu: singular for 1, plural for everything else.
+        assert_eq!((0..=3).map(|n| (ur.0.plural)(n)).collect::<Vec<_>>(), [1, 0, 1, 1]);
+        assert_eq!(trn(ur, 1, "{n} page", "{n} pages"), "صفحہ 1");
+        assert_eq!(trn(ur, 2, "{n} page", "{n} pages"), "صفحات 2");
+        assert_eq!(trn(ur, 0, "{n} field", "{n} fields"), "فیلڈز 0");
+        // Multi-word lookups come back in display order; the ellipsis ends the phrase on the left.
+        assert_eq!(tr(ur, "Save as…"), "…کریں محفوظ بطور");
+        // The in-app product name reads Rehman-PDF in the Urdu catalog (the rebrand).
+        assert_eq!(tr(ur, "About PdfCraft"), "میں بارے کے Rehman-PDF");
+        assert_eq!(tr(ur, "Rehman-PDF on the web"), "Rehman-PDF پر ویب");
+        let mut app = crate::PdfCraftApp::default();
+        app.set_option("language", "UR").unwrap();
+        assert_eq!(app.language, "ur");
+        let mut restored = crate::PdfCraftApp::default();
+        restored.restore(&app.persist());
+        assert_eq!(restored.language, "ur");
+        assert!(restored.set_option("language", "xx").is_err());
+        assert_eq!(restored.language, "ur");
+    }
+
+    /// Urdu translates every registered command and every All tools group, section and item.
+    #[test]
+    fn urdu_covers_commands_and_catalogue() {
+        let ur = urdu();
+        for command in pdfcraft_engine::commands::COMMANDS {
+            assert!(has(ur, command.label), "missing command: {}", command.label);
+            if let Some(menu) = command.menu {
+                assert!(has(ur, menu), "missing menu: {menu}");
+            }
+        }
+        for group in pdfcraft_engine::catalog::TOOL_GROUPS {
+            assert!(has(ur, group.label), "missing group: {}", group.label);
+            for section in group.sections {
+                assert!(has(ur, section.title), "missing section: {}", section.title);
+                for item in section.items {
+                    assert!(has(ur, item.label), "missing item: {}", item.label);
+                }
+            }
+        }
+    }
+
+    /// Urdu translates every `tl!("…")` literal in the UI source.
+    #[test]
+    fn urdu_covers_ui_literals() {
+        let literals = ui_literals();
+        assert!(literals.len() > 900, "source scan found only {} literals", literals.len());
+        let missing: Vec<_> = literals.iter().filter(|label| !has(urdu(), label)).collect();
+        assert!(missing.is_empty(), "untranslated Urdu UI literals: {missing:#?}");
     }
 
     /// Every bundled catalog is well-formed and consistent with its sources.

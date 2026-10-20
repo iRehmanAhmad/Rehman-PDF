@@ -2358,3 +2358,359 @@ animation effects	Off	آف
 	navigate	نیویگیٹ
 	run	چلائیں
 	Thumbnail size	تھمب نیل کا سائز
+
+# T-010 (v0.9.0 sync): rows added upstream in v0.9.0 (and rows the other fork
+# catalogs carry) that Urdu does not translate yet — English text stands in
+# until a translation pass replaces it, the same treatment other locales get.
+	 on page {label}	 on page {label}
+	4 x 6 in label (101.6 x 152.4 mm)	4 x 6 in label (101.6 x 152.4 mm)
+	A font isn't embedded	A font isn't embedded
+	A {} action isn't allowed	A {} action isn't allowed
+	A {} annotation has additional actions	A {} annotation has additional actions
+	A {} annotation has no appearance stream	A {} annotation has no appearance stream
+	A {} annotation isn't set to print, or is hidden	A {} annotation isn't set to print, or is hidden
+	Accessibility Report	Accessibility Report
+	Add the PDFs to combine	Add the PDFs to combine
+	Added the first {n} PDFs in {folder}	Added the first {n} PDFs in {folder}
+	Always	Always
+	Automatically	Automatically
+	CRL Signing	CRL Signing
+	Certificate Signing	Certificate Signing
+	Certificate authority	Certificate authority
+	Change Author	Change Author
+	Change Keywords	Change Keywords
+	Change Subject	Change Subject
+	Change Title	Change Title
+	Characters	Characters
+	Characters without spaces	Characters without spaces
+	Choose a digital ID.	Choose a digital ID.
+	Choose a file…	Choose a file…
+	Choose a folder…	Choose a folder…
+	Choose…	Choose…
+	Collapse all pages	Collapse all pages
+	Color	Color
+	Comment	Comment
+	Comment and review	Comment and review
+	Copied to clipboard	Copied to clipboard
+	Copy to clipboard	Copy to clipboard
+	Counting words… {n} pages read	Counting words… {n} pages read
+	Create Link…	Create Link…
+	Create folder	Create folder
+	Create links	Create links
+	Creator	Creator
+	Crop Image	Crop Image
+	Current page only	Current page only
+	Cut Image	Cut Image
+	Cut and stack needs Two-sided: Off. Print single-sided sheets.	Cut and stack needs Two-sided: Off. Print single-sided sheets.
+	Cuts each page to its printed area, turns it upright and fits it to the sheet without stretching. One label per sheet.	Cuts each page to its printed area, turns it upright and fits it to the sheet without stretching. One label per sheet.
+	DN: 	DN: 
+	Data Encipherment	Data Encipherment
+	Date: 	Date: 
+	Decipher Only	Decipher Only
+	Detailed Report	Detailed Report
+	DeviceCMYK is used, but the PDF/A output intent isn't a CMYK profile	DeviceCMYK is used, but the PDF/A output intent isn't a CMYK profile
+	DeviceRGB is used, but the PDF/A output intent isn't an RGB profile	DeviceRGB is used, but the PDF/A output intent isn't an RGB profile
+	Digital Signature	Digital Signature
+	Digitally signed by	Digitally signed by
+	Disabled	Disabled
+	Document properties (⌘D)	Document properties (⌘D)
+	Drop PDFs or folders here, or choose them.	Drop PDFs or folders here, or choose them.
+	Duplicate	Duplicate
+	Enabled	Enabled
+	Encipher Only	Encipher Only
+	End entity	End entity
+	English	English
+	Enter a URL	Enter a URL
+	Enter a name.	Enter a name.
+	Enter a page number	Enter a page number
+	Enter the field names	Enter the field names
+	Error	Error
+	Every PDF in the folder	Every PDF in the folder
+	Every PDF in the folder and the folders inside it	Every PDF in the folder and the folders inside it
+	Exclude image/OCR text	Exclude image/OCR text
+	Exclude tagged code blocks	Exclude tagged code blocks
+	Exclude tagged tables	Exclude tagged tables
+	Exclusions use PDF tags. Untagged tables and code remain included. Image exclusion also removes invisible text.	Exclusions use PDF tags. Untagged tables and code remain included. Image exclusion also removes invisible text.
+	Expand all pages	Expand all pages
+	Field "{}" on page {p} has no description (tooltip)	Field "{}" on page {p} has no description (tooltip)
+	Filename	Filename
+	Fill colour:	Fill colour:
+	Find untagged content	Find untagged content
+	Flatten Fill & Sign	Flatten Fill & Sign
+	Folder	Folder
+	Font	Font
+	Font (unnamed) on page {p} doesn't map its characters to Unicode	Font (unnamed) on page {p} doesn't map its characters to Unicode
+	Font size	Font size
+	Font {} on page {p} doesn't map its characters to Unicode	Font {} on page {p} doesn't map its characters to Unicode
+	Form field on page {p} isn't tagged	Form field on page {p} isn't tagged
+	Found {n} untagged content problems.	Found {n} untagged content problems.
+	Full Screen	Full Screen
+	Help…	Help…
+	Hide hover previews for highlights without comment text	Hide hover previews for highlights without comment text
+	H{n} follows an H{d}; headings should not skip levels	H{n} follows an H{d}; headings should not skip levels
+	Import	Import
+	Information	Information
+	Inserted text	Inserted text
+	Key Agreement	Key Agreement
+	Key Encipherment	Key Encipherment
+	Loading…	Loading…
+	Location: 	Location: 
+	Make Properties Default	Make Properties Default
+	Make properties default	Make properties default
+	Margins (in)	Margins (in)
+	Mark as artifact	Mark as artifact
+	Mark content as artifact	Mark content as artifact
+	Merge image fragments	Merge image fragments
+	Mobile	Mobile
+	Move	Move
+	Never	Never
+	New bookmark (⌘B)	New bookmark (⌘B)
+	New file only	New file only
+	New file: {name}	New file: {name}
+	Next	Next
+	Next (⌘G)	Next (⌘G)
+	No PDFs found in {folder}	No PDFs found in {folder}
+	No document language is set	No document language is set
+	No page has text: the document appears to be images of pages	No page has text: the document appears to be images of pages
+	No printers were found. Check that the printer is installed and the print spooler is running, then open Print again.	No printers were found. Check that the printer is installed and the print spooler is running, then open Print again.
+	No results	No results
+	No untagged content was found.	No untagged content was found.
+	Non-Repudiation	Non-Repudiation
+	Not now	Not now
+	Old file: {name}	Old file: {name}
+	On	On
+	Only the document's owner can change its security (open it with the permissions password)	Only the document's owner can change its security (open it with the permissions password)
+	Opacity:	Opacity:
+	Open a PDF (⌘O)	Open a PDF (⌘O)
+	Open folder	Open folder
+	Open in Full Screen mode?	Open in Full Screen mode?
+	Optimizing… merging image fragments	Optimizing… merging image fragments
+	Organize	Organize
+	Outline colour:	Outline colour:
+	Page properties	Page properties
+	Page {n}	Page {n}
+	Page {n} of {total}	Page {n} of {total}
+	Page {p} doesn't tab in structure order	Page {p} doesn't tab in structure order
+	Page {p}: {n} untagged content item	Page {p}: {n} untagged content item
+	Page {p}: {n} untagged content items	Page {p}: {n} untagged content items
+	Page {} has additional actions	Page {} has additional actions
+	Pages counted	Pages counted
+	Pages selected	Pages selected
+	Panel layout could not be restored: {error}	Panel layout could not be restored: {error}
+	Panel move was not applied: {error}	Panel move was not applied: {error}
+	Paste	Paste
+	PdfCraft can't check this signature yet: {}.	PdfCraft can't check this signature yet: {}.
+	Previous	Previous
+	Previous (⇧⌘G)	Previous (⇧⌘G)
+	Print (⌘P)	Print (⌘P)
+	Print as image	Print as image
+	Producer	Producer
+	Reason: 	Reason: 
+	Recognize Text…	Recognize Text…
+	Redact Image	Redact Image
+	Redaction mark appearance	Redaction mark appearance
+	Redo {action}	Redo {action}
+	Refresh	Refresh
+	Remove Crop	Remove Crop
+	Remove this leaf tag from reading order and mark its direct content as an artifact	Remove this leaf tag from reading order and mark its direct content as an artifact
+	Rendering…	Rendering…
+	Report created	Report created
+	Resolution:	Resolution:
+	Rev. {rev}: Certified by an unknown signer	Rev. {rev}: Certified by an unknown signer
+	Rev. {rev}: Certified by {name}	Rev. {rev}: Certified by {name}
+	Rev. {rev}: Signed by an unknown signer	Rev. {rev}: Signed by an unknown signer
+	Rev. {rev}: Signed by {name}	Rev. {rev}: Signed by {name}
+	Rotate view clockwise (⇧⌘+)	Rotate view clockwise (⇧⌘+)
+	Rule Name	Rule Name
+	Save (M4)	Save (M4)
+	Save anyway	Save anyway
+	Save as {level}	Save as {level}
+	Save changes?	Save changes?
+	Save file	Save file
+	Save over the changed file?	Save over the changed file?
+	Scroll speed (mouse wheel and arrow keys)	Scroll speed (mouse wheel and arrow keys)
+	Search results	Search results
+	Sending sheet {s} of {n} to {printer}…	Sending sheet {s} of {n} to {printer}…
+	Set page transitions	Set page transitions
+	Shown while the pointer is over a mark.	Shown while the pointer is over a mark.
+	Side by side	Side by side
+	Signature is invalid	Signature is invalid
+	Signature is valid	Signature is valid
+	Signature validity is unknown	Signature validity is unknown
+	Signing time is from the clock on the signer's computer.	Signing time is from the clock on the signer's computer.
+	Some content could not be classified safely and was kept in the count.	Some content could not be classified safely and was kept in the count.
+	Some pages contain no countable text. Scanned images need OCR first.	Some pages contain no countable text. Scanned images need OCR first.
+	Standard	Standard
+	Still rendering — this page is unusually complex…	Still rendering — this page is unusually complex…
+	Success	Success
+	System	System
+	Tag form fields	Tag form fields
+	The ECDSA signature is not in canonical DER (trailing bytes, padding or a missing sign byte); it was read anyway.	The ECDSA signature is not in canonical DER (trailing bytes, padding or a missing sign byte); it was read anyway.
+	The ECDSA signature is the raw r and s values instead of a DER sequence; it was read anyway.	The ECDSA signature is the raw r and s values instead of a DER sequence; it was read anyway.
+	The RSA signature value does not have the length of the key's modulus (leading zero bytes dropped or added); it was read anyway.	The RSA signature value does not have the length of the key's modulus (leading zero bytes dropped or added); it was read anyway.
+	The RSA signature's DigestInfo has no NULL parameter (older signers write it so); it was read anyway.	The RSA signature's DigestInfo has no NULL parameter (older signers write it so); it was read anyway.
+	The certificate of {} does not allow this many CA certificates below it (path length), so it is not used to vouch for {}.	The certificate of {} does not allow this many CA certificates below it (path length), so it is not used to vouch for {}.
+	The certificate of {} is not a CA certificate that may issue certificates, so it is not used to vouch for {}.	The certificate of {} is not a CA certificate that may issue certificates, so it is not used to vouch for {}.
+	The certificate of {} was not valid at the time of signing, so it is not used to vouch for {}.	The certificate of {} was not valid at the time of signing, so it is not used to vouch for {}.
+	The checker found problems which may prevent the document from being fully accessible.	The checker found problems which may prevent the document from being fully accessible.
+	The document has been altered or corrupted since the signature was applied.	The document has been altered or corrupted since the signature was applied.
+	The document has been altered or corrupted since the timestamp was applied.	The document has been altered or corrupted since the timestamp was applied.
+	The document has been altered since this signature was applied in ways it does not permit ({}).	The document has been altered since this signature was applied in ways it does not permit ({}).
+	The document has been altered since this timestamp was applied in ways it does not permit ({}).	The document has been altered since this timestamp was applied in ways it does not permit ({}).
+	The document has been modified since this signature was applied, but the changes are permitted ({}).	The document has been modified since this signature was applied, but the changes are permitted ({}).
+	The document has been modified since this timestamp was applied, but the changes are permitted ({}).	The document has been modified since this timestamp was applied, but the changes are permitted ({}).
+	The document has no tags (structure tree)	The document has no tags (structure tree)
+	The document has no title	The document has no title
+	The document isn't marked as tagged (MarkInfo Marked)	The document isn't marked as tagged (MarkInfo Marked)
+	The document isn't tagged, so none of its content is	The document isn't tagged, so none of its content is
+	The document's embedded revocation information shows that the signer's certificate has not been revoked.	The document's embedded revocation information shows that the signer's certificate has not been revoked.
+	The embedded timestamp token is valid and its authority is trusted; trusted time is {}.	The embedded timestamp token is valid and its authority is trusted; trusted time is {}.
+	The font {} isn't embedded	The font {} isn't embedded
+	The labels are in English: the signature's font can't draw them in this language.	The labels are in English: the signature's font can't draw them in this language.
+	The metadata doesn't identify the file as {}	The metadata doesn't identify the file as {}
+	The password is incorrect.	The password is incorrect.
+	The password must have at least 6 characters.	The password must have at least 6 characters.
+	The password must have at least 8 characters.	The password must have at least 8 characters.
+	The passwords do not match.	The passwords do not match.
+	The security settings don't allow screen readers to read the text	The security settings don't allow screen readers to read the text
+	The signature algorithm and the SignerInfo's digest algorithm name different hashes; the signature was made with the SignerInfo's.	The signature algorithm and the SignerInfo's digest algorithm name different hashes; the signature was made with the SignerInfo's.
+	The signature carries an unverified timestamp ({}): the timestamp authority is not in your list of trusted certificates, so the signing time claimed by the signer is used instead.	The signature carries an unverified timestamp ({}): the timestamp authority is not in your list of trusted certificates, so the signing time claimed by the signer is used instead.
+	The signature contents are not hexadecimal.	The signature contents are not hexadecimal.
+	The signature could not be checked ({}).	The signature could not be checked ({}).
+	The signature could not be read ({}).	The signature could not be read ({}).
+	The signature could not be verified ({}).	The signature could not be verified ({}).
+	The signature has no valid byte range.	The signature has no valid byte range.
+	The signature includes an embedded timestamp.	The signature includes an embedded timestamp.
+	The signature is BER-encoded (indefinite lengths) rather than DER; it was read leniently.	The signature is BER-encoded (indefinite lengths) rather than DER; it was read leniently.
+	The signature uses the legacy adbe.x509.rsa_sha1 format.	The signature uses the legacy adbe.x509.rsa_sha1 format.
+	The signature value does not match the signer's certificate: the signature is corrupt.	The signature value does not match the signer's certificate: the signature is corrupt.
+	The signature's byte range does not exclude exactly its contents.	The signature's byte range does not exclude exactly its contents.
+	The signature's byte range does not match the file.	The signature's byte range does not match the file.
+	The signature's timestamp token could not be verified ({}).	The signature's timestamp token could not be verified ({}).
+	The signature's timestamp token does not cover the signature value.	The signature's timestamp token does not cover the signature value.
+	The signed content is a constructed (segmented) OCTET STRING, as BER allows; it was read anyway.	The signed content is a constructed (segmented) OCTET STRING, as BER allows; it was read anyway.
+	The signer's certificate does not allow digital signatures (its key usage has neither digital signature nor non-repudiation).	The signer's certificate does not allow digital signatures (its key usage has neither digital signature nor non-repudiation).
+	The signer's certificate has been revoked ({}).	The signer's certificate has been revoked ({}).
+	The signer's certificate has critical extensions PdfCraft does not recognize ({}).	The signer's certificate has critical extensions PdfCraft does not recognize ({}).
+	The signer's certificate is not in the signature.	The signer's certificate is not in the signature.
+	The signer's certificate is not issued for signing documents (its extended key usage has no document-signing purpose).	The signer's certificate is not issued for signing documents (its extended key usage has no document-signing purpose).
+	The signer's certificate was not valid at the time of signing.	The signer's certificate was not valid at the time of signing.
+	The signer's identity is unknown because it has not been included in your list of trusted certificates and none of its parent certificates are trusted certificates.	The signer's identity is unknown because it has not been included in your list of trusted certificates and none of its parent certificates are trusted certificates.
+	The signer's identity is valid.	The signer's identity is valid.
+	The timestamp authority's certificate was not valid at the time of timestamping.	The timestamp authority's certificate was not valid at the time of timestamping.
+	The timestamp contents are not hexadecimal.	The timestamp contents are not hexadecimal.
+	The timestamp has no valid byte range.	The timestamp has no valid byte range.
+	The timestamp token could not be read ({}).	The timestamp token could not be read ({}).
+	The timestamp token is valid and its authority is trusted.	The timestamp token is valid and its authority is trusted.
+	The timestamp token is valid, but the timestamp authority is not in your list of trusted certificates.	The timestamp token is valid, but the timestamp authority is not in your list of trusted certificates.
+	The timestamp's byte range does not exclude exactly its contents.	The timestamp's byte range does not exclude exactly its contents.
+	The timestamp's byte range does not match the file.	The timestamp's byte range does not match the file.
+	The window shows the file name, not the title (Initial View > Show)	The window shows the file name, not the title (Initial View > Show)
+	Theme	Theme
+	There is no folder to save the digital ID in.	There is no folder to save the digital ID in.
+	This document asks to open in Full Screen mode: the page fills the screen and nothing else shows. Press Esc at any time to leave it.	This document asks to open in Full Screen mode: the page fills the screen and nothing else shows. Press Esc at any time to leave it.
+	This document has not been modified since this signature was applied.	This document has not been modified since this signature was applied.
+	This document has not been modified since this timestamp was applied.	This document has not been modified since this timestamp was applied.
+	This file changed on disk. Reload shows the new version and drops your unsaved changes; Save replaces it with this version.	This file changed on disk. Reload shows the new version and drops your unsaved changes; Save replaces it with this version.
+	This signature uses RIPEMD-160, a legacy 160-bit hash algorithm that is no longer recommended for signatures. It still validates, but it should not be relied on.	This signature uses RIPEMD-160, a legacy 160-bit hash algorithm that is no longer recommended for signatures. It still validates, but it should not be relied on.
+	This signature uses SHA-1, a weak hash algorithm: collisions in it have been demonstrated. It still validates because many documents signed years ago use it, but it should not be relied on.	This signature uses SHA-1, a weak hash algorithm: collisions in it have been demonstrated. It still validates because many documents signed years ago use it, but it should not be relied on.
+	Trim the picture with its handles; Enter or Done applies	Trim the picture with its handles; Enter or Done applies
+	Turn upside down (180°)	Turn upside down (180°)
+	Undo {action}	Undo {action}
+	Unsigned signature field	Unsigned signature field
+	Unsigned signature field: {name}	Unsigned signature field: {name}
+	Use it when a printer skips text, shading or transparency. The print is no longer searchable text; with Print in grayscale, the pictures are grey.	Use it when a printer skips text, shading or transparency. The print is no longer searchable text; with Print in grayscale, the pictures are grey.
+	Warning	Warning
+	What takes up the space in this file, by kind of content.	What takes up the space in this file, by kind of content.
+	Word count	Word count
+	Word counting stopped unexpectedly.	Word counting stopped unexpectedly.
+	Word count…	Word count…
+	Words	Words
+	You are viewing revision {rev} of “{from}”. It is a snapshot: changes here won't affect the original.	You are viewing revision {rev} of “{from}”. It is a snapshot: changes here won't affect the original.
+	You are viewing the signed version of “{from}” (revision {rev}). It is a snapshot: changes here won't affect the original.	You are viewing the signed version of “{from}” (revision {rev}). It is a snapshot: changes here won't affect the original.
+	Zoom in (⌘+)	Zoom in (⌘+)
+	Zoom in / out (also pinch or ⌘-scroll)	Zoom in / out (also pinch or ⌘-scroll)
+	Zoom out (⌘−)	Zoom out (⌘−)
+	alternate text hides an annotation inside it	alternate text hides an annotation inside it
+	alternate text on an element with no page content	alternate text on an element with no page content
+	comments	comments
+	document security store	document security store
+	document structure	document structure
+	form fill	form fill
+	its alternate text is inside another element's and will never be read	its alternate text is inside another element's and will never be read
+	links	links
+	metadata	metadata
+	no alternate text	no alternate text
+	no header cells (TH)	no header cells (TH)
+	no summary	no summary
+	not in a TR	not in a TR
+	not in a Table, THead, TBody or TFoot	not in a Table, THead, TBody or TFoot
+	not in an L (list)	not in an L (list)
+	not in an LI (list item)	not in an LI (list item)
+	of	of
+	other changes	other changes
+	page content	page content
+	page {n} is out of range (1–{count})	page {n} is out of range (1–{count})
+	pages added or removed	pages added or removed
+	rows have between {min} and {max} columns	rows have between {min} and {max} columns
+	the first heading is an H{n}; headings should not skip levels	the first heading is an H{n}; headings should not skip levels
+	the name is not a plain file name	the name is not a plain file name
+	the signed version could not be read	the signed version could not be read
+	{n} pages and no bookmarks	{n} pages and no bookmarks
+	{page} is not a page number or label	{page} is not a page number or label
+	{ty} element on page {p}: {what}	{ty} element on page {p}: {what}
+	{ty} element: {what}	{ty} element: {what}
+	{who}, certificate issued by an unknown issuer.	{who}, certificate issued by an unknown issuer.
+	{who}, certificate issued by {issuer}.	{who}, certificate issued by {issuer}.
+	{} annotation on page {p} isn't tagged	{} annotation on page {p} isn't tagged
+	{} annotations aren't allowed	{} annotations aren't allowed
+	“{name}” changed on disk after it was opened or last saved. Saving now replaces that newer version with this one.	“{name}” changed on disk after it was opened or last saved. Saving now replaces that newer version with this one.
+	… and {n} more	… and {n} more
+@id	file.word_count	Word count…
+@plural	Delete {n} field|Delete {n} fields	Delete {n} field|Delete {n} fields
+@plural	{n} byte|{n} bytes	{n} byte|{n} bytes
+@plural	{n} comment|{n} comments	{n} comment|{n} comments
+@plural	{n} file|{n} files	{n} file|{n} files
+@plural	{n} image optimized|{n} images optimized	{n} image optimized|{n} images optimized
+@plural	{n} item discarded|{n} items discarded	{n} item discarded|{n} items discarded
+@plural	{n} pixel|{n} pixels	{n} pixel|{n} pixels
+@plural	{n} result|{n} results	{n} result|{n} results
+action wizard	Start	Start
+calendar date	April	April
+calendar date	August	August
+calendar date	December	December
+calendar date	February	February
+calendar date	January	January
+calendar date	July	July
+calendar date	June	June
+calendar date	March	March
+calendar date	May	May
+calendar date	November	November
+calendar date	October	October
+calendar date	September	September
+calendar weekday	Fr	Fr
+calendar weekday	Mo	Mo
+calendar weekday	Sa	Sa
+calendar weekday	Su	Su
+calendar weekday	Th	Th
+calendar weekday	Tu	Tu
+calendar weekday	We	We
+certificate	Basic constraints	Basic constraints
+certificate	Intended usage	Intended usage
+certificate	Issued by	Issued by
+certificate	Issued to	Issued to
+certificate	Issuer	Issuer
+certificate	Key usage	Key usage
+certificate	Public key	Public key
+certificate	SHA-1 digest	SHA-1 digest
+certificate	SHA-256 digest	SHA-256 digest
+certificate	Self-signed	Self-signed
+certificate	Serial number	Serial number
+certificate	Subject	Subject
+certificate	Valid from	Valid from
+certificate	Valid to	Valid to
+certificate	Validity ends	Validity ends
+certificate	Validity starts	Validity starts
+certificate	Version	Version
+comment menu	Edit	Edit
+theme	Appearance	Appearance

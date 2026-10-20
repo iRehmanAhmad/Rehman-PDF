@@ -1,6 +1,8 @@
 //! Page-range parsing ("1, 12, 16-18") for the control channel. The Organize Pages toolbar's
-//! editable range field was replaced by the T-003 mockup's Select-all action bar; `parse`
-//! stays for `--control` page selection.
+//! editable range field was replaced by the T-003 mockup's Select-all action bar; upstream
+//! v0.9.0's typed-field widget (`PageSelectionInput`) and its organize panel were removed in
+//! T-010 (PM decision: the T-003 canvas action bar is the shipped Organize). `parse` stays
+//! for `--control` page selection.
 use std::collections::BTreeSet;
 
 use pdfcraft_engine::print::PrintError;
@@ -36,24 +38,6 @@ pub(crate) fn parse(text: &str, count: usize) -> Result<Vec<usize>, PrintError> 
 }
 
 #[cfg(test)]
-fn formatted(pages: &BTreeSet<usize>) -> String {
-    let mut parts = Vec::new();
-    let mut it = pages.iter().copied().peekable();
-    while let Some(first) = it.next() {
-        let mut last = first;
-        while it.peek().is_some_and(|p| last.checked_add(1) == Some(*p)) {
-            if let Some(next) = it.next() {
-                last = next;
-            }
-        }
-        let first = first.saturating_add(1);
-        let last = last.saturating_add(1);
-        parts.push(if first == last { first.to_string() } else { format!("{first}-{last}") });
-    }
-    parts.join(", ")
-}
-
-#[cfg(test)]
 mod tests {
     use super::*;
 
@@ -61,7 +45,6 @@ mod tests {
     fn selection_ranges_are_sorted_unique_and_bounded() {
         let pages = parse("1,12,16-18,89,92,93,97,99", 100).unwrap();
         assert_eq!(pages, [0, 11, 15, 16, 17, 88, 91, 92, 96, 98]);
-        assert_eq!(formatted(&pages.into_iter().collect()), "1, 12, 16-18, 89, 92-93, 97, 99");
         assert_eq!(parse("3-1,2", 3).unwrap(), [0, 1, 2]);
         assert!(parse("  ", 0).unwrap().is_empty());
         for text in ["0", "101", "1,", "x", "1--3", "18446744073709551616", "1-100000000"] {

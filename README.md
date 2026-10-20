@@ -59,7 +59,7 @@
 
 ## About this fork
 
-Rehman-PDF is a **fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft)'s open-source PDF engine** (dual-licensed MIT OR Apache-2.0), pinned at its **v0.8.0** release. It is not a rebrand of an unrelated product: every page you render, every combine and split, runs on PdfCraft's Rust engine, with full credit to its authors.
+Rehman-PDF is a **fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft)'s open-source PDF engine** (dual-licensed MIT OR Apache-2.0), pinned at its **v0.9.0** release. It is not a rebrand of an unrelated product: every page you render, every combine and split, runs on PdfCraft's Rust engine, with full credit to its authors.
 
 What makes this fork different is that it **speaks your language**:
 
@@ -171,7 +171,7 @@ Open **Organize pages** to see every page at once:
 **Saves you can trust:**
 - *Incremental:* the original bytes stay byte-for-byte intact.
 - *Atomic:* the file is written to a temporary copy, then swapped in.
-- *Verified:* independently checked with qpdf.
+- *Verified:* independently checked with qpdf, on every CI run.
 
 When open documents exceed the window width, scroll over the tab strip with the mouse wheel or trackpad, or use its horizontal scrollbar. Opening or switching to a document brings its tab into view.
 
@@ -198,7 +198,7 @@ Every page of a combined document renders pixel-identical to its source.
 
 ```sh
 pdfcraft-cli combine report.pdf appendix.pdf --out combined.pdf
-pdfcraft-cli extract report.pdf --pages 1,3,5 --out highlights.pdf
+pdfcraft-cli extract report.pdf --pages 1,3,5-8 --out highlights.pdf
 pdfcraft-cli split   report.pdf --every 10 --out-dir parts/
 ```
 
@@ -284,6 +284,7 @@ Every engine feature is reachable without the GUI, through one table of JSON-Sch
   pdfcraft-cli run text_find doc=1 query=invoice            # key=value; values parse as JSON
   pdfcraft-cli run --script review.json                     # e.g. comment_add {"type": "highlight", "find": "total due"}
   pdfcraft-cli run --script steps.json --root ./work        # several steps in one session
+  pdfcraft-cli run --script steps.json --report             # one JSON document: per step its number, tool, status, result or error
   ```
 
   With `--root`, every file the script's steps read or write stays in that directory, including the PNG a step saves with `"out"` (the script itself is read from wherever you name it).
@@ -353,7 +354,8 @@ On top of those, two corpus sweeps run over real-world files:
 - **Opening and rendering:** of the 983 pdf.js test files, 963 open and render cleanly, with 0 crashes.
 - **Open, edit and save round trips:** 958 succeed.
 
-The output is verified with independent tools: hayro, qpdf and poppler.
+The output is verified against independent implementations: hayro and qpdf on every CI run, and
+poppler over the corpus on demand (`cargo xtask text-oracle`).
 
 The engine is a clean-room implementation. Its behaviour comes from the ISO 32000 specification and black-box observation, never from anyone else's code. Every icon, font and image is openly licensed and listed in [ATTRIBUTION.md](ATTRIBUTION.md).
 
@@ -377,7 +379,7 @@ languages, including Arabic with full right-to-left layout; the fork's goal is t
 to that same list.
 
 > [!NOTE]
-> In this pinned v0.8.0 build the binaries are still named `pdfcraft` and `pdfcraft-cli` (the upstream names); a rename ships with the first Rehman-PDF release. All CLI examples on this page use those names and work as written.
+> In this pinned v0.9.0 build the binaries are still named `pdfcraft` and `pdfcraft-cli` (the upstream names); a rename ships with the first Rehman-PDF release. All CLI examples on this page use those names and work as written.
 
 Logs, environment variables and other development notes are in [docs/development.md](docs/development.md).
 
@@ -407,7 +409,7 @@ The summary is in **[ROADMAP.md](ROADMAP.md)**; the full assessment by dimension
 Rehman-PDF is dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option, inherited from the upstream engine.
 Copyright (c) 2026 ArtCraft Team and the PdfCraft contributors. Required notices are in [NOTICE](NOTICE).
 
-Rehman-PDF is a fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft) (pinned at v0.8.0), rebranded and extended as a complete PDF editor that supports maximum languages, Urdu included. Per the upstream trademark terms, the ArtCraft name, logos and brand assets were removed from this fork; the engine code remains under the same open license.
+Rehman-PDF is a fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft) (pinned at v0.9.0), rebranded and extended as a complete PDF editor that supports maximum languages, Urdu included. Per the upstream trademark terms, the ArtCraft name, logos and brand assets were removed from this fork; the engine code remains under the same open license.
 
 Bundled fonts, icons, images and other assets keep their own open licenses; each one is listed
 with its author, source and license in [ATTRIBUTION.md](ATTRIBUTION.md). Release builds also embed

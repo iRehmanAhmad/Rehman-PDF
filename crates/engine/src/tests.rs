@@ -2433,6 +2433,41 @@ fn flattening_fill_and_sign_reopens_an_encrypted_file() {
     assert!(!comment_text(&again, id2).contains(&"Hello".to_string()));
 }
 
+/// T-006 evidence: Urdu added through the editing API is extracted back by the
+/// engine's own text extraction in logical (reading) order, shaped with the
+/// Nastaliq face. Without a Nastaliq face in the build the add is the existing
+/// clear error (or the Arabic-face fallback), never a panic.
+#[test]
+fn added_urdu_text_extracts_back_in_reading_order() {
+    let logical = "اردو بڑا ٹیسٹ ہے۔";
+    let (mut s, id) = session_with(1);
+    let text = AddedText { rect: [10.0, 240.0, 190.0, 285.0], text: logical.into(), size: 12.0, ..AddedText::default() };
+    let applied = s.apply(id, Edit::AddText { page: 0, text });
+    if pdfcraft_fonts::document_urdu_font().is_none() {
+        if pdfcraft_fonts::document_arabic_font().is_none() {
+            let err = applied.unwrap_err().to_string();
+            assert!(err.contains("CRAFT_FONTS_DIR"), "{err}");
+        } else {
+            eprintln!("skipping the Urdu extraction check: Arabic face present but no Nastaliq face (set CRAFT_FONTS_DIR with Noto Nastaliq Urdu)");
+        }
+        return;
+    }
+    applied.unwrap();
+    // The fixture page's own text is "Page 1"; the added Urdu must extract first, in
+    // logical (reading) order, exactly as typed.
+    let expected = format!("{logical} Page 1");
+    let extracted = page_texts(&s, id).swap_remove(0);
+    let normalised = extracted.split_whitespace().collect::<Vec<_>>().join(" ");
+    assert_eq!(normalised, expected, "extraction must return the typed Urdu in reading order, got {extracted:?}");
+    // And after a save/reopen round trip (the bytes a user would share).
+    let saved = s.save_bytes(id).unwrap();
+    let mut s2 = Session::new();
+    let id2 = s2.open("urdu.pdf", None, saved, None).unwrap();
+    let extracted = page_texts(&s2, id2).swap_remove(0);
+    let normalised = extracted.split_whitespace().collect::<Vec<_>>().join(" ");
+    assert_eq!(normalised, expected, "after reopen: {extracted:?}");
+}
+
 #[test]
 fn pages_export_as_png_jpeg_and_tiff() {
     use crate::export::{Exporter, ImageFormat};

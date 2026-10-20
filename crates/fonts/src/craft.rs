@@ -59,6 +59,31 @@ fn arabic<'a>(faces: impl IntoIterator<Item = &'a CraftFont>) -> Vec<&'a CraftFo
     faces.into_iter().filter(|f| f.covers("Arab")).collect()
 }
 
+/// The `Noto Nastaliq Urdu` craft-fonts faces for Urdu interface text, in manifest order.
+/// Urdu is written in the Arabic script (ISO 15924 `Arab`), so its faces are picked by
+/// family, not by script tag. Empty when built without craft-fonts or when it has no
+/// Nastaliq face.
+pub fn ui_urdu_fonts() -> Vec<&'static CraftFont> {
+    urdu(CRAFT_FONTS.iter())
+}
+
+/// The face for Urdu text written into PDFs: the Nastaliq face's Regular, else any
+/// Nastaliq face. Never the Arabic (Naskh) face: Urdu's letters (ٹ ڈ ڑ ں ھ ہ ے) and
+/// Nastaliq joining are not its job. `None` without craft-fonts or without the face —
+/// Urdu text then falls back to the Arabic path, or to its clear error.
+pub fn document_urdu_font() -> Option<&'static CraftFont> {
+    urdu_face(CRAFT_FONTS)
+}
+
+fn urdu<'a>(faces: impl IntoIterator<Item = &'a CraftFont>) -> Vec<&'a CraftFont> {
+    faces.into_iter().filter(|f| f.family == "Noto Nastaliq Urdu").collect()
+}
+
+fn urdu_face(faces: &[CraftFont]) -> Option<&CraftFont> {
+    let nastaliq = || faces.iter().filter(|f| f.family == "Noto Nastaliq Urdu");
+    nastaliq().find(|f| f.style == "Regular").or_else(|| nastaliq().next())
+}
+
 /// The `Telu` craft-fonts faces for Telugu interface text (the Telugu catalog, file names,
 /// document titles), in manifest order. Empty when built without craft-fonts or when it has no
 /// Telugu face.
@@ -277,6 +302,23 @@ mod tests {
         }
         assert!(BARRED_FAMILIES.iter().any(|barred| "Noto Sans CJK SC".starts_with(barred)));
         assert!(!BARRED_FAMILIES.iter().any(|barred| "Noto Sans Arabic".starts_with(barred)));
+    }
+
+    #[test]
+    fn urdu_document_face_is_the_nastaliq_face() {
+        static ARAB: &[&str] = &["Arab"];
+        let faces = [
+            CraftFont { family: "Noto Sans Arabic", style: "Regular", scripts: ARAB, bytes: b"naskh" },
+            CraftFont { family: "Noto Nastaliq Urdu", style: "Bold", scripts: ARAB, bytes: b"bold" },
+            CraftFont { family: "Noto Nastaliq Urdu", style: "Regular", scripts: ARAB, bytes: b"nastaliq" },
+        ];
+        // Regular Nastaliq wins; the Arabic face is never an Urdu document face.
+        assert_eq!(urdu_face(&faces).map(|f| f.bytes), Some(&b"nastaliq"[..]));
+        assert_eq!(urdu_face(&faces[..2]).map(|f| f.bytes), Some(&b"bold"[..]));
+        assert!(urdu_face(&faces[..1]).is_none());
+        assert!(urdu_face(&[]).is_none());
+        assert_eq!(urdu(&faces).len(), 2);
+        assert_eq!(document_urdu_font().is_some(), CRAFT_FONTS.iter().any(|f| f.family == "Noto Nastaliq Urdu"));
     }
 
     #[test]

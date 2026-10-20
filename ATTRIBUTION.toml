@@ -3255,6 +3255,17 @@ attribution = "https://github.com/storytold/craft-fonts/blob/main/ATTRIBUTION.md
 kind = "font"
 usage = "Japanese fallback in the interface (BIZ UDPGothic first) and Japanese glyphs in edited PDF text (Shippori Mincho); Arabic interface text, file names and document titles (Noto Sans Arabic); the web build embeds only BIZ UDPGothic Regular and Noto Sans Arabic. The checkout also holds Noto Sans CJK SC, which crates/fonts/build.rs never embeds (AGENTS.md §1.1)"
 
+[[build_input]]
+name = "craft-fonts-noto-nastaliq-urdu"
+option = "CRAFT_FONTS_DIR"
+title = "Urdu font: Noto Nastaliq Urdu Regular, Version 3.002 (file NotoNastaliqUrdu-Regular.ttf, SHA-256 7ec900458bd2f8749050fcf9805e51775f632bae765f99a85637189017808204)"
+author = "The Noto Project Authors"
+source = "https://github.com/notofonts/noto-fonts/blob/5ff655a1ea278777083e8beedf053dd5ec5bded3/unhinted/ttf/NotoNastaliqUrdu/NotoNastaliqUrdu-Regular.ttf"
+licence = "OFL-1.1"
+attribution = "https://github.com/notofonts/nastaliq"
+kind = "font"
+usage = "Urdu text written into PDFs: shaped with the Nastaliq face (ShapedScript::Urdu in crates/fonts, Add-text in crates/edit) and Urdu interface text, when the craft-fonts checkout given by CRAFT_FONTS_DIR carries the face (manifest family \"Noto Nastaliq Urdu\", script Arab). The font file itself is never committed to this repository (AGENTS.md §1.4); without the face, Urdu Add-text falls back to the Arabic face or returns a clear error. Licence text: OFL.txt beside the font in the checkout (also in the upstream repository https://github.com/notofonts/nastaliq)"
+
 [[asset]]
 path = "crates/sign/tests/data/x509-rsa-sha1.pdf"
 title = "One-page PDF with a legacy adbe.x509.rsa_sha1 signature by the RSA test key"

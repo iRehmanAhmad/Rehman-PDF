@@ -1,4 +1,4 @@
-//! Arabic, Hebrew and Thai text shaping with the matching craft-fonts face and bounded glyph outlines.
+//! Arabic, Hebrew, Urdu and Thai text shaping with the matching craft-fonts face and bounded glyph outlines.
 
 use std::sync::OnceLock;
 
@@ -27,6 +27,7 @@ pub struct ShapedCluster {
 pub enum ShapedScript {
     Arabic,
     Hebrew,
+    Urdu,
     Thai,
 }
 
@@ -35,6 +36,7 @@ impl ShapedScript {
         match self {
             Self::Arabic => crate::document_arabic_font(),
             Self::Hebrew => crate::document_hebrew_font(false),
+            Self::Urdu => crate::document_urdu_font(),
             Self::Thai => crate::document_thai_font(),
         }
     }
@@ -43,10 +45,12 @@ impl ShapedScript {
 fn face(script: ShapedScript) -> Option<&'static (FontRef<'static>, ShaperData)> {
     static FACE: OnceLock<Option<(FontRef<'static>, ShaperData)>> = OnceLock::new();
     static HEBREW: OnceLock<Option<(FontRef<'static>, ShaperData)>> = OnceLock::new();
+    static URDU: OnceLock<Option<(FontRef<'static>, ShaperData)>> = OnceLock::new();
     static THAI: OnceLock<Option<(FontRef<'static>, ShaperData)>> = OnceLock::new();
     let cache = match script {
         ShapedScript::Arabic => &FACE,
         ShapedScript::Hebrew => &HEBREW,
+        ShapedScript::Urdu => &URDU,
         ShapedScript::Thai => &THAI,
     };
     cache
@@ -81,6 +85,20 @@ pub fn shape_hebrew(text: &str, rtl: bool) -> Result<Vec<ShapedCluster>, GlyphEr
     shape_script(text, rtl, ShapedScript::Hebrew)
 }
 
+/// Whether the Nastaliq document face has a glyph for `c` (false without the face).
+pub fn urdu_has(c: char) -> bool {
+    face(ShapedScript::Urdu).is_some_and(|(font, _)| font.charmap().map(c).is_some())
+}
+
+/// Shape one directional run of `text` with the Nastaliq document face (Noto Nastaliq
+/// Urdu). Urdu is written in the Arabic script, so the shaper gets the Arabic script tag;
+/// what differs from [`shape_arabic`] is the face — Nastaliq joining, Urdu's own letters
+/// (ٹ ڈ ڑ ں ھ ہ ے) and its stacked ligatures. [`GlyphError::NoFont`] without the face;
+/// [`GlyphError::Missing`] when it lacks a character.
+pub fn shape_urdu(text: &str, rtl: bool) -> Result<Vec<ShapedCluster>, GlyphError> {
+    shape_script(text, rtl, ShapedScript::Urdu)
+}
+
 pub fn thai_has(c: char) -> bool {
     face(ShapedScript::Thai).is_some_and(|(font, _)| font.charmap().map(c).is_some())
 }
@@ -99,13 +117,14 @@ fn shape_script(text: &str, rtl: bool, kind: ShapedScript) -> Result<Vec<ShapedC
     buffer.push_str(text);
     buffer.set_direction(if rtl { Direction::RightToLeft } else { Direction::LeftToRight });
     buffer.set_script(match kind {
-        ShapedScript::Arabic => script::ARABIC,
+        // Urdu is written in the Arabic script; HarfBuzz has no separate Urdu script tag.
+        ShapedScript::Arabic | ShapedScript::Urdu => script::ARABIC,
         ShapedScript::Hebrew => script::HEBREW,
         ShapedScript::Thai => script::THAI,
     });
     // Preserve the historical Arabic per-character mapping; Hebrew and Thai marks stay with their base.
     buffer.set_cluster_level(match kind {
-        ShapedScript::Arabic => BufferClusterLevel::Characters,
+        ShapedScript::Arabic | ShapedScript::Urdu => BufferClusterLevel::Characters,
         ShapedScript::Hebrew | ShapedScript::Thai => BufferClusterLevel::MonotoneGraphemes,
     });
     let shaped = shaper.shape(buffer, ShapeOptions::new());
@@ -142,6 +161,11 @@ fn shape_script(text: &str, rtl: bool, kind: ShapedScript) -> Result<Vec<ShapedC
 /// outlines (spaces) come back empty.
 pub fn arabic_glyph(id: u32) -> Result<GlyphOutline, GlyphError> {
     shaped_glyph(ShapedScript::Arabic, id)
+}
+
+/// Glyph `id` of the Nastaliq document face, bounded like [`arabic_glyph`].
+pub fn urdu_glyph(id: u32) -> Result<GlyphOutline, GlyphError> {
+    shaped_glyph(ShapedScript::Urdu, id)
 }
 
 /// A bounded outline from the same face that produced the shaped glyph id.
@@ -231,6 +255,72 @@ mod tests {
         assert_eq!(shape_arabic("日", true), Err(GlyphError::Missing));
         assert_eq!(arabic_glyph(u32::MAX).map(|_| ()), Err(GlyphError::Missing));
         assert!(shape_arabic("", true).unwrap().is_empty());
+    }
+}
+
+#[cfg(test)]
+mod urdu_tests {
+    use super::*;
+
+    fn face_or_skip() -> bool {
+        if crate::document_urdu_font().is_none() {
+            eprintln!("skipping the Urdu shaping checks: built without a craft-fonts Nastaliq face (set CRAFT_FONTS_DIR)");
+            assert_eq!(shape_urdu("ب", true), Err(GlyphError::NoFont));
+            assert_eq!(urdu_glyph(1).map(|_| ()), Err(GlyphError::NoFont));
+            assert!(!urdu_has('ب'));
+            return false;
+        }
+        true
+    }
+
+    #[test]
+    fn urdu_specific_letters_are_in_the_nastaliq_face() {
+        if !face_or_skip() {
+            return;
+        }
+        // The letters Arabic faces commonly lack or draw in Naskh form: ٹ ڈ ڑ ں ھ ہ ے ۔
+        for c in ['\u{0679}', '\u{0688}', '\u{0691}', '\u{06BA}', '\u{06BE}', '\u{06C1}', '\u{06D2}', '\u{06D4}'] {
+            assert!(urdu_has(c), "U+{:04X} missing from the Nastaliq face", u32::from(c));
+            let clusters = shape_urdu(&c.to_string(), true).unwrap();
+            assert!(!clusters.is_empty() && clusters.iter().all(|c| c.advance > 0.0), "{clusters:?}");
+        }
+        assert_eq!(shape_urdu("日", true), Err(GlyphError::Missing));
+    }
+
+    #[test]
+    fn urdu_letters_take_their_joining_forms() {
+        if !face_or_skip() {
+            return;
+        }
+        let ids = |s: &str| shape_urdu(s, true).unwrap().iter().flat_map(|c| c.glyphs.iter().map(|g| g.0)).collect::<std::collections::BTreeSet<_>>();
+        let (isolated, joined) = (ids("ب"), ids("ببب"));
+        // Initial, medial and final forms are glyphs the isolated letter doesn't use.
+        assert!(joined.difference(&isolated).count() >= 2, "{isolated:?} {joined:?}");
+        // Every cluster keeps its logical text: joining the clusters' text in drawing
+        // order and reversing gives the typed word back (extraction reads it this way).
+        let word = "بڑا";
+        let clusters = shape_urdu(word, true).unwrap();
+        let drawn: String = clusters.iter().map(|c| c.text.as_str()).collect();
+        assert_eq!(drawn.chars().rev().collect::<String>(), word, "{clusters:?}");
+        assert!(clusters.iter().all(|c| c.script == ShapedScript::Urdu && !c.glyphs.is_empty()));
+        for c in &clusters {
+            for (id, _) in &c.glyphs {
+                urdu_glyph(*id).unwrap();
+            }
+        }
+    }
+
+    #[test]
+    fn urdu_runs_are_drawn_from_their_last_letter() {
+        if !face_or_skip() {
+            return;
+        }
+        let text = "اردو ہے";
+        let g = shape_urdu(text, true).unwrap();
+        let drawn: String = g.iter().map(|g| g.text.as_str()).collect();
+        assert_eq!(drawn.chars().rev().collect::<String>(), text, "{g:?}");
+        assert!(shape_urdu("", true).unwrap().is_empty());
+        assert_eq!(shaped_glyph(ShapedScript::Urdu, u32::MAX).map(|_| ()), Err(GlyphError::Missing));
     }
 }
 

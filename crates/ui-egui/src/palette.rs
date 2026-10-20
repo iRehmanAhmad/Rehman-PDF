@@ -1,7 +1,7 @@
 //! ⌘K command palette: every registered command (with its shortcut) and every tool in the
 //! catalogue, with a fuzzy-ish substring match.
 
-use egui::{Align2, CornerRadius, Rect, Sense, Stroke, vec2};
+use egui::{Align2, Color32, CornerRadius, Rect, Sense, Stroke, vec2};
 use pdfcraft_engine::catalog::{Availability, TOOL_GROUPS};
 
 use crate::theme::{self, Tokens};
@@ -13,6 +13,9 @@ struct Hit {
     label: String,
     detail: String,
     icon: &'static str,
+    /// The tool group's catalogue hue, for the mockup's tinted glyph tile (`None` for plain
+    /// commands, which get a neutral tile).
+    hue: Option<[u8; 3]>,
     command: Option<&'static str>,
     ready: bool,
 }
@@ -61,6 +64,7 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 Hit {
                     group: None,
                     label: translated,
+                    hue: None,
                     detail: spec
                         .shortcut
                         .map(|k| crate::commands::shortcut_label(ctx, k))
@@ -81,6 +85,7 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     label: tl!(g.label).to_string(),
                     detail: tl!("Tool").into(),
                     icon: g.icon,
+                    hue: Some(g.hue),
                     command: None,
                     ready: g.availability == Availability::Ready,
                 },
@@ -99,6 +104,7 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
                             label: tl!(i.label).to_string(),
                             detail: tl!(g.label).into(),
                             icon: i.icon,
+                            hue: Some(g.hue),
                             command: Some(i.command),
                             ready: i.availability == Availability::Ready,
                         },
@@ -148,7 +154,7 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
         .pivot(Align2::CENTER_TOP)
         .fixed_pos(egui::pos2(screen.center().x, screen.top() + 96.0))
         .show(ctx, |ui| {
-            egui::Frame::popup(ui.style()).corner_radius(CornerRadius::same(12)).inner_margin(egui::Margin::same(10)).show(ui, |ui| {
+            egui::Frame::popup(ui.style()).corner_radius(CornerRadius::same(16)).inner_margin(egui::Margin::same(10)).show(ui, |ui| {
                 ui.set_width(560.0);
                 ui.horizontal(|ui| {
                     ui.add(icons::image("search", 18.0, t.text_muted));
@@ -159,6 +165,11 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
                             .font(theme::regular(15.0))
                             .desired_width(f32::INFINITY),
                     );
+                    // The mockup's esc chip at the input's end.
+                    let (cr, _) = ui.allocate_exact_size(vec2(34.0, 22.0), Sense::hover());
+                    ui.painter().rect_filled(cr, CornerRadius::same(6), t.hover);
+                    ui.painter().rect(cr, CornerRadius::same(6), Color32::TRANSPARENT, Stroke::new(1.0, t.border), egui::StrokeKind::Inside);
+                    ui.painter().text(cr.center(), Align2::CENTER_CENTER, "esc", theme::semibold(11.0), t.text_muted);
                     // Enter runs the selected hit while the field is focused or relinquishing focus.
                     if (r.has_focus() || r.lost_focus())
                         && ui.input(|i| i.key_pressed(egui::Key::Enter))
@@ -173,11 +184,20 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 });
                 ui.separator();
                 for (index, (_, h)) in hits.iter().enumerate() {
-                    let (rect, resp) = ui.allocate_exact_size(vec2(ui.available_width(), 36.0), Sense::click());
+                    let (rect, resp) = ui.allocate_exact_size(vec2(ui.available_width(), 50.0), Sense::click());
                     let press = theme::Press::track(ui, &resp);
-                    press.wash(ui, rect, 6, index == selected);
+                    // The mockup's selected row: accent-soft fill, never an outline.
+                    if index == selected {
+                        ui.painter().rect_filled(rect, CornerRadius::same(10), t.accent_soft);
+                    } else {
+                        press.wash(ui, rect, 10, false);
+                    }
                     let body = rect.translate(press.offset());
-                    icons::paint(ui, Rect::from_min_size(body.min + vec2(8.0, 9.0), vec2(18.0, 18.0)), h.icon, 17.0, t.icon);
+                    // The mockup's 34 px tinted glyph tile (the home cards' hue system).
+                    let (tile, glyph) = h.hue.map(|hue| t.glyph_tile(hue)).unwrap_or((t.hover, t.icon));
+                    let tile_rect = Rect::from_min_size(body.min + vec2(8.0, 8.0), vec2(34.0, 34.0));
+                    ui.painter().rect_filled(tile_rect, CornerRadius::same(9), tile);
+                    icons::paint(ui, tile_rect, h.icon, 18.0, glyph);
                     // Display is translated; matching above already considered both languages.
                     let shown = crate::i18n::command_label(&h.label);
                     let shown_detail = tl!(&h.detail).to_string();
@@ -190,11 +210,11 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     ui.painter().text(body.right_center() - vec2(10.0, 0.0), Align2::RIGHT_CENTER, detail, detail_font, t.text_faint);
                     crate::widgets::paint_left(
                         ui,
-                        body.left_center() + vec2(36.0, 0.0),
+                        body.left_center() + vec2(54.0, 0.0),
                         &shown,
-                        theme::regular(13.5),
+                        if index == selected { theme::semibold(13.5) } else { theme::medium(13.5) },
                         fg,
-                        (rect.width() - 36.0 - detail_w - 24.0).max(0.0),
+                        (rect.width() - 54.0 - detail_w - 24.0).max(0.0),
                     );
                     if theme::hand(resp).clicked() {
                         chosen = Some((h.command, h.group));
@@ -204,7 +224,18 @@ pub fn show(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     ui.label(egui::RichText::new(tl!("No matching tools")).color(t.text_muted));
                 }
                 ui.add_space(2.0);
-                let _ = Stroke::NONE;
+                // The mockup's footer: ↑↓ navigate · ↵ run · esc close.
+                let (fr, _) = ui.allocate_exact_size(vec2(ui.available_width(), 1.0), Sense::hover());
+                ui.painter().hline(fr.x_range(), fr.center().y, Stroke::new(1.0, t.divider));
+                ui.add_space(8.0);
+                ui.horizontal(|ui| {
+                    ui.spacing_mut().item_spacing.x = 6.0;
+                    for (keys, what) in [("↑↓", tl!("navigate")), ("↵", tl!("run")), ("esc", tl!("Close"))] {
+                        ui.label(egui::RichText::new(keys).font(theme::semibold(11.5)).color(t.text_muted));
+                        ui.label(egui::RichText::new(what).font(theme::regular(11.5)).color(t.text_faint));
+                        ui.add_space(10.0);
+                    }
+                });
             });
         });
 

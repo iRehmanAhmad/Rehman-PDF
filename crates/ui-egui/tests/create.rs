@@ -278,7 +278,7 @@ fn multiple_files_open_as_one_document_in_the_page_grid() {
     // Remove the middle page and save what is left.
     h.get_by_label("Page 2").click();
     h.run_steps(2);
-    h.get_by_label("Delete pages (Delete)").click();
+    h.get_by_label("Delete").click();
     h.run_steps(3);
     h.state_mut().save_override = Some(path.to_string_lossy().into_owned());
     h.get_by_label("Save pages").click();

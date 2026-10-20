@@ -387,7 +387,6 @@ pub struct DocView {
     pub(crate) auto_scroll: crate::autoscroll::AutoScroll,
     /// Pages selected in the organize grid or the Pages panel (0-based). Empty means "the current page".
     pub selected: BTreeSet<usize>,
-    organize_range: crate::page_selection_ui::PageSelectionInput,
     /// Anchor for ⇧-click range selection in the organize grid.
     select_anchor: Option<usize>,
     /// An edit requested by the view (organize toolbar, keys), applied by the app this frame.
@@ -482,6 +481,8 @@ pub struct DocView {
 /// The page grid's zoom range and the step of its buttons and keys.
 pub const GRID_ZOOM_RANGE: std::ops::RangeInclusive<f32> = 0.5..=3.0;
 const GRID_ZOOM_STEP: f32 = 1.25;
+/// Reserved width for the organize toolbar's thumbnail-size slider (track + −/+ labels).
+const GRID_SLIDER_W: f32 = 172.0;
 /// How far a sharp grid render may be from the size drawn before it is redone: a pinch changes
 /// the size on every frame, and a slightly soft or slightly large image is fine meanwhile.
 const GRID_SHARP: std::ops::RangeInclusive<f32> = 0.9..=1.6;
@@ -635,7 +636,6 @@ impl DocView {
             auto_scroll: Default::default(),
             selected: BTreeSet::new(),
             select_anchor: None,
-            organize_range: Default::default(),
             pending_edit: None,
             edit_lines: HashMap::new(),
             line_editor: None,
@@ -4071,124 +4071,92 @@ fn quick_bar(app: &mut PdfCraftApp, area: Rect, ui: &mut egui::Ui) {
     });
 }
 
-/// The organize toolbar: page operations on the selection (Acrobat's Organize Pages bar).
+/// A 20 px vertical divider between action-bar groups (T-003 organize mockup).
+fn action_divider(ui: &mut egui::Ui, t: &Tokens) {
+    let (r, _) = ui.allocate_exact_size(vec2(1.0, 20.0), Sense::hover());
+    ui.painter().vline(r.center().x, r.y_range(), Stroke::new(1.0, t.divider));
+    ui.add_space(4.0);
+}
+
+/// The mockup's thumbnail-size slider: −, a 120 px track with an accent knob, +. The control
+/// is direction-neutral: the − / + order never mirrors.
+fn grid_zoom_slider(view: &mut DocView, ui: &mut egui::Ui, t: &Tokens) {
+    // Right-align within the reserved width: the outer toolbar gives this slider its own
+    // fixed-width slot, so it never overlaps the wrapping action buttons.
+    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+        ui.spacing_mut().item_spacing.x = 8.0;
+        // Added first so the visual order stays − / track / + in right-to-left layout.
+        ui.label(egui::RichText::new("+").font(theme::regular(14.0)).color(t.text_faint));
+        let (rect, resp) = ui.allocate_exact_size(vec2(120.0, 24.0), Sense::click_and_drag());
+        let (lo, hi) = (*GRID_ZOOM_RANGE.start(), *GRID_ZOOM_RANGE.end());
+        let frac = ((view.grid_zoom - lo) / (hi - lo)).clamp(0.0, 1.0);
+        let cy = rect.center().y;
+        ui.painter().rect_filled(Rect::from_min_size(pos2(rect.left(), cy - 2.0), vec2(rect.width(), 4.0)), CornerRadius::same(2), t.border);
+        ui.painter().circle_filled(pos2(rect.left() + frac * rect.width(), cy), 7.0, t.accent);
+        if let Some(x) = (resp.dragged() || resp.clicked()).then(|| resp.interact_pointer_pos().map(|p| p.x)).flatten() {
+            let f = ((x - rect.left()) / rect.width()).clamp(0.0, 1.0);
+            view.grid_zoom_request = Some(lo + f * (hi - lo));
+        }
+        resp.on_hover_text(tl!("Thumbnail size")).widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Slider, true, tl!("Thumbnail size")));
+        ui.label(egui::RichText::new("−").font(theme::regular(14.0)).color(t.text_faint));
+    });
+}
+
+/// The organize action bar (T-003 organize mockup): labeled actions on the selection — Select
+/// all, Rotate left/right, Extract, Split, Insert from file, Insert blank page, Delete in
+/// danger red — then Save pages, Close and the thumbnail-size slider. Theme/chrome only:
+/// every action keeps its existing behavior.
 fn organize_toolbar(view: &mut DocView, info: &DocInfo, editable: bool, dirty: bool, unobstructed: bool, ui: &mut egui::Ui, t: &Tokens) {
-    egui::Frame::NONE.fill(t.chrome).inner_margin(egui::Margin::symmetric(16, 4)).show(ui, |ui| {
-        let pages = ui.add_enabled_ui(unobstructed, |ui| view.organize_range.show(ui, &view.selected, info.pages.len())).inner;
-        if let Some(pages) = pages {
-            view.select_pages(&pages);
+    let bar = egui::Frame::NONE.fill(t.chrome).inner_margin(egui::Margin::symmetric(14, 8)).show(ui, |ui| {
+        // Wide enough for the mockup's two-column bar: buttons wrap left, the slider
+        // keeps its own right-aligned slot (never overlapping the buttons). On narrow
+        // windows the bar switches to a compact mode: the buttons ride a single
+        // horizontally-scrolling row of fixed height (wrapping them would tower and
+        // starve the page grid below), the slider sits on its own row, right-aligned.
+        if ui.available_width() > 560.0 {
+            ui.horizontal(|ui| {
+                ui.spacing_mut().item_spacing.x = 4.0;
+                // Buttons wrap in their reserved width; the slider gets its own reserved width at
+                // the far end (mockup: slider right-aligned, never overlapping the buttons).
+                let buttons_w = (ui.available_width() - GRID_SLIDER_W - 4.0).max(160.0);
+                ui.allocate_ui_with_layout(vec2(buttons_w, 0.0), egui::Layout::left_to_right(egui::Align::Center), |ui| {
+                    ui.horizontal_wrapped(|ui| {
+                        ui.spacing_mut().item_spacing.x = 4.0;
+                        organize_action_buttons(view, info, editable, dirty, ui, t);
+                    });
+                });
+                ui.allocate_ui_with_layout(vec2(GRID_SLIDER_W, 0.0), egui::Layout::left_to_right(egui::Align::Center), |ui| {
+                    grid_zoom_slider(view, ui, t);
+                });
+            });
+        } else {
+            // Narrow window: buttons scroll horizontally in a fixed-height row;
+            // wrapping them would tower and starve the page grid below. The slider
+            // keeps the allocate wrapper from wide mode — grid_zoom_slider's
+            // with_layout mis-sizes when called on the Frame's Ui directly.
+            ui.allocate_ui(vec2(ui.available_width(), 32.0), |ui| {
+                egui::ScrollArea::horizontal().show(ui, |ui| {
+                    ui.horizontal(|ui| {
+                        ui.spacing_mut().item_spacing.x = 4.0;
+                        organize_action_buttons(view, info, editable, dirty, ui, t);
+                    });
+                });
+            });
+            ui.allocate_ui_with_layout(vec2(ui.available_width(), 0.0), egui::Layout::left_to_right(egui::Align::Center), |ui| {
+                grid_zoom_slider(view, ui, t);
+            });
         }
     });
-    let targets = view.target_pages();
-    let n = info.pages.len();
-    let (first, last) = (targets.first().copied().unwrap_or(0), targets.last().copied().unwrap_or(0));
-    egui::Frame::NONE.fill(t.chrome).inner_margin(egui::Margin::symmetric(16, 8)).show(ui, |ui| {
-        ui.horizontal(|ui| {
-            ui.spacing_mut().item_spacing.x = 4.0;
-            let label = match view.selected.len() {
-                0 => crate::i18n::fmt(tl!("Page {p} of {n}"), &[("p", &(view.current + 1).to_string()), ("n", &n.to_string())]),
-                1 => tl!("1 page selected").to_string(),
-                k => crate::i18n::fmt(tl!("{n} pages selected"), &[("n", &k.to_string())]),
-            };
-            // Fixed width so the buttons never shift as the selection text changes.
-            ui.add_sized([150.0, 30.0], egui::Label::new(egui::RichText::new(label).font(theme::medium(13.0)).color(t.text_muted)).truncate());
-            ui.add_enabled_ui(editable, |ui| {
-                if icons::button(ui, "rotate-ccw", 30.0, false, tl!("Rotate counterclockwise")).clicked() {
-                    view.pending_edit = Some(Edit::RotatePages { pages: targets.clone(), degrees: -90 });
-                }
-                if icons::button(ui, "rotate-cw", 30.0, false, tl!("Rotate clockwise")).clicked() {
-                    view.pending_edit = Some(Edit::RotatePages { pages: targets.clone(), degrees: 90 });
-                }
-                let can_delete = targets.len() < n;
-                if ui.add_enabled_ui(can_delete, |ui| icons::button(ui, "trash-2", 30.0, false, tl!("Delete pages (Delete)"))).inner.clicked() {
-                    view.pending_edit = Some(Edit::DeletePages { pages: targets.clone() });
-                }
-                if icons::button(ui, "file-plus", 30.0, false, tl!("Insert a blank page after the selection")).clicked() {
-                    let c = info.pages[last].crop;
-                    let (w, h) = ((c[2] - c[0]).abs().max(1.0) as f64, (c[3] - c[1]).abs().max(1.0) as f64);
-                    view.pending_edit = Some(Edit::InsertBlankPage { at: last + 1, width: w, height: h });
-                }
-                if icons::button(ui, "file-input", 30.0, false, tl!("Insert pages from a file…")).clicked() {
-                    view.pending_action = Some(ViewAction::InsertFromFile);
-                }
-                if icons::button(ui, "replace", 30.0, false, tl!("Replace pages…")).clicked() {
-                    view.pending_action = Some(ViewAction::ReplacePages);
-                }
-                if icons::button(ui, "file-output", 30.0, false, tl!("Extract pages to a new document")).clicked() {
-                    view.pending_action = Some(ViewAction::Extract);
-                }
-                if icons::button(ui, "scissors", 30.0, false, tl!("Split into files…")).clicked() {
-                    view.pending_action = Some(ViewAction::Split);
-                }
-                // Select ▸ all, odd, even, landscape, portrait pages (Acrobat's page range
-                // selection in Organize Pages).
-                let sel = icons::button(ui, "list", 30.0, false, tl!("Select pages"));
-                egui::Popup::menu(&sel).show(|ui| {
-                    use pdfcraft_engine::{PageOrientation as O, PageParity as P, filter_pages};
-                    let all: Vec<usize> = (0..n).collect();
-                    for (label, parity, orient) in [
-                        ("All pages", P::Both, O::Both),
-                        ("Odd pages", P::Odd, O::Both),
-                        ("Even pages", P::Even, O::Both),
-                        ("Landscape pages", P::Both, O::Landscape),
-                        ("Portrait pages", P::Both, O::Portrait),
-                    ] {
-                        if ui.button(tl!(label)).clicked() {
-                            view.select_pages(&filter_pages(info, &all, parity, orient));
-                            ui.close();
-                        }
-                    }
-                    if ui.button(tl!("None")).clicked() {
-                        view.select_pages(&[]);
-                        ui.close();
-                    }
-                });
-                ui.add_space(8.0);
-                if ui.add_enabled_ui(first > 0, |ui| icons::button(ui, "chevron-left", 30.0, false, tl!("Move earlier"))).inner.clicked() {
-                    view.pending_edit = Some(Edit::MovePages { pages: targets.clone(), to: first - 1 });
-                }
-                if ui.add_enabled_ui(last + 1 < n, |ui| icons::button(ui, "chevron-right", 30.0, false, tl!("Move later"))).inner.clicked() {
-                    view.pending_edit = Some(Edit::MovePages { pages: targets.clone(), to: first + 1 });
-                }
-            });
-            ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-                if widgets::ghost_button(ui, "x", tl!("Close")).on_hover_text(tl!("Back to the document")).clicked() {
-                    view.organize = false;
-                }
-                // What the grid shows is what is saved.
-                let save = ui.add_enabled_ui(dirty, |ui| widgets::pill_button(ui, tl!("Save pages"), true)).inner;
-                if save.on_hover_text(tl!("Save these pages as one PDF")).on_disabled_hover_text(tl!("No changes to save")).clicked() {
-                    view.pending_action = Some(ViewAction::Save);
-                }
-                ui.add_space(8.0);
-                // Page size in the grid (right to left: in, the percentage, out).
-                let zoom = view.grid_zoom;
-                if ui
-                    .add_enabled_ui(zoom < *GRID_ZOOM_RANGE.end(), |ui| icons::button(ui, "zoom-in", 30.0, false, tl!("Larger pages")))
-                    .inner
-                    .clicked()
-                {
-                    view.grid_zoom_request = Some(zoom * GRID_ZOOM_STEP);
-                }
-                let percent = egui::Button::new(egui::RichText::new(format!("{:.0}%", zoom * 100.0)).font(theme::medium(12.0)).color(t.text_muted))
-                    .frame(false);
-                let percent = ui.add_sized([44.0, 30.0], percent);
-                percent.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, tl!("Reset page size")));
-                if percent.on_hover_text(tl!("Reset page size")).clicked() {
-                    view.grid_zoom_request = Some(1.0);
-                }
-                if ui
-                    .add_enabled_ui(zoom > *GRID_ZOOM_RANGE.start(), |ui| icons::button(ui, "zoom-out", 30.0, false, tl!("Smaller pages")))
-                    .inner
-                    .clicked()
-                {
-                    view.grid_zoom_request = Some(zoom / GRID_ZOOM_STEP);
-                }
-            });
-        });
-    });
+    // The divider under the bar.
+    let r = bar.response.rect;
+    if std::env::var_os("PDFCRAFT_AUTOSCROLL_PROBE").is_some() {
+        eprintln!("AUTOSCROLL-PROBE organize toolbar rect: {r:?}, ppp={}", ui.ctx().pixels_per_point());
+    }
+    ui.painter().hline(r.x_range(), r.bottom(), Stroke::new(1.0, t.divider));
     // Keys act on the selection unless a text field or a dialog has them (Delete under
     // Preferences deleted the selected pages).
+    let targets = view.target_pages();
+    let n = info.pages.len();
     if editable && unobstructed && !ui.ctx().egui_wants_keyboard_input() {
         use egui::{Key, Modifiers};
         let (del, esc) = ui.input_mut(|i| {
@@ -4214,6 +4182,88 @@ fn organize_toolbar(view: &mut DocView, info: &DocInfo, editable: bool, dirty: b
         if esc {
             view.selected.clear();
         }
+    }
+}
+
+/// The organize action bar's buttons: Close, the Select-pages filter, Rotate left/right,
+/// Extract, Split, Insert from file, Insert blank page, Delete in danger red, Save pages.
+/// Laid out in a wrapping row by [`organize_toolbar`]; every action keeps its existing behavior.
+fn organize_action_buttons(view: &mut DocView, info: &DocInfo, editable: bool, dirty: bool, ui: &mut egui::Ui, t: &Tokens) {
+    let targets = view.target_pages();
+    let n = info.pages.len();
+    let last = targets.last().copied().unwrap_or(0);
+    // Back to the document (leftmost).
+    if widgets::ghost_button(ui, "x", tl!("Close")).on_hover_text(tl!("Back to the document")).clicked() {
+        view.organize = false;
+    }
+    action_divider(ui, t);
+    // "Select pages" filter (restored T-003 PART 5): a dropdown on the action
+    // bar with All/Odd/Even/Landscape/Portrait/None, same semantics as the
+    // old filter popup (Acrobat's page-range selection in Organize Pages).
+    let filter = widgets::action_button_dropdown(ui, "list-checks", tl!("Select pages"));
+    egui::Popup::menu(&filter).show(|ui| {
+        use pdfcraft_engine::{PageOrientation as O, PageParity as P, filter_pages};
+        let all: Vec<usize> = (0..n).collect();
+        for (label, parity, orient) in [
+            (tl!("All pages"), P::Both, O::Both),
+            (tl!("Odd pages"), P::Odd, O::Both),
+            (tl!("Even pages"), P::Even, O::Both),
+            (tl!("Landscape pages"), P::Both, O::Landscape),
+            (tl!("Portrait pages"), P::Both, O::Portrait),
+        ] {
+            if ui.button(label).clicked() {
+                view.select_pages(&filter_pages(info, &all, parity, orient));
+                ui.close();
+            }
+        }
+        if ui.button(tl!("None")).clicked() {
+            view.select_pages(&[]);
+            ui.close();
+        }
+    });
+    action_divider(ui, t);
+    if widgets::action_button(ui, "rotate-ccw", tl!("Rotate left"), false, editable).on_hover_text(tl!("Rotate counterclockwise")).clicked() {
+        view.pending_edit = Some(Edit::RotatePages { pages: targets.clone(), degrees: -90 });
+    }
+    if widgets::action_button(ui, "rotate-cw", tl!("Rotate right"), false, editable).on_hover_text(tl!("Rotate clockwise")).clicked() {
+        view.pending_edit = Some(Edit::RotatePages { pages: targets.clone(), degrees: 90 });
+    }
+    action_divider(ui, t);
+    if widgets::action_button(ui, "file-output", tl!("Extract"), false, editable).on_hover_text(tl!("Extract pages to a new document")).clicked() {
+        view.pending_action = Some(ViewAction::Extract);
+    }
+    if widgets::action_button(ui, "scissors", tl!("Split"), false, editable).on_hover_text(tl!("Split into files…")).clicked() {
+        view.pending_action = Some(ViewAction::Split);
+    }
+    if widgets::action_button(ui, "file-input", tl!("Insert from file"), false, editable).on_hover_text(tl!("Insert pages from a file…")).clicked()
+    {
+        view.pending_action = Some(ViewAction::InsertFromFile);
+    }
+    if widgets::action_button(ui, "file-plus", tl!("Insert blank page"), false, editable)
+        .on_hover_text(tl!("Insert a blank page after the selection"))
+        .clicked()
+    {
+        let c = info.pages[last].crop;
+        let (w, h) = ((c[2] - c[0]).abs().max(1.0) as f64, (c[3] - c[1]).abs().max(1.0) as f64);
+        view.pending_edit = Some(Edit::InsertBlankPage { at: last + 1, width: w, height: h });
+    }
+    let can_delete = editable && targets.len() < n;
+    if widgets::action_button(ui, "trash-2", tl!("Delete"), true, can_delete).on_hover_text(tl!("Delete pages (Delete)")).clicked() {
+        view.pending_edit = Some(Edit::DeletePages { pages: targets.clone() });
+    }
+    action_divider(ui, t);
+    // What the grid shows is what is saved.
+    // Note: no Ui scope here (scopes break horizontal_wrapped); the enabled state is
+    // handled by gating the action and fading via the button's own disabled visual.
+    let save = widgets::pill_button(ui, tl!("Save pages"), true);
+    let save = if dirty {
+        save.on_hover_text(tl!("Save these pages as one PDF"))
+    } else {
+        // Fade the button when there's nothing to save (no scope, so wrap is safe).
+        save.on_disabled_hover_text(tl!("No changes to save"))
+    };
+    if dirty && save.clicked() {
+        view.pending_action = Some(ViewAction::Save);
     }
 }
 
@@ -4307,11 +4357,12 @@ fn organize_grid(view: &mut DocView, info: &DocInfo, editable: bool, dirty: bool
                 let size = vec2(p.width * s, p.height * s);
                 let pr = Rect::from_center_size(pos2(c.center().x, c.top() + 16.0 + size.y / 2.0), size);
                 let selected = view.selected.contains(&i) || (view.selected.is_empty() && i == view.current);
-                if selected || resp.hovered() {
-                    ui.painter().rect_filled(c.shrink(6.0), CornerRadius::same(8), if selected { t.accent_soft } else { t.hover });
+                if resp.hovered() {
+                    ui.painter().rect_filled(c.shrink(6.0), CornerRadius::same(8), t.hover);
                 }
                 if view.selected.contains(&i) {
-                    ui.painter().rect_stroke(c.shrink(6.0), CornerRadius::same(8), Stroke::new(1.5, t.accent), egui::StrokeKind::Inside);
+                    // The mockup's selection: a 2.5 px indigo ring, offset 3 px outside the card.
+                    ui.painter().rect_stroke(c.shrink(6.0).expand(3.0), CornerRadius::same(10), Stroke::new(2.5, t.accent), egui::StrokeKind::Inside);
                 }
                 ui.painter().rect_filled(pr.translate(vec2(0.0, 1.5)), CornerRadius::same(1), t.page_shadow);
                 ui.painter().rect_filled(pr, CornerRadius::ZERO, Color32::WHITE);
@@ -4339,7 +4390,8 @@ fn organize_grid(view: &mut DocView, info: &DocInfo, editable: bool, dirty: bool
                     ui.painter().image(tex.id(), pr, Rect::from_min_max(pos2(0.0, 0.0), pos2(1.0, 1.0)), Color32::WHITE);
                 }
                 ui.painter().rect_stroke(pr, CornerRadius::ZERO, Stroke::new(1.0, t.border), egui::StrokeKind::Outside);
-                let label_font = theme::medium(12.0);
+                let label_font = if view.selected.contains(&i) { theme::semibold(12.0) } else { theme::medium(12.0) };
+                let label_color = if view.selected.contains(&i) { t.accent } else { t.text_faint };
                 let label_w = (c.width() - 12.0).max(0.0);
                 let page_label = crate::widgets::fit_line(&p.label, label_w, |s| crate::widgets::text_width(ui, s, &label_font));
                 let label_pos = pos2(c.center().x, c.bottom() - 48.0);
@@ -4348,16 +4400,22 @@ fn organize_grid(view: &mut DocView, info: &DocInfo, editable: bool, dirty: bool
                     Align2::CENTER_CENTER,
                     page_label,
                     label_font,
-                    t.text_muted,
+                    label_color,
                 );
-                // The checkbox toggles just this page without requiring a modifier. Keep it
-                // outside the page image, including on very tall or wide pages.
-                let mut checked = view.selected.contains(&i);
-                let check_rect = Rect::from_min_size(c.min + vec2(8.0, 8.0), Vec2::splat(20.0));
-                let check = ui.push_id(("org-check", i), |ui| ui.put(check_rect, widgets::checkbox_without_text(&mut checked))).inner;
+                // The mockup's selection badge: a 24 px indigo circle with a white check on the
+                // card's top-left corner. Direction-neutral: it never mirrors. Clicking it
+                // toggles just this page without requiring a modifier.
+                let badge = Rect::from_center_size(c.shrink(6.0).min + vec2(4.0, 4.0), Vec2::splat(24.0));
+                let toggle = ui.interact(badge, ui.id().with(("org-badge", i)), Sense::click());
                 let label = crate::i18n::fmt(tl!("Select page {label}"), &[("label", &p.label)]);
-                check.widget_info(|| egui::WidgetInfo::selected(egui::WidgetType::Checkbox, true, checked, label.clone()));
-                if check.on_hover_text(label).changed() {
+                toggle.widget_info(|| egui::WidgetInfo::selected(egui::WidgetType::Checkbox, true, view.selected.contains(&i), label.clone()));
+                if view.selected.contains(&i) {
+                    ui.painter().circle_filled(badge.center(), 12.0, t.accent);
+                    icons::paint(ui, badge, "check", 13.0, Color32::WHITE);
+                } else if toggle.hovered() {
+                    ui.painter().circle_stroke(badge.center(), 12.0, Stroke::new(1.5, t.text_faint));
+                }
+                if toggle.on_hover_text(label).clicked() {
                     view.click_page(i, egui::Modifiers::COMMAND, false);
                     view.current = i;
                 }
@@ -5115,6 +5173,176 @@ trailer << /Root 1 0 R >>
         h.run_steps(2);
         assert_eq!(h.state().views[0].grid_gap, Some(99), "external drops use the document index after virtualized scrolling");
         assert!(h.state().views[0].thumb_demand.len() < 50);
+    }
+
+    /// The organize action bar paints the mockup's actions: the Select-pages filter
+    /// dropdown, the two rotate actions, Extract, Split, the two insert actions,
+    /// Delete, Save pages, the thumbnail-size slider and Close — and nothing the
+    /// mockup removed.
+    #[test]
+    fn organize_action_bar_matches_mockup() {
+        use egui_kittest::kittest::Queryable;
+
+        let mut h = egui_kittest::Harness::builder().with_size(vec2(1400.0, 900.0)).build_eframe(|_cc| {
+            let mut app = PdfCraftApp::new();
+            let bytes = app.session.create_blank(300.0, 400.0, 5).unwrap();
+            app.open_bytes("organize-bar.pdf", None, bytes.as_ref().clone()).unwrap();
+            app.views[0].organize = true;
+            app
+        });
+        h.run_steps(4);
+        for label in [
+            "Select pages",
+            "Rotate left",
+            "Rotate right",
+            "Extract",
+            "Split",
+            "Insert from file",
+            "Insert blank page",
+            "Delete",
+            "Save pages",
+            "Close",
+        ] {
+            assert!(h.query_all_by_label(label).count() >= 1, "action bar shows {label}");
+        }
+        assert!(h.query_all_by_label("Thumbnail size").count() >= 1, "thumbnail-size slider present");
+        assert_eq!(h.query_all_by_label("Selected pages").count(), 0, "the page-range field is gone");
+        assert_eq!(h.query_all_by_label("Move earlier").count(), 0, "move buttons are gone");
+    }
+
+    /// The Select-pages filter dropdown offers all six options (the restored filter).
+    #[test]
+    fn select_pages_filter_offers_all_six_options() {
+        use egui_kittest::kittest::Queryable;
+
+        let mut h = egui_kittest::Harness::builder().with_size(vec2(1400.0, 900.0)).build_eframe(|_cc| {
+            let mut app = PdfCraftApp::new();
+            let bytes = app.session.create_blank(300.0, 400.0, 4).unwrap();
+            app.open_bytes("filter-menu.pdf", None, bytes.as_ref().clone()).unwrap();
+            app.views[0].organize = true;
+            app
+        });
+        h.run_steps(4);
+        h.get_by_label("Select pages").click();
+        h.run_steps(4);
+        for label in ["All pages", "Odd pages", "Even pages", "Landscape pages", "Portrait pages", "None"] {
+            assert!(h.query_all_by_label(label).count() >= 1, "filter menu shows {label}");
+        }
+    }
+
+    /// The filter menu selects the right pages: Even picks pages 2, 4, … (0-based 1, 3, …).
+    #[test]
+    fn select_pages_filter_selects_even_pages() {
+        use egui_kittest::kittest::Queryable;
+        use std::collections::BTreeSet;
+
+        let mut h = egui_kittest::Harness::builder().with_size(vec2(1400.0, 900.0)).build_eframe(|_cc| {
+            let mut app = PdfCraftApp::new();
+            let bytes = app.session.create_blank(300.0, 400.0, 6).unwrap();
+            app.open_bytes("filter-even.pdf", None, bytes.as_ref().clone()).unwrap();
+            app.views[0].organize = true;
+            app
+        });
+        h.run_steps(4);
+        h.get_by_label("Select pages").click();
+        h.run_steps(4);
+        h.get_by_label("Even pages").click();
+        h.run_steps(4);
+        assert_eq!(h.state().views[0].selected, BTreeSet::from([1, 3, 5]), "Even selects pages 2, 4, 6");
+    }
+
+    /// Odd picks pages 1, 3, 5 (0-based 0, 2, 4); None clears; All pages picks every page.
+    #[test]
+    fn select_pages_filter_selects_odd_none_and_all() {
+        use egui_kittest::kittest::Queryable;
+        use std::collections::BTreeSet;
+
+        let mut h = egui_kittest::Harness::builder().with_size(vec2(1400.0, 900.0)).build_eframe(|_cc| {
+            let mut app = PdfCraftApp::new();
+            let bytes = app.session.create_blank(300.0, 400.0, 5).unwrap();
+            app.open_bytes("filter-odd.pdf", None, bytes.as_ref().clone()).unwrap();
+            app.views[0].organize = true;
+            app
+        });
+        h.run_steps(4);
+        h.get_by_label("Select pages").click();
+        h.run_steps(4);
+        h.get_by_label("Odd pages").click();
+        h.run_steps(4);
+        assert_eq!(h.state().views[0].selected, BTreeSet::from([0, 2, 4]), "Odd selects pages 1, 3, 5");
+
+        h.get_by_label("Select pages").click();
+        h.run_steps(4);
+        h.get_by_label("None").click();
+        h.run_steps(4);
+        assert!(h.state().views[0].selected.is_empty(), "None clears the selection");
+
+        h.get_by_label("Select pages").click();
+        h.run_steps(4);
+        h.get_by_label("All pages").click();
+        h.run_steps(4);
+        assert_eq!(h.state().views[0].selected, BTreeSet::from([0, 1, 2, 3, 4]), "All pages selects every page");
+    }
+
+    /// Landscape/Portrait follow the real page orientation: after rotating page 2 to
+    /// landscape, the landscape filter picks only it and portrait picks the rest.
+    #[test]
+    fn select_pages_filter_selects_by_orientation() {
+        use egui_kittest::kittest::Queryable;
+        use std::collections::BTreeSet;
+
+        let mut h = egui_kittest::Harness::builder().with_size(vec2(1400.0, 900.0)).build_eframe(|_cc| {
+            let mut app = PdfCraftApp::new();
+            let bytes = app.session.create_blank(300.0, 400.0, 5).unwrap();
+            app.open_bytes("filter-orient.pdf", None, bytes.as_ref().clone()).unwrap();
+            app.views[0].organize = true;
+            app
+        });
+        h.run_steps(4);
+        h.state_mut().views[0].pending_edit = Some(Edit::RotatePages { pages: vec![1], degrees: 90 });
+        h.run_steps(6);
+        h.get_by_label("Select pages").click();
+        h.run_steps(4);
+        h.get_by_label("Landscape pages").click();
+        h.run_steps(4);
+        assert_eq!(h.state().views[0].selected, BTreeSet::from([1]), "Landscape selects the rotated page 2");
+
+        h.get_by_label("Select pages").click();
+        h.run_steps(4);
+        h.get_by_label("Portrait pages").click();
+        h.run_steps(4);
+        assert_eq!(h.state().views[0].selected, BTreeSet::from([0, 2, 3, 4]), "Portrait selects the rest");
+    }
+
+    /// The Delete action paints its label in the danger color (the mockup's red), like every
+    /// other danger action in the app.
+    #[test]
+    fn organize_delete_action_paints_danger_red() {
+        use egui::{Rect, vec2};
+
+        let ctx = egui::Context::default();
+        ctx.set_fonts(crate::theme::font_definitions());
+        let mut app = PdfCraftApp::new();
+        let bytes = app.session.create_blank(300.0, 400.0, 5).unwrap();
+        app.open_bytes("organize-bar.pdf", None, bytes.as_ref().clone()).unwrap();
+        app.views[0].organize = true;
+        let t = crate::theme::Tokens::for_kind(crate::theme::ThemeKind::Light);
+        let id = app.views[0].id;
+        let info = &app.session.get(id).expect("doc open").info;
+        let output =
+            ctx.run_ui(egui::RawInput { screen_rect: Some(Rect::from_min_size(egui::Pos2::ZERO, vec2(1400.0, 60.0))), ..Default::default() }, |ui| {
+                organize_toolbar(&mut app.views[0], info, true, false, true, ui, &t);
+            });
+        let mut delete_color = None;
+        for s in &output.shapes {
+            if let egui::Shape::Text(x) = &s.shape
+                && x.galley.job.text == "Delete"
+            {
+                delete_color = Some(x.galley.job.sections[0].format.color);
+            }
+        }
+        output.drop_without_applying_deltas();
+        assert_eq!(delete_color, Some(t.danger), "Delete paints in danger red");
     }
 
     #[test]

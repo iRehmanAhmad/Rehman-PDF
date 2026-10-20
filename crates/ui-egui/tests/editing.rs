@@ -56,36 +56,18 @@ fn organize(pages: usize) -> Harness<'static, PdfCraftApp> {
     harness(pages, |app| app.set_option("organize", "on").unwrap())
 }
 
-fn type_selection(h: &mut Harness<'static, PdfCraftApp>, text: &str) {
-    use egui::accesskit::Role;
-    h.get_by_role_and_label(Role::TextInput, "Selected pages").click();
-    h.run_steps(1);
-    h.key_press_modifiers(Modifiers::COMMAND, Key::A);
-    h.get_by_role_and_label(Role::TextInput, "Selected pages").type_text(text);
-    h.run_steps(2);
-}
-
 #[test]
-fn organize_page_range_tracks_thumbnails_and_applies_typed_selection() {
-    use egui::accesskit::Role;
+fn organize_selection_tracks_thumbnails_and_rotate_applies_to_selection() {
+    // The typed page-range field is gone (mockup contract); selection is driven by the
+    // thumbnail check badges, and the parser lives on only for the --control channel.
     let mut h = organize(100);
     h.get_by_label("Select page 2").click();
     h.run_steps(2);
-    assert_eq!(h.get_by_role_and_label(Role::TextInput, "Selected pages").value().as_deref(), Some("2"));
+    h.get_by_label_contains("1 of 100 pages selected");
     h.get_by_label("Select page 3").click();
     h.run_steps(2);
-    assert_eq!(h.get_by_role_and_label(Role::TextInput, "Selected pages").value().as_deref(), Some("2-3"));
-    let old = h.state().views[0].selected.clone();
-    type_selection(&mut h, "1,12,16-18,89,92,93,97,99");
-    assert_eq!(h.state().views[0].selected, old, "typing is not committed until Enter or focus loss");
-    h.key_press(Key::Enter);
-    h.run_steps(2);
-    assert_eq!(h.state().views[0].target_pages(), [0, 11, 15, 16, 17, 88, 91, 92, 96, 98]);
-    assert_eq!(h.get_by_role_and_label(Role::TextInput, "Selected pages").value().as_deref(), Some("1, 12, 16-18, 89, 92-93, 97, 99"));
-    if let Some(path) = std::env::var_os("PDFCRAFT_ORGANIZE_SNAPSHOT") {
-        h.render().unwrap().save(std::path::Path::new(&path)).unwrap();
-    }
-    h.get_by_label("Rotate clockwise").click();
+    h.get_by_label_contains("2 of 100 pages selected");
+    h.get_by_label("Rotate right").click();
     h.run_steps(3);
     let doc = h.state().session.get(h.state().views[0].id).unwrap();
     for (i, page) in doc.info.pages.iter().enumerate() {
@@ -97,32 +79,16 @@ fn organize_page_range_tracks_thumbnails_and_applies_typed_selection() {
 }
 
 #[test]
-fn organize_page_range_rejects_invalid_input_and_escape_cancels_without_clearing() {
-    use egui::accesskit::Role;
+fn organize_select_option_rejects_out_of_range_for_the_control_channel() {
+    // The --control channel's `select` option still parses ranges (the UI field is gone,
+    // the parser is not); out-of-range input is an error, not a silent clamp.
     let mut h = organize(5);
     h.state_mut().set_option("select", "2-3").unwrap();
     h.run_steps(2);
-    for text in ["0", "6", "1,", "no"] {
-        type_selection(&mut h, text);
-        h.key_press(Key::Enter);
-        h.run_steps(2);
-        assert_eq!(h.state().views[0].target_pages(), [1, 2]);
-    }
-    type_selection(&mut h, "1-5");
-    h.key_press(Key::Escape);
-    h.run_steps(2);
     assert_eq!(h.state().views[0].target_pages(), [1, 2]);
-    assert_eq!(h.get_by_role_and_label(Role::TextInput, "Selected pages").value().as_deref(), Some("2-3"));
-    type_selection(&mut h, "5, 4, 4");
-    h.get_by_label("Apply").click();
-    h.run_steps(2);
-    assert_eq!(h.state().views[0].target_pages(), [3, 4]);
-    type_selection(&mut h, " ");
-    h.key_press(Key::Enter);
-    h.run_steps(2);
-    assert!(h.state().views[0].selected.is_empty());
     assert!(h.state_mut().set_option("select", "0").is_err());
     assert!(h.state_mut().set_option("select", "6").is_err());
+    assert_eq!(h.state().views[0].target_pages(), [1, 2], "rejected input leaves the selection alone");
 }
 
 #[test]
@@ -187,7 +153,7 @@ fn organize_page_actions_rotate_only_the_named_page_and_undo() {
     };
     assert_eq!(rotations(&h), [90, 0, 0]);
     assert_eq!(h.state().views[0].target_pages(), [0, 2], "a local action preserves the multi-selection");
-    h.get_by_label("Rotate counterclockwise").click();
+    h.get_by_label("Rotate left").click();
     h.run_steps(3);
     assert_eq!(rotations(&h), [0, 0, 270], "toolbar actions apply to the selection");
     h.key_press_modifiers(Modifiers::COMMAND, Key::Z);
@@ -264,8 +230,8 @@ fn organize_delete_then_undo_and_redo_with_keys() {
     let mut h = organize(3);
     h.get_by_label("Page 2").click();
     h.run_steps(2);
-    h.get_by_label_contains("1 page selected");
-    h.get_by_label("Delete pages (Delete)").click();
+    h.get_by_label_contains("1 of 3 pages selected");
+    h.get_by_label("Delete").click();
     h.run_steps(3);
     assert_eq!(page_texts(h.state()), ["Page 1", "Page 3"]);
     assert!(dirty(&h));
@@ -286,15 +252,23 @@ fn shift_click_selects_a_range_and_moves_it() {
     h.run_steps(1);
     h.get_by_label("Page 2").click_modifiers(Modifiers::SHIFT);
     h.run_steps(2);
-    h.get_by_label_contains("2 pages selected");
-    h.get_by_label("Move later").click();
-    h.run_steps(3);
+    h.get_by_label_contains("2 of 4 pages selected");
+    // The Move earlier/later buttons are gone (mockup contract); the selection moves by drag.
+    let from = h.get_by_label("Page 1").rect().center();
+    let to = h.get_by_label("Page 3").rect().right_center() - egui::vec2(10.0, 0.0);
+    h.hover_at(from);
+    h.run_steps(1);
+    h.drag_at(from);
+    h.run_steps(1);
+    for k in 1..=5 {
+        h.hover_at(from + (to - from) * (k as f32 / 5.0));
+        h.run_steps(1);
+    }
+    h.drop_at(to);
+    h.run_steps(4);
     assert_eq!(page_texts(h.state()), ["Page 3", "Page 1", "Page 2", "Page 4"]);
-    // The moved pages stay selected at their new position, so repeated clicks keep moving them.
+    // The moved pages stay selected at their new position.
     assert_eq!(h.state().views[0].selected.iter().copied().collect::<Vec<_>>(), [1, 2]);
-    h.get_by_label("Move later").click();
-    h.run_steps(3);
-    assert_eq!(page_texts(h.state()), ["Page 3", "Page 4", "Page 1", "Page 2"]);
 }
 
 #[test]
@@ -304,7 +278,7 @@ fn command_click_toggles_and_rotation_applies_to_selection() {
     h.run_steps(1);
     h.get_by_label("Page 3").click_modifiers(Modifiers::COMMAND);
     h.run_steps(2);
-    h.get_by_label("Rotate clockwise").click();
+    h.get_by_label("Rotate right").click();
     h.run_steps(3);
     let rot: Vec<u16> = {
         let app = h.state();
@@ -351,7 +325,7 @@ fn organize_select_all_applies_operations_to_every_page() {
     h.key_press_modifiers(Modifiers::COMMAND, Key::A);
     h.run_steps(2);
     assert_eq!(h.state().views[0].target_pages(), [0, 1, 2]);
-    h.get_by_label("Rotate clockwise").click();
+    h.get_by_label("Rotate right").click();
     h.run_steps(3);
     let app = h.state();
     let rotations: Vec<_> = app.session.get(app.views[0].id).unwrap().info.pages.iter().map(|p| p.rotation).collect();
@@ -434,7 +408,7 @@ fn insert_blank_page_after_selection() {
     let mut h = organize(2);
     h.get_by_label("Page 1").click();
     h.run_steps(1);
-    h.get_by_label("Insert a blank page after the selection").click();
+    h.get_by_label("Insert blank page").click();
     h.run_steps(3);
     assert_eq!(page_texts(h.state()), ["Page 1", "", "Page 2"]);
     let app = h.state();
@@ -451,7 +425,7 @@ fn save_writes_an_incremental_update_and_clears_dirty() {
     h.state_mut().save_override = Some(target.clone());
     h.get_by_label("Page 3").click();
     h.run_steps(1);
-    h.get_by_label("Rotate counterclockwise").click();
+    h.get_by_label("Rotate left").click();
     h.run_steps(3);
     h.key_press_modifiers(Modifiers::COMMAND, Key::S);
     h.run_steps(3);
@@ -469,7 +443,7 @@ fn save_writes_an_incremental_update_and_clears_dirty() {
 #[test]
 fn closing_a_dirty_tab_asks_and_cancel_keeps_it() {
     let mut h = organize(2);
-    h.get_by_label("Rotate clockwise").click();
+    h.get_by_label("Rotate right").click();
     h.run_steps(3);
     h.key_press_modifiers(Modifiers::COMMAND, Key::W);
     h.run_steps(3);
@@ -492,7 +466,7 @@ fn closing_a_dirty_tab_can_save_first() {
     let out = temp_path("closed.pdf");
     let mut h = organize(2);
     h.state_mut().save_override = Some(out.to_string_lossy().into_owned());
-    h.get_by_label("Rotate clockwise").click();
+    h.get_by_label("Rotate right").click();
     h.run_steps(3);
     h.state_mut().request_close_tab(0);
     h.run_steps(2);
@@ -510,7 +484,7 @@ fn the_save_prompt_answers_to_the_keyboard() {
     // prompt is open, ⌘D is not Document properties.
     for (m, key) in [(Modifiers::COMMAND, Key::D), (Modifiers::ALT, Key::D), (Modifiers::ALT, Key::N)] {
         let mut h = organize(2);
-        h.get_by_label("Rotate clockwise").click();
+        h.get_by_label("Rotate right").click();
         h.run_steps(3);
         h.key_press_modifiers(Modifiers::COMMAND, Key::W);
         h.run_steps(3);
@@ -521,7 +495,7 @@ fn the_save_prompt_answers_to_the_keyboard() {
         assert!(h.state().dialog.is_none(), "{m:?}+{key:?} ran no command underneath");
     }
     let mut h = organize(2);
-    h.get_by_label("Rotate clockwise").click();
+    h.get_by_label("Rotate right").click();
     h.run_steps(3);
     h.key_press_modifiers(Modifiers::COMMAND, Key::W);
     h.run_steps(3);
@@ -549,7 +523,7 @@ fn keys_leave_the_document_under_a_dialog_alone() {
     let mut h = organize(3);
     h.get_by_label("Page 2").click();
     h.run_steps(2);
-    h.get_by_label("Rotate clockwise").click();
+    h.get_by_label("Rotate right").click();
     h.run_steps(3);
     assert!(h.state_mut().execute("app.preferences"));
     h.run_steps(3);
@@ -805,7 +779,8 @@ fn document_properties_edit_is_one_undoable_step() {
     author.focus();
     author.type_text("Finance team");
     h.run_steps(2);
-    h.get_by_label("OK").click();
+    // The redesign's Properties footer is Cancel/Save once the draft changed (was OK).
+    h.get_by_label("Save").click();
     h.run_steps(3);
     let app = h.state();
     let doc = app.session.get(app.views[0].id).unwrap();
@@ -1119,7 +1094,11 @@ fn column_headings_sort_the_list_and_flip_on_the_second_click() {
     h.get_by_label("File name, sorted ascending").click();
     h.run_steps(2);
     assert_eq!(combine_names(&h), ["scan10.pdf", "Scan2.pdf", "a.pdf"]);
-    h.get_by_label("Pages").click();
+    // The redesign's menubar has a top-level "Pages" menu button; the combine list's
+    // "Pages" column heading is the one below the menubar.
+    let pages_heading =
+        h.query_all_by_label("Pages").max_by(|a, b| a.rect().center().y.partial_cmp(&b.rect().center().y).unwrap()).expect("Pages column heading");
+    pages_heading.click();
     h.run_steps(2);
     assert_eq!(combine_names(&h), ["scan10.pdf", "a.pdf", "Scan2.pdf"]);
     // Moving a file by hand ends the sorted order.
@@ -1127,7 +1106,10 @@ fn column_headings_sort_the_list_and_flip_on_the_second_click() {
     h.get_by_label("Move up").click();
     h.run_steps(2);
     assert_eq!(h.state().combine_tab.sort, None);
-    h.get_by_label("Pages");
+    let _ = h
+        .query_all_by_label("Pages")
+        .max_by(|a, b| a.rect().center().y.partial_cmp(&b.rect().center().y).unwrap())
+        .expect("Pages column heading still there");
 }
 
 #[test]
@@ -1466,7 +1448,7 @@ fn extract_button_copies_selected_pages_to_a_new_tab() {
     h.run_steps(1);
     h.get_by_label("Page 3").click_modifiers(Modifiers::COMMAND);
     h.run_steps(2);
-    h.get_by_label("Extract pages to a new document").click();
+    h.get_by_label("Extract").click();
     h.run_steps(3);
     h.get_by_label("2 pages selected.");
     h.get_all_by_label("Extract").last().unwrap().click();
@@ -1479,7 +1461,9 @@ fn extract_button_copies_selected_pages_to_a_new_tab() {
 }
 
 #[test]
-fn replace_button_replaces_selected_pages_in_organize() {
+fn replace_selected_pages_via_context_menu_in_organize() {
+    // The toolbar's Replace button is gone (mockup contract); Replace lives on in the
+    // thumbnail context menu, acting on the whole selection.
     let dir = temp_path("replace-btn");
     std::fs::create_dir_all(&dir).unwrap();
     let other = dir.join("other.pdf");
@@ -1491,6 +1475,8 @@ fn replace_button_replaces_selected_pages_in_organize() {
     h.get_by_label("Page 3").click_modifiers(Modifiers::COMMAND);
     h.run_steps(2);
     h.state_mut().pick_override = Some(vec![other.to_string_lossy().into_owned()]);
+    h.get_by_label("Page 2").click_button(egui::PointerButton::Secondary);
+    h.run_steps(2);
     h.get_by_label("Replace pages…").click();
     h.run_steps(3);
     egui_kittest::kittest::Queryable::get_by_label(&h, "Replace Pages");
@@ -1601,7 +1587,7 @@ fn plus_between_pages_inserts_picked_files_there_in_order() {
     // The toolbar button still inserts after the selection, not at the last "+" used.
     h.get_by_label("Page 2").click();
     h.run_steps(2);
-    h.get_by_label("Insert pages from a file…").click();
+    h.get_by_label("Insert from file").click();
     h.run_steps(4);
     assert_eq!(texts_of(h.state(), 0), ["a note", "Page 1", "a note", "Page 2", "Page 3", "a note"]);
     // A file that can't be converted changes nothing.
@@ -1691,25 +1677,32 @@ fn grid_zoom(h: &Harness<'static, PdfCraftApp>) -> f32 {
 }
 
 #[test]
-fn page_grid_zooms_with_its_buttons_keys_and_pinch() {
+fn page_grid_zooms_with_its_slider_keys_and_pinch() {
+    // The Larger/Reset/Smaller button cluster is gone (mockup contract); the thumbnail-size
+    // slider drives the same grid_zoom, and the keyboard shortcuts still work.
     let mut h = organize(12);
     let width = |h: &Harness<'static, PdfCraftApp>| h.get_by_label("Page 2").rect().left() - h.get_by_label("Page 1").rect().left();
     let usual = width(&h);
-    h.get_by_label("Larger pages").click();
+    let slider = h.get_by_label("Thumbnail size").rect();
+    // Drag the knob to three-quarters along the track: 0.5 + 0.75 * (3.0 - 0.5).
+    // (The knob starts at 20%: zoom 1.0 in the 0.5..=3.0 range.)
+    let from = egui::pos2(slider.left() + slider.width() * 0.2, slider.center().y);
+    let to = egui::pos2(slider.left() + slider.width() * 0.75, slider.center().y);
+    h.hover_at(from);
+    h.run_steps(1);
+    h.drag_at(from);
+    h.run_steps(1);
+    h.hover_at(to);
+    h.run_steps(1);
+    h.drop_at(to);
     h.run_steps(3);
-    assert_eq!(grid_zoom(&h), 1.25);
+    let z = grid_zoom(&h);
+    assert!((z - 2.375).abs() < 0.01, "slider at 75% of its track zooms to ~2.375, got {z}");
     assert!(width(&h) > usual + 20.0, "the pages are drawn larger");
-    h.get_by_label("Reset page size").click();
-    h.run_steps(3);
-    assert_eq!((grid_zoom(&h), width(&h)), (1.0, usual));
-    h.get_by_label("Smaller pages").click();
-    h.run_steps(3);
-    assert_eq!(grid_zoom(&h), 0.8);
-    assert!(width(&h) < usual - 20.0);
     // Keys.
     h.key_press_modifiers(Modifiers::COMMAND, Key::Num0);
     h.run_steps(2);
-    assert_eq!(grid_zoom(&h), 1.0);
+    assert_eq!((grid_zoom(&h), width(&h)), (1.0, usual));
     h.key_press_modifiers(Modifiers::COMMAND, Key::Equals);
     h.run_steps(2);
     assert_eq!(grid_zoom(&h), 1.25);
@@ -1723,19 +1716,16 @@ fn page_grid_zooms_with_its_buttons_keys_and_pinch() {
     h.event(egui::Event::Zoom(1.5));
     h.run_steps(2);
     assert_eq!(grid_zoom(&h), 1.5);
-    h.hover_at(h.get_by_label("Larger pages").rect().center());
+    h.hover_at(h.get_by_label("Thumbnail size").rect().center());
     h.run_steps(1);
     h.event(egui::Event::Zoom(1.5));
     h.run_steps(2);
     assert_eq!(grid_zoom(&h), 1.5, "the pointer was on the toolbar");
-    // It stops at its limits, where the buttons switch off.
+    // It stops at its limits.
     for _ in 0..12 {
         h.key_press_modifiers(Modifiers::COMMAND, Key::Equals);
         h.run_steps(1);
     }
-    assert_eq!(grid_zoom(&h), 3.0);
-    h.get_by_label("Larger pages").click();
-    h.run_steps(2);
     assert_eq!(grid_zoom(&h), 3.0);
     for _ in 0..20 {
         h.key_press_modifiers(Modifiers::COMMAND, Key::Minus);
@@ -1825,10 +1815,10 @@ fn split_dialog_writes_one_file_per_part() {
     let d = dir.to_string_lossy().into_owned();
     let mut h = organize(3);
     h.state_mut().export_dir_override = Some(d);
-    h.get_by_label("Split into files…").click();
+    h.get_by_label("Split").click();
     h.run_steps(3);
     h.get_by_label_contains("Creates 3 files from 3 pages");
-    h.get_by_label("Split").click();
+    h.get_all_by_label("Split").last().unwrap().click();
     h.run_steps(3);
     let mut names: Vec<String> = std::fs::read_dir(&dir).unwrap().map(|e| e.unwrap().file_name().to_string_lossy().into_owned()).collect();
     names.sort();
@@ -1854,7 +1844,8 @@ fn split_at_bookmarks_with_equal_titles_keeps_every_part() {
     h.state_mut().run_command("page.split");
     h.run_steps(3);
     h.get_by_label_contains("Creates 3 files from 3 pages");
-    h.get_by_label("Split").click();
+    // The toolbar's "Split" is still in the tree behind the modal: the dialog's footer button paints last.
+    h.get_all_by_label("Split").last().unwrap().click();
     h.run_steps(3);
     let mut names: Vec<String> = std::fs::read_dir(&dir).unwrap().map(|e| e.unwrap().file_name().to_string_lossy().into_owned()).collect();
     names.sort();
@@ -1874,7 +1865,7 @@ fn split_before_selected_pages() {
     h.state_mut().run_command("page.split");
     h.run_steps(3);
     h.get_by_label_contains("Creates 2 files from 4 pages");
-    h.get_by_label("Split").click();
+    h.get_all_by_label("Split").last().unwrap().click();
     h.run_steps(3);
     let mut names: Vec<String> = std::fs::read_dir(&dir).unwrap().map(|e| e.unwrap().file_name().to_string_lossy().into_owned()).collect();
     names.sort();
@@ -2024,15 +2015,26 @@ fn restricted_documents_show_a_notice_and_block_page_changes() {
     h.get_by_label_contains("This document is secured");
     h.get_by_label("Page 1").click();
     h.run_steps(1);
-    h.get_by_label("Delete pages (Delete)").click();
+    h.get_by_label("Delete").click();
     h.key_press(Key::Delete);
     h.run_steps(3);
     assert_eq!(texts_of(h.state(), 0).len(), 2, "page changes are blocked");
     assert_eq!(h.query_all_by_label_contains("Insert a file").count(), 0, "nothing to insert into");
-    // Looking closer is not a page change.
-    h.get_by_label("Larger pages").click();
+    // Looking closer is not a page change: drag the thumbnail-size slider (which replaced
+    // the Larger/Smaller buttons) from 20% to 30% of its track, i.e. zoom 1.25.
+    let slider = h.get_by_label("Thumbnail size").rect();
+    let from = egui::pos2(slider.left() + slider.width() * 0.2, slider.center().y);
+    let to = egui::pos2(slider.left() + slider.width() * 0.3, slider.center().y);
+    h.hover_at(from);
+    h.run_steps(1);
+    h.drag_at(from);
+    h.run_steps(1);
+    h.hover_at(to);
+    h.run_steps(1);
+    h.drop_at(to);
     h.run_steps(2);
-    assert_eq!(grid_zoom(&h), 1.25);
+    let z = grid_zoom(&h);
+    assert!((z - 1.25).abs() < 0.01, "slider at 30% of its track zooms to ~1.25, got {z}");
     assert!(!dirty(&h));
     h.get_by_label("Security settings").click();
     h.run_steps(3);
@@ -3412,7 +3414,7 @@ fn host_dirty_hears_when_unsaved_work_appears_and_goes() {
         app.host_dirty = Some(Box::new(move |dirty| sink.lock().unwrap().push(dirty)));
     });
     assert_eq!(reports.lock().unwrap().last(), Some(&false), "a freshly opened document has nothing unsaved");
-    h.get_by_label("Rotate clockwise").click();
+    h.get_by_label("Rotate right").click();
     h.run_steps(3);
     assert_eq!(reports.lock().unwrap().last(), Some(&true), "an edit is unsaved work");
 

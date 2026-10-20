@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rehman-PDF — Organize pages (light) · T-003 mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --titlebar:#F5F5F7; --chrome:#FFFFFF; --pasteboard:#ECECF0; --card:#FFFFFF;
+    --border:#E2E2E8; --divider:#ECECF0;
+    --text:#1C1C21; --muted:#5B5B63; --faint:#74747C; --icon:#3F3F46;
+    --hover:#F1F1F4; --pressed:#E6E6EB; --selected:#EDF0FF;
+    --accent:#4F46E5; --accent-soft:#EEF0FE; --field:#FFFFFF; --danger:#D92D20;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; color:var(--text);
+       background:#3a3a40; font-size:13px; -webkit-font-smoothing:antialiased;}
+  .win{max-width:1240px; margin:20px auto; border:1px solid var(--border); border-radius:14px;
+       overflow:hidden; background:var(--chrome); box-shadow:0 12px 40px rgba(0,0,0,.25); height:860px;
+       display:flex; flex-direction:column;}
+  .titlebar{display:flex; align-items:center; gap:8px; background:var(--titlebar);
+            border-bottom:1px solid var(--divider); padding:8px 14px;}
+  .traffic{display:flex; gap:7px; margin-right:6px;}
+  .traffic i{width:11px; height:11px; border-radius:50%; display:block;}
+  .traffic i:nth-child(1){background:#FF5F57;} .traffic i:nth-child(2){background:#FEBC2E;}
+  .traffic i:nth-child(3){background:#28C840;}
+  .apptitle{font-weight:600; font-size:12.5px; color:var(--muted); letter-spacing:.2px;}
+  .tabs{display:flex; gap:6px; margin-left:14px;}
+  .tab{display:flex; align-items:center; gap:8px; padding:6px 10px 6px 12px; border-radius:8px;
+       font-size:12.5px; color:var(--muted); background:transparent; border:1px solid transparent; max-width:230px;}
+  .tab.active{background:var(--chrome); border-color:var(--border); color:var(--text); font-weight:500;}
+  .tab .nm{white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .tab .x{color:var(--faint); font-size:13px;}
+  .titlebar .sp{flex:1;}
+  .iconbtn{width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center;
+           border-radius:8px; color:var(--icon);}
+  .iconbtn svg{width:17px; height:17px;}
+  .modebar{display:flex; align-items:center; gap:6px; padding:8px 14px; background:var(--chrome);
+           border-bottom:1px solid var(--divider);}
+  .menubtn{font-size:12.5px; color:var(--icon); padding:7px 9px; border-radius:8px; font-weight:500;}
+  .vline{width:1px; height:20px; background:var(--divider); margin:0 8px;}
+  .modetabs{display:flex; background:var(--hover); border-radius:10px; padding:3px; gap:2px;}
+  .modetab{font-size:12.5px; font-weight:500; color:var(--muted); padding:6px 14px; border-radius:8px;}
+  .modetab.active{background:var(--card); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,.10);}
+  .modebar .sp{flex:1;}
+  .kbdsearch{display:flex; align-items:center; gap:8px; border:1px solid var(--border); border-radius:8px;
+             padding:7px 11px; color:var(--faint); font-size:12.5px; background:var(--field); min-width:230px;}
+  .kbdsearch .kbd{margin-left:auto; background:var(--hover); border:1px solid var(--border);
+                  border-radius:5px; padding:1px 6px; font-size:11px; color:var(--muted); font-weight:600;}
+  /* ---- action bar ---- */
+  .actionbar{display:flex; align-items:center; gap:4px; padding:8px 14px; background:var(--chrome);
+             border-bottom:1px solid var(--divider); flex-wrap:wrap;}
+  .abtn{display:inline-flex; align-items:center; gap:7px; padding:7px 11px; border-radius:8px;
+        font-size:12.5px; font-weight:500; color:var(--icon);}
+  .abtn svg{width:16px; height:16px;}
+  .abtn.primary{background:var(--accent-soft); color:var(--accent); font-weight:600;}
+  .abtn.danger{color:var(--danger);}
+  .abtn.dim{opacity:.38;}
+  .agroup{display:flex; align-items:center; gap:2px;}
+  .aslider{display:flex; align-items:center; gap:8px; margin-left:auto; color:var(--faint); font-size:12px;}
+  .aslider .track{width:120px; height:4px; border-radius:2px; background:var(--border); position:relative;}
+  .aslider .knob{width:14px; height:14px; border-radius:50%; background:var(--accent);
+                 position:absolute; left:56px; top:-5px; box-shadow:0 1px 3px rgba(0,0,0,.25);}
+  /* ---- grid ---- */
+  .stage{flex:1; background:var(--pasteboard); overflow:auto; padding:28px 32px; min-height:0;}
+  .grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:26px; max-width:980px; margin:0 auto;}
+  .pcard{position:relative;}
+  .pthumb{background:#fff; border:1px solid var(--border); border-radius:8px; height:230px;
+          box-shadow:0 2px 8px rgba(0,0,0,.08); padding:18px 20px; cursor:default;}
+  .pthumb .ln{height:5px; border-radius:3px; background:#DCDCE2; margin-bottom:9px;}
+  .pthumb .ln.ur{background:#C9CFE8;}
+  .pthumb .ln:last-child{margin-bottom:0;}
+  .pcard.sel .pthumb{outline:2.5px solid var(--accent); outline-offset:3px;}
+  .check{position:absolute; top:-9px; left:-9px; width:26px; height:26px; border-radius:50%;
+         background:var(--accent); display:flex; align-items:center; justify-content:center;
+         box-shadow:0 2px 6px rgba(79,70,229,.45); z-index:2;}
+  .check svg{width:14px; height:14px; color:#fff;}
+  .pnum{text-align:center; font-size:12px; color:var(--faint); margin-top:10px;}
+  .pcard.sel .pnum{color:var(--accent); font-weight:600;}
+  .insertline{grid-column:1 / -1; height:0; position:relative; margin:-13px 0;}
+  .insertline::before{content:""; position:absolute; left:2%; right:2%; top:0; height:3px;
+                      background:var(--accent); border-radius:2px;}
+  .insertline::after{content:""; position:absolute; left:2%; top:-4.5px; width:12px; height:12px;
+                     background:var(--accent); border-radius:50%;}
+  .status{display:flex; align-items:center; gap:10px; background:var(--chrome);
+          border-top:1px solid var(--divider); padding:8px 16px; font-size:12.5px; color:var(--muted);}
+  .status b{color:var(--accent); font-weight:600;}
+  .status .sp{flex:1;}
+  .undo{display:flex; gap:2px;}
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="titlebar">
+    <div class="traffic"><i></i><i></i><i></i></div>
+    <span class="apptitle">Rehman-PDF</span>
+    <div class="tabs">
+      <div class="tab"><span class="nm">Home</span></div>
+      <div class="tab active"><span class="nm">Urdu-Worksheet-Class5.pdf</span><span class="x">×</span></div>
+    </div>
+    <div class="sp"></div>
+    <span class="iconbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></span>
+  </div>
+  <div class="modebar">
+    <span class="menubtn">☰&nbsp; Menu</span>
+    <span class="menubtn">File</span><span class="menubtn">Edit</span>
+    <span class="menubtn">Pages</span><span class="menubtn">View</span>
+    <div class="vline"></div>
+    <div class="modetabs">
+      <span class="modetab">All tools</span><span class="modetab">Read</span>
+      <span class="modetab">Edit</span><span class="modetab">Convert</span><span class="modetab">E-Sign</span>
+    </div>
+    <div class="sp"></div>
+    <span class="kbdsearch"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> Find tools and commands <span class="kbd">⌘K</span></span>
+  </div>
+  <div class="actionbar">
+    <span class="abtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 12l2 2 4-4"/></svg> Select all</span>
+    <div class="vline"></div>
+    <div class="agroup">
+      <span class="abtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg> Rotate left</span>
+      <span class="abtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12a9 9 0 1 1-3-6.7L21 8"/><path d="M21 3v5h-5"/></svg> Rotate right</span>
+    </div>
+    <div class="vline"></div>
+    <div class="agroup">
+      <span class="abtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg> Extract</span>
+      <span class="abtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M12 11v6M9 14l3 3 3-3"/></svg> Split</span>
+      <span class="abtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6M12 18v-6M9 15h6"/></svg> Insert from file</span>
+      <span class="abtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 8v8M8 12h8"/></svg> Insert blank page</span>
+      <span class="abtn danger"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg> Delete</span>
+    </div>
+    <div class="aslider"><span>−</span><div class="track"><div class="knob"></div></div><span>+</span></div>
+  </div>
+  <div class="stage">
+    <div class="grid">
+      <div class="pcard"><div class="pthumb"><div class="ln ur"></div><div class="ln ur"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div><div class="pnum">1</div></div>
+      <div class="pcard sel"><div class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div><div class="pthumb"><div class="ln"></div><div class="ln ur"></div><div class="ln ur"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div><div class="pnum">2</div></div>
+      <div class="pcard sel"><div class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div><div class="pthumb"><div class="ln ur"></div><div class="ln ur"></div><div class="ln ur"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div><div class="pnum">3</div></div>
+      <div class="pcard sel"><div class="check"><svg viewBox="0 0 24 24" fill="none" stroke-width="3"><path d="M20 6L9 17l-5-5"/></svg></div><div class="pthumb"><div class="ln"></div><div class="ln"></div><div class="ln ur"></div><div class="ln ur"></div><div class="ln"></div><div class="ln"></div></div><div class="pnum">4</div></div>
+      <div class="insertline"></div>
+      <div class="pcard"><div class="pthumb"><div class="ln ur"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln ur"></div><div class="ln"></div></div><div class="pnum">5</div></div>
+      <div class="pcard"><div class="pthumb"><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln ur"></div><div class="ln"></div><div class="ln"></div></div><div class="pnum">6</div></div>
+      <div class="pcard"><div class="pthumb"><div class="ln ur"></div><div class="ln ur"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div><div class="ln"></div></div><div class="pnum">7</div></div>
+      <div class="pcard"><div class="pthumb"><div class="ln"></div><div class="ln ur"></div><div class="ln"></div><div class="ln ur"></div><div class="ln"></div><div class="ln"></div></div><div class="pnum">8</div></div>
+    </div>
+  </div>
+  <div class="status">
+    <span><b>3</b> of 28 pages selected</span>
+    <div class="sp"></div>
+    <div class="undo">
+      <span class="iconbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 7v6h6"/><path d="M21 17a9 9 0 0 0-15-6.7L3 13"/></svg></span>
+      <span class="iconbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 7v6h-6"/><path d="M3 17a9 9 0 0 1 15-6.7L21 13"/></svg></span>
+    </div>
+    <span>Undo · Redo</span>
+  </div>
+</div>
+</body>
+</html>

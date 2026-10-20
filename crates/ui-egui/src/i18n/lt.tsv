@@ -551,7 +551,7 @@
 	Files are combined from top to bottom. Leave Pages empty to take every page.	Failai jungiami iš viršaus į apačią. Palikite lauką „Puslapiai“ tuščią, jei norite įtraukti visus puslapius.
 	Files are combined in the order shown. Drag them to change it.	Failai sujungiami rodoma tvarka. Vilkite juos, kad ją pakeistumėte.
 	Files for {name}	Failai: {name}
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Čia rodomi „PdfCraft“ atverti failai. Įkelkite PDF bet kurioje vietoje, kad jį atvertumėte.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	Čia rodomi „PdfCraft“ atverti failai. Įkelkite PDF bet kurioje vietoje, kad jį atvertumėte.
 	Fill & Sign dates	Datos pildymo ir pasirašymo įrankyje
 	Fill & Sign signature	Parašas pildymo ir pasirašymo įrankyje
 	Fill Color:	Užpildo spalva:
@@ -1246,7 +1246,7 @@
 	Visible Rectangle	Matomo stačiakampio anotacija
 	Visual	Vaizdinis
 	Warnings	Įspėjimai
-	Welcome to PdfCraft	Sveiki atvykę į „PdfCraft“
+	Welcome to Rehman-PDF	Sveiki atvykę į „PdfCraft“
 	What word or phrase would you like to search for?	Kokio žodžio ar frazės norite ieškoti?
 	Whole words only	Tik ištisi žodžiai
 	Width:	Plotis:
@@ -2596,3 +2596,22 @@ key	Space	Tarpas
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Rehman-PDF on the web
 	Project page, source code and the author's site.	Project page, source code and the author's site.
+
+	or drop a PDF anywhere	or drop a PDF anywhere
+	Free and open source · your files never leave this computer	Free and open source · your files never leave this computer
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Select, rotate, delete, insert and reorder pages · deep undo
+	Sticky notes, highlights and markup · summarize to a report	Sticky notes, highlights and markup · summarize to a report
+	Add fillable fields, checkboxes and signatures · bulk edit	Add fillable fields, checkboxes and signatures · bulk edit
+	Fix text, images and links in place · RTL-aware editing	Fix text, images and links in place · RTL-aware editing
+	Passwords and permissions · certificates and redaction	Passwords and permissions · certificates and redaction
+	Annotate	Annotate
+	of {count}	of {count}
+	Custom zoom	Custom zoom
+	Rotate left	Rotate left
+	Rotate right	Rotate right
+	Insert from file	Insert from file
+	{n} of {total} pages selected	{n} of {total} pages selected
+	navigate	navigate
+	run	run
+	Thumbnail size	Thumbnail size

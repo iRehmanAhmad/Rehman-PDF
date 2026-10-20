@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="#FFFFFF" stroke="#D9E1FD" stroke-width="5"/>
+  <g transform="translate(256 256) scale(1.14) translate(-256 -256)">
+    <!-- Nastaliq-style sweeping descender -->
+    <path d="M378 158 C328 196 292 254 240 296 C202 328 162 334 138 316"
+          fill="none" stroke="#4F46E5" stroke-width="48" stroke-linecap="round"/>
+    <!-- diamond dot above the stroke, echoing Urdu letter dots -->
+    <rect x="353" y="69" width="38" height="38" rx="7" transform="rotate(45 372 88)" fill="#4F46E5"/>
+  </g>
+</svg>

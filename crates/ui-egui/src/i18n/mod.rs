@@ -1372,6 +1372,8 @@ mod tests {
             "−Bin",
             // A domain name is identical in every language.
             "rehmanahmad.com",
+            // A brand name: identical in every language.
+            "GitHub",
             // Brand strings: the Rehman-PDF name stays as-is in every language.
             "Rehman-PDF project page",
             "Rehman-PDF on GitHub",
@@ -1489,6 +1491,8 @@ mod tests {
             "−Bin",
             // A domain name is identical in every language.
             "rehmanahmad.com",
+            // A brand name: identical in every language.
+            "GitHub",
             // Brand strings: the Rehman-PDF name stays as-is in every language.
             "Rehman-PDF project page",
             "Rehman-PDF on GitHub",
@@ -2713,6 +2717,8 @@ mod tests {
             "−Bin",
             // A domain name is identical in every language.
             "rehmanahmad.com",
+            // A brand name: identical in every language.
+            "GitHub",
             // Brand strings: the Rehman-PDF name stays as-is in every language.
             "Rehman-PDF project page",
             "Rehman-PDF on GitHub",
@@ -2798,6 +2804,8 @@ mod tests {
             "−Bin",
             // A domain name is identical in every language.
             "rehmanahmad.com",
+            // A brand name: identical in every language.
+            "GitHub",
             // Brand strings: the Rehman-PDF name stays as-is in every language.
             "Rehman-PDF project page",
             "Rehman-PDF on GitHub",

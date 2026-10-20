@@ -1,14 +1,9 @@
-//! The Organize Pages selection, as an editable list of physical page numbers.
+//! Page-range parsing ("1, 12, 16-18") for the control channel. The Organize Pages toolbar's
+//! editable range field was replaced by the T-003 mockup's Select-all action bar; `parse`
+//! stays for `--control` page selection.
 use std::collections::BTreeSet;
 
 use pdfcraft_engine::print::PrintError;
-
-#[derive(Default)]
-pub(crate) struct PageSelectionInput {
-    text: String,
-    selection: BTreeSet<usize>,
-    error: Option<String>,
-}
 
 /// Blank clears the explicit selection. Repeated/reversed ranges become a sorted set.
 /// Bound both the input and expansion work, including repeated overlapping ranges.
@@ -40,6 +35,7 @@ pub(crate) fn parse(text: &str, count: usize) -> Result<Vec<usize>, PrintError> 
     Ok(pages.into_iter().collect())
 }
 
+#[cfg(test)]
 fn formatted(pages: &BTreeSet<usize>) -> String {
     let mut parts = Vec::new();
     let mut it = pages.iter().copied().peekable();
@@ -55,53 +51,6 @@ fn formatted(pages: &BTreeSet<usize>) -> String {
         parts.push(if first == last { first.to_string() } else { format!("{first}-{last}") });
     }
     parts.join(", ")
-}
-
-impl PageSelectionInput {
-    pub(crate) fn show(&mut self, ui: &mut egui::Ui, selected: &BTreeSet<usize>, count: usize) -> Option<Vec<usize>> {
-        if self.selection != *selected {
-            self.selection.clone_from(selected);
-            self.text = formatted(selected);
-            self.error = None;
-        }
-        let mut commit = false;
-        let id = ui.make_persistent_id("organize-page-range");
-        // Egui can surrender focus before this frame's widgets run on Escape.
-        let cancel = ui.is_enabled()
-            && ui.memory(|m| m.has_focus(id) || m.had_focus_last_frame(id))
-            && ui.input_mut(|i| i.consume_key(egui::Modifiers::NONE, egui::Key::Escape));
-        if cancel {
-            self.text = formatted(selected);
-            self.error = None;
-            ui.memory_mut(|m| m.surrender_focus(id));
-        }
-        ui.horizontal(|ui| {
-            let label = tl!("Selected pages");
-            ui.label(label);
-            let field = ui.add(egui::TextEdit::singleline(&mut self.text).id(id).desired_width(300.0).char_limit(16_384).hint_text("1, 12, 16-18"));
-            field.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::TextEdit, ui.is_enabled(), label));
-            let apply = ui.button(tl!("Apply")).clicked();
-            commit = ui.is_enabled() && !cancel && (field.lost_focus() || apply);
-        });
-        if cancel {
-            self.text = formatted(selected);
-            self.error = None;
-        } else if commit {
-            match parse(&self.text, count) {
-                Ok(pages) => {
-                    self.selection = pages.iter().copied().collect();
-                    self.text = formatted(&self.selection);
-                    self.error = None;
-                    return Some(pages);
-                }
-                Err(e) => self.error = Some(e.said(&|s| crate::i18n::t(s).to_string())),
-            }
-        }
-        if let Some(error) = &self.error {
-            ui.label(error);
-        }
-        None
-    }
 }
 
 #[cfg(test)]

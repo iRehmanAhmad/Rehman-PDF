@@ -9,16 +9,16 @@ use crate::{PdfCraftApp, icons};
 const FIELD_MARGIN: egui::Margin = egui::Margin::symmetric(10, 6);
 /// Outer height of a single-line field, including its inset.
 const FIELD_MIN_HEIGHT: f32 = 30.0;
-/// Padding inside every modal.
-const DIALOG_PAD_X: i8 = 20;
-const DIALOG_PAD_Y: i8 = 16;
+/// Padding inside every modal (T-003 mockup: 24 px sides, 20 px top/bottom).
+const DIALOG_PAD_X: i8 = 24;
+const DIALOG_PAD_Y: i8 = 20;
 
 fn dialog_frame(ctx: &egui::Context) -> egui::Frame {
     let t = Tokens::get(ctx);
     egui::Frame::new()
         .fill(t.card)
         .stroke(Stroke::new(1.0, t.border))
-        .corner_radius(CornerRadius::same(10))
+        .corner_radius(CornerRadius::same(16))
         .inner_margin(egui::Margin::symmetric(DIALOG_PAD_X, DIALOG_PAD_Y))
         .shadow(ctx.global_style().visuals.window_shadow)
 }
@@ -58,6 +58,8 @@ pub fn begin_dialog(ui: &mut egui::Ui) {
     }
     ui.visuals_mut().selection.stroke = Stroke::new(1.5, t.accent);
     ui.spacing_mut().interact_size.y = FIELD_MIN_HEIGHT;
+    // The mockup's radio dots are 17 px; the default 14 px dots read small next to them.
+    ui.spacing_mut().icon_width = 16.0;
 }
 
 /// A single-line field tall enough to read and to click.
@@ -151,6 +153,55 @@ pub fn ghost_button(ui: &mut egui::Ui, icon: &str, label: &str) -> Response {
     ghost_button_sized(ui, icon, label, 30.0)
 }
 
+/// An Organize-style action-bar button: 16 px icon + 12.5 medium label, transparent until
+/// hovered (T-003 organize mockup). `danger` tints it with the danger colour (Delete).
+/// `enabled=false` fades it and makes it non-interactive (no `Ui` scope needed, so it is
+/// safe to use inside a wrapping row).
+pub fn action_button(ui: &mut egui::Ui, icon: &str, label: &str, danger: bool, enabled: bool) -> Response {
+    let t = Tokens::get(ui.ctx());
+    let font = theme::medium(12.5);
+    let enabled = enabled && ui.is_enabled();
+    // Disabled buttons fade instead of using the Ui's disabled opacity (which needs a scope).
+    let fade = if enabled { 1.0 } else { 0.35 };
+    let ink = (if danger { t.danger } else { t.icon }).gamma_multiply(fade);
+    let text_ink = (if danger { t.danger } else { t.text }).gamma_multiply(fade);
+    let w = ui.fonts_mut(|f| f.layout_no_wrap(label.to_owned(), font.clone(), t.text).size().x);
+    let (rect, resp) = ui.allocate_exact_size(vec2(w + 16.0 + 7.0 + 22.0, 32.0), if enabled { Sense::click() } else { Sense::hover() });
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, enabled, label));
+    let press = theme::Press::track(ui, &resp);
+    if enabled {
+        press.wash(ui, rect, 8, false);
+    }
+    let body = rect.translate(press.offset());
+    icons::paint(ui, Rect::from_min_size(egui::pos2(body.left() + 11.0, body.center().y - 8.0), vec2(16.0, 16.0)), icon, 16.0, ink);
+    ui.painter().text(egui::pos2(body.left() + 11.0 + 16.0 + 7.0, body.center().y), Align2::LEFT_CENTER, label, font, text_ink);
+    if enabled { theme::hand(resp) } else { resp }
+}
+
+/// An Organize-style action-bar button that opens a dropdown menu: like
+/// [`action_button`] with a chevron-down in the trailing padding (T-003
+/// select-pages filter). The menu itself is the caller's `egui::Popup`.
+pub fn action_button_dropdown(ui: &mut egui::Ui, icon: &str, label: &str) -> Response {
+    let t = Tokens::get(ui.ctx());
+    let font = theme::medium(12.5);
+    let w = ui.fonts_mut(|f| f.layout_no_wrap(label.to_owned(), font.clone(), t.text).size().x);
+    let (rect, resp) = ui.allocate_exact_size(vec2(w + 16.0 + 7.0 + 22.0 + 18.0, 32.0), Sense::click());
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, ui.is_enabled(), label));
+    let press = theme::Press::track(ui, &resp);
+    press.wash(ui, rect, 8, false);
+    let body = rect.translate(press.offset());
+    icons::paint(ui, Rect::from_min_size(egui::pos2(body.left() + 11.0, body.center().y - 8.0), vec2(16.0, 16.0)), icon, 16.0, t.icon);
+    ui.painter().text(egui::pos2(body.left() + 11.0 + 16.0 + 7.0, body.center().y), Align2::LEFT_CENTER, label, font, t.text);
+    icons::paint(
+        ui,
+        Rect::from_min_size(egui::pos2(body.right() - 18.0, body.center().y - 7.0), vec2(14.0, 14.0)),
+        "chevron-down",
+        14.0,
+        t.text_faint,
+    );
+    theme::hand(resp)
+}
+
 /// [`ghost_button`] at a given height (the macOS title bar is shorter than the tab strip elsewhere).
 pub fn ghost_button_sized(ui: &mut egui::Ui, icon: &str, label: &str, height: f32) -> Response {
     let t = Tokens::get(ui.ctx());
@@ -169,27 +220,53 @@ pub fn ghost_button_sized(ui: &mut egui::Ui, icon: &str, label: &str, height: f3
 /// A search-field lookalike that opens the command palette.
 pub fn search_box(ui: &mut egui::Ui, placeholder: &str, width: f32) -> Response {
     let t = Tokens::get(ui.ctx());
+    let rtl = crate::i18n::current().rtl();
     let (rect, resp) = ui.allocate_exact_size(vec2(width, 32.0), Sense::click());
     resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, ui.is_enabled(), placeholder));
     let press = theme::Press::track(ui, &resp);
     let fill = press.fill(t.field, t.hover, t.pressed);
     let edge = t.border.lerp_to_gamma(t.text_muted, press.hover * 0.35);
-    ui.painter().rect(rect, CornerRadius::same(16), fill, Stroke::new(1.0, edge), egui::StrokeKind::Inside);
-    icons::paint(ui, Rect::from_min_size(rect.min + vec2(10.0, 8.0), vec2(16.0, 16.0)), "search", 15.0, t.text_muted);
+    ui.painter().rect(rect, CornerRadius::same(8), fill, Stroke::new(1.0, edge), egui::StrokeKind::Inside);
+    // The icon and the kbd chip swap sides in RTL; the placeholder keeps clear of both.
+    let icon_rect = if rtl {
+        Rect::from_min_size(egui::pos2(rect.right() - 26.0, rect.top() + 8.0), vec2(16.0, 16.0))
+    } else {
+        Rect::from_min_size(rect.min + vec2(10.0, 8.0), vec2(16.0, 16.0))
+    };
+    icons::paint(ui, icon_rect, "search", 15.0, t.text_muted);
     let shortcut = crate::commands::command_shortcut_label(ui.ctx(), "view.palette");
-    let shortcut = ui.painter().layout_no_wrap(shortcut, theme::regular(11.5), t.text_faint);
-    let shortcut_pos = rect.right_center() - vec2(12.0 + shortcut.size().x, shortcut.size().y * 0.5);
+    let shortcut_font = theme::medium(11.5);
+    let shortcut = ui.painter().layout_no_wrap(shortcut, shortcut_font, t.text_muted);
+    let shortcut_pos = if rtl {
+        egui::pos2(rect.left() + 12.0, rect.center().y - shortcut.size().y * 0.5)
+    } else {
+        rect.right_center() - vec2(12.0 + shortcut.size().x, shortcut.size().y * 0.5)
+    };
+    // The ⌘K kbd chip (redesign mockup): hover-tinted, bordered, rounded.
+    let chip = Rect::from_min_max(
+        egui::pos2(shortcut_pos.x - 6.0, shortcut_pos.y - 3.0),
+        egui::pos2(shortcut_pos.x + shortcut.size().x + 6.0, shortcut_pos.y + shortcut.size().y + 3.0),
+    );
+    ui.painter().rect_filled(chip, CornerRadius::same(5), t.hover);
+    ui.painter().rect(chip, CornerRadius::same(5), Color32::TRANSPARENT, Stroke::new(1.0, t.border), egui::StrokeKind::Inside);
     // Reserve the measured shortcut width in every language; long translations are elided
     // within the remaining space rather than painted underneath the shortcut.
-    let text_right = (shortcut_pos.x - 10.0).max(rect.left());
-    let text_left = (rect.left() + 34.0).min(text_right);
+    let (text_left, text_right) = if rtl {
+        let text_left = (shortcut_pos.x + shortcut.size().x + 16.0).min(rect.right());
+        let text_right = (rect.right() - 34.0).max(text_left);
+        (text_left, text_right)
+    } else {
+        let text_right = (shortcut_pos.x - 10.0).max(rect.left());
+        let text_left = (rect.left() + 34.0).min(text_right);
+        (text_left, text_right)
+    };
     let text_rect = Rect::from_min_max(egui::pos2(text_left, rect.top()), egui::pos2(text_right, rect.bottom()));
     let mut job = egui::text::LayoutJob::simple_singleline(placeholder.to_owned(), theme::regular(13.0), t.text_faint);
     job.wrap = egui::text::TextWrapping { max_width: text_rect.width(), max_rows: 1, break_anywhere: true, ..Default::default() };
     let text = ui.fonts_mut(|f| f.layout_job(job));
     let elided = text.elided;
     ui.painter().with_clip_rect(text_rect).galley(egui::pos2(text_left, rect.center().y - text.size().y * 0.5), text, t.text_faint);
-    ui.painter().with_clip_rect(rect).galley(shortcut_pos, shortcut, t.text_faint);
+    ui.painter().with_clip_rect(rect).galley(shortcut_pos, shortcut, t.text_muted);
     let resp = resp.on_hover_cursor(egui::CursorIcon::Text);
     if elided { resp.on_hover_text(placeholder) } else { resp }
 }
@@ -207,13 +284,6 @@ const CHECKBOX_RADIUS: u8 = 3;
 pub fn checkbox<'a>(checked: &'a mut bool, atoms: impl egui::IntoAtoms<'a>) -> impl egui::Widget + 'a {
     #[expect(clippy::disallowed_methods, reason = "the one place that styles the box")]
     let widget = egui::Checkbox::new(checked, atoms);
-    toggle(widget, Some(CHECKBOX_RADIUS))
-}
-
-/// [`checkbox`] without a label: the selection box on Organize Pages thumbnails.
-pub fn checkbox_without_text(checked: &mut bool) -> impl egui::Widget + '_ {
-    #[expect(clippy::disallowed_methods, reason = "the one place that styles the box")]
-    let widget = egui::Checkbox::without_text(checked);
     toggle(widget, Some(CHECKBOX_RADIUS))
 }
 

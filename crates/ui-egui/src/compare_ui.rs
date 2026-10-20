@@ -2,12 +2,12 @@
 //! (replaced blue, inserted green, deleted red), shades them on the newer document's pages, and
 //! offers a report or the differences as comments.
 
-use egui::{Align, Color32, Layout};
+use egui::Color32;
 use pdfcraft_engine::DocId;
 use pdfcraft_engine::compare::{Comparison, Kind};
 
 use crate::theme::{self, Tokens};
-use crate::{PdfCraftApp, RightPanel, widgets};
+use crate::{PdfCraftApp, RightPanel};
 
 /// The last comparison.
 pub struct CompareState {
@@ -63,18 +63,7 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> (boo
     ui.add_space(4.0);
     ui.label(egui::RichText::new(tl!("Text is compared word by word; the differences are shown on the new file.")).small().color(t.text_muted));
     ui.add_space(10.0);
-    let (mut go, mut cancel) = (false, false);
-    ui.horizontal(|ui| {
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if ui.add_enabled_ui(app.compare_old.is_some(), |ui| widgets::pill_button(ui, tl!("Compare"), true)).inner.clicked() {
-                go = true;
-            }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                cancel = true;
-            }
-        })
-    });
-    (go, cancel)
+    crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Compare"), app.compare_old.is_some())
 }
 
 /// The Compare panel.

@@ -1011,17 +1011,8 @@ pub(crate) fn body(
         });
     });
     ui.add_space(12.0);
-    let (mut go, mut cancel) = (false, false);
-    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-        let label = if d.printer.is_some() { "Print" } else { "Save as PDF" };
-        if ui.add_enabled_ui(settings.is_ok() && !sheets.is_empty(), |ui| widgets::pill_button(ui, label, true)).inner.clicked() {
-            go = true;
-        }
-        if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-            cancel = true;
-        }
-    });
-    (go, cancel)
+    let label = if d.printer.is_some() { "Print" } else { "Save as PDF" };
+    crate::dialog_chrome::footer(ui, tl!("Cancel"), label, settings.is_ok() && !sheets.is_empty())
 }
 
 #[cfg(test)]

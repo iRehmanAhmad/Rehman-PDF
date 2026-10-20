@@ -273,13 +273,13 @@ key	Space	Mezerník
 	Next page	Další stránka
 	Previous page	Předchozí stránka
 	Current page — type a page number or label (such as iv) and press Enter	Aktuální stránka — zadejte číslo nebo označení stránky (třeba iv) a stiskněte Enter
-	Welcome to PdfCraft	Vítá vás PdfCraft
+	Welcome to Rehman-PDF	Vítá vás PdfCraft
 	An open-source PDF workbench — local, private, and scriptable.	Open-source dílna pro PDF — lokální, soukromá a skriptovatelná.
 	Recommended tools	Doporučené nástroje
 	Use now	Použít
 	Open file	Otevřít soubor
 	Recent	Nedávné
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Zde se zobrazí soubory, které otevřete v PdfCraftu. Soubor PDF otevřete přetažením kamkoli do okna.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	Zde se zobrazí soubory, které otevřete v PdfCraftu. Soubor PDF otevřete přetažením kamkoli do okna.
 	Privacy	Soukromí
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft funguje offline. Žádná telemetrie, žádný účet a žádné zpracování v cloudu, pokud nepřidáte poskytovatele.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	Skripty běží v izolovaném prostředí bez přístupu k souborům a síti. S vypnutým JavaScriptem dál fungují standardní funkce Acrobatu pro formátování, ověření a výpočty.
@@ -2426,3 +2426,23 @@ animation effects	Off	Vypnuto
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Rehman-PDF na webu
 	Project page, source code and the author's site.	Stránka projektu, zdrojový kód a web autora.
+
+	or drop a PDF anywhere	nebo sem přetáhněte PDF
+	Free and open source · your files never leave this computer	Zdarma a open source · vaše soubory nikdy neopustí tento počítač
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Výběr, otočení, odstranění, vložení a změna pořadí stránek · hluboké vrácení
+	Sticky notes, highlights and markup · summarize to a report	Lepicí poznámky, zvýraznění a revize · shrnutí do zprávy
+	Add fillable fields, checkboxes and signatures · bulk edit	Přidání vyplnitelných polí, zaškrtávacích políček a podpisů · hromadné úpravy
+	Fix text, images and links in place · RTL-aware editing	Oprava textu, obrázků a odkazů přímo na místě · úpravy s podporou RTL
+	Passwords and permissions · certificates and redaction	Hesla a oprávnění · certifikáty a redakce
+	Annotate	Přidat anotaci
+	of {count}	z {count}
+	Custom zoom	Vlastní zvětšení
+	Select all	Vybrat vše
+	Rotate left	Otočit doleva
+	Rotate right	Otočit doprava
+	Insert from file	Vložit ze souboru
+	{n} of {total} pages selected	Vybráno {n} z {total} stránek
+	navigate	procházet
+	run	spustit
+	Thumbnail size	Velikost miniatur

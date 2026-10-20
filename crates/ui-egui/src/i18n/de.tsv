@@ -133,13 +133,13 @@
 	Next page	Nächste Seite
 	Previous page	Vorherige Seite
 	Current page — type a page number or label (such as iv) and press Enter	Aktuelle Seite – gib eine Seitenzahl oder -beschriftung ein (z. B. iv) und drücke die Eingabetaste
-	Welcome to PdfCraft	Willkommen bei PdfCraft
+	Welcome to Rehman-PDF	Willkommen bei PdfCraft
 	An open-source PDF workbench — local, private, and scriptable.	Eine Open-Source-PDF-Werkbank – lokal, privat und skriptfähig.
 	Recommended tools	Empfohlene Werkzeuge
 	Use now	Jetzt verwenden
 	Open file	Datei öffnen
 	Recent	Zuletzt geöffnet
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Dateien, die du in PdfCraft öffnest, erscheinen hier. Zieh ein PDF an eine beliebige Stelle, um es zu öffnen.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	Dateien, die du in PdfCraft öffnest, erscheinen hier. Zieh ein PDF an eine beliebige Stelle, um es zu öffnen.
 	Privacy	Datenschutz
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft funktioniert offline. Keine Telemetrie, kein Konto und keine Cloud-Verarbeitung, solange du keinen Anbieter hinzufügst.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	Skripte laufen in einer Sandbox ohne Datei- oder Netzwerkzugriff. Auch bei deaktiviertem JavaScript funktionieren die Acrobat-Standardfunktionen zum Formatieren, Prüfen und Berechnen weiterhin.
@@ -2353,3 +2353,23 @@ animation effects	Off	Aus
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Rehman-PDF on the web
 	Project page, source code and the author's site.	Project page, source code and the author's site.
+
+	or drop a PDF anywhere	or drop a PDF anywhere
+	Free and open source · your files never leave this computer	Free and open source · your files never leave this computer
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Select, rotate, delete, insert and reorder pages · deep undo
+	Sticky notes, highlights and markup · summarize to a report	Sticky notes, highlights and markup · summarize to a report
+	Add fillable fields, checkboxes and signatures · bulk edit	Add fillable fields, checkboxes and signatures · bulk edit
+	Fix text, images and links in place · RTL-aware editing	Fix text, images and links in place · RTL-aware editing
+	Passwords and permissions · certificates and redaction	Passwords and permissions · certificates and redaction
+	Annotate	Annotate
+	of {count}	of {count}
+	Custom zoom	Custom zoom
+	Select all	Select all
+	Rotate left	Rotate left
+	Rotate right	Rotate right
+	Insert from file	Insert from file
+	{n} of {total} pages selected	{n} of {total} pages selected
+	navigate	navigate
+	run	run
+	Thumbnail size	Thumbnail size

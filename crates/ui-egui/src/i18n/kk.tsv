@@ -121,13 +121,13 @@
 	Next page	Келесі бет
 	Previous page	Алдыңғы бет
 	Current page — type a page number or label (such as iv) and press Enter	Ағымдағы бет — бет нөмірін немесе белгісін (мысалы, iv) теріңіз де, Enter пернесін басыңыз
-	Welcome to PdfCraft	PdfCraft-ге қош келдіңіз
+	Welcome to Rehman-PDF	PdfCraft-ге қош келдіңіз
 	An open-source PDF workbench — local, private, and scriptable.	Ашық бастапқы кодты PDF жұмыс орны — жергілікті, жеке әрі скрипттерді қолдайтын.
 	Recommended tools	Ұсынылған құралдар
 	Use now	Дәл қазір пайдалану
 	Open file	Файлды ашу
 	Recent	Соңғы
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	PdfCraft-те ашқан файлдарыңыз осында көрсетіледі. PDF файлын ашу үшін оны кез келген жерге апарып тастаңыз.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	PdfCraft-те ашқан файлдарыңыз осында көрсетіледі. PDF файлын ашу үшін оны кез келген жерге апарып тастаңыз.
 	Privacy	Жекелік
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft офлайн жұмыс істейді. Провайдер қоспағаныңызша телеметрия да, тіркелгі де, бұлтта өңдеу де жоқ.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	Скрипттер файлға да, желіге де қатынасы жоқ құмсалғышта орындалады. JavaScript өшірулі тұрса да, Acrobat-тың стандартты пішімдеу, тексеру және есептеу функциялары әлі де жұмыс істейді.
@@ -2350,3 +2350,23 @@ animation effects	Off	Өшірулі
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Интернеттегі Rehman-PDF
 	Project page, source code and the author's site.	Жоба беті, бастапқы код және автор сайты.
+
+	or drop a PDF anywhere	немесе PDF-ті кез келген жерге сүйреп апарыңыз
+	Free and open source · your files never leave this computer	Тегін және ашық бастапқы код · файлдарыңыз бұл компьютерден ешқайда кетпейді
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Беттерді таңдау, бұру, жою, кірістіру және ретін өзгерту · терең болдырмау
+	Sticky notes, highlights and markup · summarize to a report	Жабысқақ жазбалар, бөлектеулер және түзетулер · есепке жинақтау
+	Add fillable fields, checkboxes and signatures · bulk edit	Толтырылатын өрістер, құсбелгілер және қолтаңбалар қосу · жаппай өңдеу
+	Fix text, images and links in place · RTL-aware editing	Мәтінді, суреттерді және сілтемелерді орнында түзету · RTL-ді ескеретін өңдеу
+	Passwords and permissions · certificates and redaction	Құпиясөздер мен рұқсаттар · сертификаттар және редакциялау
+	Annotate	Аннотация қосу
+	of {count}	{count} беттің
+	Custom zoom	Таңдамалы масштаб
+	Select all	Барлығын таңдау
+	Rotate left	Солға бұру
+	Rotate right	Оңға бұру
+	Insert from file	Файлдан кірістіру
+	{n} of {total} pages selected	{total} беттің {n} таңдалды
+	navigate	шарлау
+	run	іске қосу
+	Thumbnail size	Нобай өлшемі

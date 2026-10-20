@@ -775,7 +775,7 @@
 	Files are combined from top to bottom. Leave Pages empty to take every page.	Datoteke se združijo od zgoraj navzdol. Če pustite Strani prazno, se vzamejo vse strani.
 	Files are combined in this order. Leave Pages empty to take every page.	Datoteke se združijo v tem vrstnem redu. Če pustite Strani prazno, se vzamejo vse strani.
 	Files for {name}	Datoteke za {name}
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Datoteke, ki jih odprete v PdfCraftu, se prikažejo tukaj. Spustite PDF kamor koli, da ga odprete.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	Datoteke, ki jih odprete v PdfCraftu, se prikažejo tukaj. Spustite PDF kamor koli, da ga odprete.
 	Fill	Izpolni
 	Fill & Sign	Izpolni in podpiši
 	Fill & Sign: add text	Izpolni in podpiši: dodaj besedilo
@@ -1953,7 +1953,7 @@
 	Warnings	Opozorila
 	Watermark	Vodni žig
 	Weak	Šibko
-	Welcome to PdfCraft	Dobrodošli v PdfCraftu
+	Welcome to Rehman-PDF	Dobrodošli v PdfCraftu
 	What word or phrase would you like to search for?	Katero besedo ali besedno zvezo želite poiskati?
 	Whole words only	Samo cele besede
 	Width	Širina
@@ -2357,3 +2357,23 @@ animation effects	Off	Izklopljeni
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Rehman-PDF on the web
 	Project page, source code and the author's site.	Project page, source code and the author's site.
+
+	or drop a PDF anywhere	or drop a PDF anywhere
+	Free and open source · your files never leave this computer	Free and open source · your files never leave this computer
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Select, rotate, delete, insert and reorder pages · deep undo
+	Sticky notes, highlights and markup · summarize to a report	Sticky notes, highlights and markup · summarize to a report
+	Add fillable fields, checkboxes and signatures · bulk edit	Add fillable fields, checkboxes and signatures · bulk edit
+	Fix text, images and links in place · RTL-aware editing	Fix text, images and links in place · RTL-aware editing
+	Passwords and permissions · certificates and redaction	Passwords and permissions · certificates and redaction
+	Annotate	Annotate
+	of {count}	of {count}
+	Custom zoom	Custom zoom
+	Select all	Select all
+	Rotate left	Rotate left
+	Rotate right	Rotate right
+	Insert from file	Insert from file
+	{n} of {total} pages selected	{n} of {total} pages selected
+	navigate	navigate
+	run	run
+	Thumbnail size	Thumbnail size

@@ -1,11 +1,10 @@
 //! Standards ▸ PDF/A: what the document declares, verifying it against PDF/A-2b or 3b, and
 //! fixing what can be fixed (Save as PDF/A).
 
-use egui::{Align, Layout};
 use pdfcraft_engine::pdfa::{Issue, Level};
 
+use crate::PdfCraftApp;
 use crate::theme::{self, Tokens};
-use crate::{PdfCraftApp, widgets};
 
 /// The dialog's state: the chosen level and the last result.
 #[derive(Clone, Debug, PartialEq)]
@@ -98,17 +97,19 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool
         });
     });
     ui.add_space(10.0);
+    crate::dialog_chrome::divider(ui);
     let mut close = false;
     let mut action = None;
     ui.horizontal(|ui| {
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl!("Save as PDF/A"), true).clicked() {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
+            if crate::dialog_chrome::button(ui, tl!("Save as PDF/A"), true).clicked() {
                 action = Some(true);
             }
-            if widgets::pill_button(ui, tl!("Verify"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Verify"), false).clicked() {
                 action = Some(false);
             }
-            if widgets::pill_button(ui, tl!("Close"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Close"), false).clicked() {
                 close = true;
             }
         });

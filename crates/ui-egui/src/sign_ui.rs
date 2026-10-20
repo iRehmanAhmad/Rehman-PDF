@@ -4,7 +4,7 @@
 
 use std::path::PathBuf;
 
-use egui::{Align, Color32, CornerRadius, Layout, Pos2, Rect, Stroke, vec2};
+use egui::{Color32, CornerRadius, Pos2, Rect, Stroke, vec2};
 use pdfcraft_engine::sign::{self, Appearance, Certificate, DigitalId, Modification, Name, PrivateKey};
 use pdfcraft_engine::{SignOptions, SignatureImage, SignatureInfo, SignatureStatus};
 
@@ -671,20 +671,24 @@ fn choose(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool {
         ui.add_space(10.0);
     }
     let removable = d.selected.filter(|&i| ids.get(i).is_some_and(|e| !e.path.starts_with("keychain:") && !e.path.starts_with("windows:")));
+    crate::dialog_chrome::divider(ui);
     ui.horizontal(|ui| {
-        if widgets::pill_button(ui, tl!("Configure New Digital ID"), false).clicked() {
+        if crate::dialog_chrome::button(ui, tl!("Configure New Digital ID"), false).clicked() {
             d.step = SignStep::Configure;
             d.error = None;
         }
-        if d.confirm_remove.is_none() && ui.add_enabled_ui(removable.is_some(), |ui| widgets::pill_button(ui, tl!("Remove"), false)).inner.clicked() {
+        if d.confirm_remove.is_none()
+            && ui.add_enabled_ui(removable.is_some(), |ui| crate::dialog_chrome::button(ui, tl!("Remove"), false)).inner.clicked()
+        {
             d.confirm_remove = removable;
         }
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if ui.add_enabled_ui(d.selected.is_some(), |ui| widgets::pill_button(ui, tl!("Continue"), true)).inner.clicked() {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
+            if ui.add_enabled_ui(d.selected.is_some(), |ui| crate::dialog_chrome::button(ui, tl!("Continue"), true)).inner.clicked() {
                 d.step = SignStep::SignAs;
                 d.error = None;
             }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Cancel"), false).clicked() {
                 close = true;
             }
         });
@@ -759,16 +763,18 @@ fn configure(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool {
     }
     ui.add_space(6.0);
     error(ui, &d.error);
+    crate::dialog_chrome::divider(ui);
     ui.horizontal(|ui| {
-        if !app.digital_ids.is_empty() && widgets::pill_button(ui, tl!("Back"), false).clicked() {
+        if !app.digital_ids.is_empty() && crate::dialog_chrome::button(ui, tl!("Back"), false).clicked() {
             d.step = SignStep::Choose;
             d.error = None;
         }
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, if d.new_id.create { tl!("Save") } else { tl!("Continue") }, true).clicked() {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
+            if crate::dialog_chrome::button(ui, if d.new_id.create { tl!("Save") } else { tl!("Continue") }, true).clicked() {
                 go = true;
             }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Cancel"), false).clicked() {
                 close = true;
             }
         });
@@ -959,16 +965,18 @@ fn sign_as(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool {
     });
     ui.add_space(6.0);
     error(ui, &d.error);
+    crate::dialog_chrome::divider(ui);
     ui.horizontal(|ui| {
-        if widgets::pill_button(ui, tl!("Back"), false).clicked() {
+        if crate::dialog_chrome::button(ui, tl!("Back"), false).clicked() {
             d.step = SignStep::Choose;
             d.error = None;
         }
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl!("Sign"), true).clicked() {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
+            if crate::dialog_chrome::button(ui, tl!("Sign"), true).clicked() {
                 go = true;
             }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Cancel"), false).clicked() {
                 close = true;
             }
         });
@@ -1270,7 +1278,10 @@ pub(crate) fn cert_viewer(ui: &mut egui::Ui, v: &mut CertViewer, trusted: &[Cert
             });
             ui.add_space(8.0);
             let grid = |ui: &mut egui::Ui, rows: Vec<(&str, String)>| {
-                egui::Grid::new(("cert-rows", v.tab as u8)).num_columns(2).spacing([12.0, 5.0]).show(ui, |ui| {
+                // The grid keeps one ID across tabs so its column widths survive a tab
+                // switch; a fresh grid per tab mis-measures the wrapped value labels on
+                // its first frame, blowing the dialog off-screen (T-003 fix round 2).
+                egui::Grid::new("cert-rows").num_columns(2).spacing([12.0, 5.0]).show(ui, |ui| {
                     for (k, val) in rows {
                         ui.label(egui::RichText::new(tl_ctx!("certificate", k)).color(t.text_muted));
                         ui.add(egui::Label::new(val).wrap());
@@ -1329,8 +1340,7 @@ pub(crate) fn cert_viewer(ui: &mut egui::Ui, v: &mut CertViewer, trusted: &[Cert
         });
     });
     ui.add_space(10.0);
-    let mut close = false;
-    ui.horizontal(|ui| ui.with_layout(Layout::right_to_left(Align::Center), |ui| close = widgets::pill_button(ui, tl!("OK"), true).clicked()));
+    let close = crate::dialog_chrome::footer_single(ui, tl!("OK"));
     (close, action)
 }
 

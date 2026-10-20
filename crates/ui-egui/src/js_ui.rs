@@ -1,7 +1,6 @@
 //! Acrobat JavaScript in the shell: what scripts ask for (alerts, printing, navigation, links),
 //! the JavaScript console (⌘J), Document JavaScripts, and Preferences ▸ JavaScript.
 
-use egui::{Align, Layout};
 use pdfcraft_engine::js::{JsOutput, Request};
 use pdfcraft_engine::{DocId, Edit};
 
@@ -142,15 +141,17 @@ impl PdfCraftApp {
 
 fn buttons(ui: &mut egui::Ui, primary: &str, others: &[&str]) -> Option<String> {
     let mut clicked = None;
+    crate::dialog_chrome::divider(ui);
     ui.horizontal(|ui| {
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
             // Stable ids: the console's output above changes how many widgets come first.
             // Labels are translated for display; the returned id stays English.
-            if ui.push_id(primary, |ui| widgets::pill_button(ui, tl!(primary), true)).inner.clicked() {
+            if ui.push_id(primary, |ui| crate::dialog_chrome::button(ui, tl!(primary), true)).inner.clicked() {
                 clicked = Some(primary.to_string());
             }
             for o in others {
-                if ui.push_id(o, |ui| widgets::pill_button(ui, tl!(o), false)).inner.clicked() {
+                if ui.push_id(o, |ui| crate::dialog_chrome::button(ui, tl!(o), false)).inner.clicked() {
                     clicked = Some(o.to_string());
                 }
             }

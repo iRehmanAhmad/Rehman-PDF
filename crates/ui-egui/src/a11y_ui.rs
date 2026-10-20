@@ -133,17 +133,7 @@ pub(crate) fn options_body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens)
     });
     ui.add(widgets::checkbox(&mut o.show_dialog, tl!("Show this dialog when the Checker starts")));
     ui.add_space(10.0);
-    let (mut start, mut cancel) = (false, false);
-    ui.horizontal(|ui| {
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl!("Start Checking"), true).clicked() {
-                start = true;
-            }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                cancel = true;
-            }
-        })
-    });
+    let (start, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Start Checking"), true);
     (start, cancel)
 }
 
@@ -547,10 +537,7 @@ pub(crate) fn alt_body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> 
     let n = d.figures.len();
     if n == 0 {
         ui.label(egui::RichText::new(tl!("This document has no tagged figures.")).color(t.text_muted));
-        let mut cancel = false;
-        ui.horizontal(|ui| {
-            ui.with_layout(Layout::right_to_left(Align::Center), |ui| cancel = widgets::pill_button(ui, tl!("Close"), true).clicked())
-        });
+        let cancel = crate::dialog_chrome::footer_single(ui, tl!("Close"));
         return (false, cancel);
     }
     d.index = d.index.min(n - 1);
@@ -587,6 +574,7 @@ pub(crate) fn alt_body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> 
     });
     ui.add(widgets::checkbox(&mut d.decorative[i], tl!("Decorative figure")));
     ui.add_space(10.0);
+    crate::dialog_chrome::divider(ui);
     let (mut save, mut cancel) = (false, false);
     ui.horizontal(|ui| {
         if ui.add_enabled_ui(i > 0, |ui| icons::button(ui, "chevron-left", 28.0, false, tl!("Previous figure"))).inner.clicked() {
@@ -595,11 +583,12 @@ pub(crate) fn alt_body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> 
         if ui.add_enabled_ui(i + 1 < n, |ui| icons::button(ui, "chevron-right", 28.0, false, tl!("Next figure"))).inner.clicked() {
             d.index += 1;
         }
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl!("Save & Close"), true).clicked() {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
+            if crate::dialog_chrome::button(ui, tl!("Save & Close"), true).clicked() {
                 save = true;
             }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Cancel"), false).clicked() {
                 cancel = true;
             }
         });

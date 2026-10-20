@@ -160,13 +160,13 @@
 	Next page	次のページ
 	Previous page	前のページ
 	Current page — type a page number or label (such as iv) and press Enter	現在のページ：ページ番号またはラベル（例：iv）を入力して Enter
-	Welcome to PdfCraft	PdfCraft へようこそ
+	Welcome to Rehman-PDF	PdfCraft へようこそ
 	An open-source PDF workbench — local, private, and scriptable.	ローカルで処理し、プライバシーを守る、スクリプト対応のオープンソース PDF ツール。
 	Recommended tools	おすすめのツール
 	Use now	使用する
 	Open file	ファイルを開く
 	Recent	最近使ったファイル
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	PdfCraft で開いたファイルがここに表示されます。PDF をウィンドウにドロップして開くこともできます。
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	PdfCraft で開いたファイルがここに表示されます。PDF をウィンドウにドロップして開くこともできます。
 	Privacy	プライバシー
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft はオフラインで動作します。使用状況の送信やアカウント登録はありません。サービス提供元を追加しない限り、クラウド処理も行いません。
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	スクリプトはファイルやネットワークにアクセスできないサンドボックスで実行されます。JavaScript を無効にしても、Acrobat の標準の書式設定・検証・計算関数は使用できます。
@@ -2352,3 +2352,23 @@ animation effects	Off	オフ
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	ウェブ上の Rehman-PDF
 	Project page, source code and the author's site.	プロジェクトページ、ソースコード、作者のサイト。
+
+	or drop a PDF anywhere	or drop a PDF anywhere
+	Free and open source · your files never leave this computer	Free and open source · your files never leave this computer
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Select, rotate, delete, insert and reorder pages · deep undo
+	Sticky notes, highlights and markup · summarize to a report	Sticky notes, highlights and markup · summarize to a report
+	Add fillable fields, checkboxes and signatures · bulk edit	Add fillable fields, checkboxes and signatures · bulk edit
+	Fix text, images and links in place · RTL-aware editing	Fix text, images and links in place · RTL-aware editing
+	Passwords and permissions · certificates and redaction	Passwords and permissions · certificates and redaction
+	Annotate	Annotate
+	of {count}	of {count}
+	Custom zoom	Custom zoom
+	Select all	Select all
+	Rotate left	Rotate left
+	Rotate right	Rotate right
+	Insert from file	Insert from file
+	{n} of {total} pages selected	{n} of {total} pages selected
+	navigate	navigate
+	run	run
+	Thumbnail size	Thumbnail size

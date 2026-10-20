@@ -208,16 +208,18 @@ pub(crate) fn body(ui: &mut egui::Ui, d: &mut OptimizeDraft, t: &Tokens) -> (boo
         }
     }
     ui.add_space(12.0);
+    crate::dialog_chrome::divider(ui);
     let (mut ok, mut cancel) = (false, false);
     ui.horizontal(|ui| {
-        if widgets::pill_button(ui, tl!("Audit space usage…"), false).clicked() {
+        if crate::dialog_chrome::button(ui, tl!("Audit space usage…"), false).clicked() {
             d.audit = true;
         }
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl!("OK"), true).clicked() {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
+            if crate::dialog_chrome::button(ui, tl!("OK"), true).clicked() {
                 ok = true;
             }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Cancel"), false).clicked() {
                 cancel = true;
             }
         });
@@ -254,9 +256,7 @@ pub(crate) fn audit_body(ui: &mut egui::Ui, rows: &[pdfcraft_engine::optimize::S
         ui.end_row();
     });
     ui.add_space(12.0);
-    let mut ok = false;
-    ui.horizontal(|ui| ui.with_layout(Layout::right_to_left(Align::Center), |ui| ok = widgets::pill_button(ui, tl!("OK"), true).clicked()));
-    ok
+    crate::dialog_chrome::footer_single(ui, tl!("OK"))
 }
 
 impl PdfCraftApp {

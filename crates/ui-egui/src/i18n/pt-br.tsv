@@ -1652,7 +1652,7 @@
 	Read	Ler
 	Convert	Converter
 	E-Sign	Assinatura eletrônica
-	Welcome to PdfCraft	Bem-vindo ao PdfCraft
+	Welcome to Rehman-PDF	Bem-vindo ao PdfCraft
 	An open-source PDF workbench — local, private, and scriptable.	Uma bancada de trabalho de PDF de código aberto — local, privada e programável.
 	Recommended tools	Ferramentas recomendadas
 	Use now	Usar agora
@@ -1698,7 +1698,7 @@
 	Add background…	Adicionar plano de fundo…
 	Prepare a form	Preparar um formulário
 	Digitally sign	Assinar digitalmente
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Os arquivos abertos no PdfCraft aparecem aqui. Solte um PDF em qualquer lugar para abri-lo.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	Os arquivos abertos no PdfCraft aparecem aqui. Solte um PDF em qualquer lugar para abri-lo.
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	O PdfCraft funciona offline. Sem telemetria, sem conta e sem processamento em nuvem, a menos que você adicione um provedor.
 	Measure distance	Medir distância
 	Measure perimeter	Medir perímetro
@@ -2366,3 +2366,23 @@ animation effects	Off	Desativados
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Rehman-PDF on the web
 	Project page, source code and the author's site.	Project page, source code and the author's site.
+
+	or drop a PDF anywhere	or drop a PDF anywhere
+	Free and open source · your files never leave this computer	Free and open source · your files never leave this computer
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Select, rotate, delete, insert and reorder pages · deep undo
+	Sticky notes, highlights and markup · summarize to a report	Sticky notes, highlights and markup · summarize to a report
+	Add fillable fields, checkboxes and signatures · bulk edit	Add fillable fields, checkboxes and signatures · bulk edit
+	Fix text, images and links in place · RTL-aware editing	Fix text, images and links in place · RTL-aware editing
+	Passwords and permissions · certificates and redaction	Passwords and permissions · certificates and redaction
+	Annotate	Annotate
+	of {count}	of {count}
+	Custom zoom	Custom zoom
+	Select all	Select all
+	Rotate left	Rotate left
+	Rotate right	Rotate right
+	Insert from file	Insert from file
+	{n} of {total} pages selected	{n} of {total} pages selected
+	navigate	navigate
+	run	run
+	Thumbnail size	Thumbnail size

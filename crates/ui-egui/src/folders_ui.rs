@@ -352,7 +352,9 @@ pub(crate) fn section(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
         let expanded = app.pinned.expanded.contains(folder);
         let shown = if expanded { listing.files.len() } else { listing.files.len().min(SHOWN) };
         for f in listing.files.iter().take(shown) {
-            let (rect, resp) = ui.allocate_exact_size(vec2(ui.available_width(), 38.0), Sense::click());
+            // 36 pt rows keep a full folder list (8 files + "Show more") above the fold
+            // on typical window heights (T-003 fix round 2).
+            let (rect, resp) = ui.allocate_exact_size(vec2(ui.available_width(), 36.0), Sense::click());
             resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, true, &f.name));
             if resp.hovered() {
                 ui.painter().rect_filled(rect, CornerRadius::same(8), t.hover);

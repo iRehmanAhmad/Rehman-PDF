@@ -71,6 +71,7 @@ pub use sign_ui::{DigitalIdEntry, SignDraft, SignGraphic, SignStep};
 mod autoscroll;
 mod bidi;
 pub mod bulk_fields;
+mod dialog_chrome;
 mod dialogs;
 mod edit_text_ui;
 mod editing;
@@ -2962,12 +2963,28 @@ impl eframe::App for PdfCraftApp {
         }
         chrome::tab_strip(self, ui);
         chrome::mode_bar(self, ui);
+        // Read mode's status bar (T-003 mockup): pager, fit control, zoom stepper. Declared
+        // before the side panels so it spans the window's full width, under the rail.
+        // Organize mode gets its own status bar instead (selection count + Undo/Redo).
+        let organizing = self.active.is_some_and(|i| self.views[i].organize);
+        if self.mode == Mode::Read && self.active.is_some() && !organizing {
+            chrome::status_bar(self, ui);
+        }
+        if organizing {
+            chrome::organize_status_bar(self, ui);
+        }
         if self.active.is_some() {
+            // The icon rail never mirrors, so in RTL it must stay the outermost right panel:
+            // the page-thumbnails strip is declared after it.
             chrome::right_rail(self, ui);
             // Read mode hides the tools, not the navigation panes: the rail stays visible
             // there, so its buttons (Bookmarks, Page thumbnails, ...) must open their panels.
             // Outside Read mode the docking workspace draws the inspector.
-            if self.mode == Mode::Read && self.right.is_some() {
+            // The Pages panel docks as the mockup's left thumbnails strip instead of the
+            // right panel; every other panel keeps the right side.
+            if self.mode == Mode::Read && self.right == Some(RightPanel::Pages) {
+                chrome::pages_strip(self, ui);
+            } else if self.mode == Mode::Read && self.right.is_some() {
                 egui::Panel::right("read_right_panel")
                     .resizable(true)
                     .default_size(330.0)

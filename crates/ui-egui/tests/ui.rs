@@ -31,10 +31,16 @@ fn harness(setup: impl FnOnce(&mut PdfCraftApp) + 'static) -> Harness<'static, P
     h
 }
 
+/// The top bar's project-page button ("Rehman-PDF", globe icon): the right-hand anchor the
+/// old "Discord" button used to be in these layout tests.
+fn project_button(h: &Harness<'static, PdfCraftApp>) -> egui::Rect {
+    h.get_by_role_and_label(egui::accesskit::Role::Button, "Rehman-PDF").rect()
+}
+
 #[test]
 fn home_shows_welcome_and_tools() {
     let h = harness(|_| {});
-    h.get_by_label_contains("Welcome to PdfCraft");
+    h.get_by_label_contains("Welcome to Rehman-PDF");
     assert!(h.query_all_by_label("Organize pages").count() >= 2, "tool list + home card");
     h.get_by_label("Open file");
 }
@@ -111,7 +117,7 @@ fn home_removes_one_recent_file_or_clears_them_all() {
     h.get_by_label("Clear Recent Files").click();
     h.run_steps(2);
     assert!(h.state().recent.is_empty(), "Clear empties the list");
-    h.get_by_label_contains("Files you open in PdfCraft appear here");
+    h.get_by_label_contains("Files you open in Rehman-PDF appear here");
     assert!(h.query_by_label("Clear Recent Files").is_none(), "and goes away with nothing left to clear");
 }
 
@@ -227,11 +233,12 @@ fn a_pane_closed_in_read_mode_stays_closed_when_leaving_it() {
     h.get_by_label("Read").click();
     h.run_steps(3);
     assert_eq!(h.state().right, None);
-    // Open Comments from the rail, then close it again.
-    h.get_by_role_and_label(egui::accesskit::Role::Button, "Comments").click();
+    // Open Comments from the rail, then close it again. In Read mode the rail's button is
+    // labelled "Annotate" (the mockup's four-button rail); elsewhere it is "Comments".
+    h.get_by_role_and_label(egui::accesskit::Role::Button, "Annotate").click();
     h.run_steps(3);
     assert_eq!(h.state().right, Some(RightPanel::Comments));
-    h.get_by_role_and_label(egui::accesskit::Role::Button, "Comments").click();
+    h.get_by_role_and_label(egui::accesskit::Role::Button, "Annotate").click();
     h.run_steps(3);
     assert_eq!(h.state().right, None);
     assert!(h.state().comments_panel_closed);
@@ -330,8 +337,8 @@ fn tabs_shrink_to_fit_then_arrows_step_through_them_and_open_stays_in_sight() {
         }
     });
     let open = h.get_by_label("Open").rect();
-    let discord = h.get_by_label("Discord").rect();
-    assert!(open.right() <= discord.left(), "Open {open:?} must not run under Discord {discord:?}");
+    let project = project_button(&h);
+    assert!(open.right() <= project.left(), "Open {open:?} must not run under the project button {project:?}");
     let mut previous_right = f32::MIN;
     for i in 0..5 {
         let tab = h.get_by_label(&name(i)).rect();
@@ -355,15 +362,15 @@ fn tabs_shrink_to_fit_then_arrows_step_through_them_and_open_stays_in_sight() {
     assert_eq!(enabled(&h, "Scroll tabs right"), Some(true), "and then there is more to the right");
     let open = h.get_by_label("Open").rect();
     let right = h.get_by_label("Scroll tabs right").rect();
-    assert!(right.right() <= open.left() + 0.5 && open.right() <= h.get_by_label("Discord").rect().left());
-    // Twenty: Open stays in sight left of Discord.
+    assert!(right.right() <= open.left() + 0.5 && open.right() <= project_button(&h).left());
+    // Twenty: Open stays in sight left of the project button.
     for i in 0..13 {
         h.state_mut().open_bytes(&format!("more-{i:02}.pdf"), None, FIXTURE.to_vec()).unwrap();
     }
     h.run_steps(4);
     let open = h.get_by_label("Open").rect();
-    let discord = h.get_by_label("Discord").rect();
-    assert!(open.left() > 0.0 && open.right() <= discord.left(), "Open {open:?} stays in sight left of Discord {discord:?}");
+    let project = project_button(&h);
+    assert!(open.left() > 0.0 && open.right() <= project.left(), "Open {open:?} stays in sight left of the project button {project:?}");
 }
 
 /// macOS (#789): with the integrated title bar, the strip is the 28 pt band AppKit centres the
@@ -376,11 +383,14 @@ fn the_integrated_title_bar_is_the_traffic_light_band() {
         app.open_bytes("band.pdf", None, FIXTURE.to_vec()).unwrap();
     });
     let band = 28.0;
-    for label in ["Home", "band.pdf", "Open", "Discord", "Keyboard shortcuts"] {
+    for label in ["Home", "band.pdf", "Open", "Keyboard shortcuts"] {
         let r = h.get_by_label(label).rect();
         assert!(r.top() >= 0.0 && r.bottom() <= band, "{label}: {r:?} inside the {band} pt title bar");
         assert!(r.height() >= 24.0, "{label}: {r:?} stays clickable");
     }
+    let r = project_button(&h);
+    assert!(r.top() >= 0.0 && r.bottom() <= band, "project button: {r:?} inside the {band} pt title bar");
+    assert!(r.height() >= 24.0, "project button: {r:?} stays clickable");
     // Content starts after the three lights (the last one ends 62 pt in) with a gap.
     let home = h.get_by_label("Home").rect();
     assert!(home.left() >= 62.0 + 4.0, "Home {home:?} clears the traffic lights");
@@ -398,11 +408,14 @@ fn narrow_tab_strips_accept_vertical_wheel_scrolling() {
             app
         });
         h.run_steps(4);
-        let last = h.get_by_label("narrow-11.pdf").rect();
+        // The redesign's tab strip shows the active document name as a Label as well as the
+        // Tab itself; the tab is the Role::Tab node.
+        let tab_by_name = |h: &Harness<'static, PdfCraftApp>, name: &str| h.get_by_role_and_label(egui::accesskit::Role::Tab, name).rect();
+        let last = tab_by_name(&h, "narrow-11.pdf");
         assert!(last.center().x > 28.0 && last.right() < width - 100.0, "active tab: {last:?}");
         h.state_mut().active = Some(0);
         h.run_steps(4);
-        let first = h.get_by_label("narrow-00.pdf").rect();
+        let first = tab_by_name(&h, "narrow-00.pdf");
         assert!(first.center().x > 28.0 && first.right() < width - 100.0);
         h.event(egui::Event::PointerMoved(first.center()));
         for _ in 0..8 {
@@ -414,9 +427,9 @@ fn narrow_tab_strips_accept_vertical_wheel_scrolling() {
             });
             h.run_steps(8);
         }
-        let last = h.get_by_label("narrow-11.pdf").rect();
+        let last = tab_by_name(&h, "narrow-11.pdf");
         assert!(last.center().x > 28.0 && last.right() < width - 100.0, "scrolled tab: {last:?}");
-        h.get_by_label("narrow-11.pdf").click();
+        h.get_by_role_and_label(egui::accesskit::Role::Tab, "narrow-11.pdf").click();
         h.run_steps(4);
         assert_eq!(h.state().active, Some(11));
         assert!(h.get_by_label_contains("Display theme:").rect().right() <= width);
@@ -1064,7 +1077,7 @@ fn closing_the_last_active_tab_selects_the_previous_one_then_home() {
         assert!(app.session.get(ids[removed]).is_none());
     }
     assert_eq!(h.state().active, None);
-    h.get_by_label_contains("Welcome to PdfCraft");
+    h.get_by_label_contains("Welcome to Rehman-PDF");
 }
 
 #[test]

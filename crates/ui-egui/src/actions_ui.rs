@@ -6,8 +6,8 @@ use std::sync::{Arc, Mutex};
 use egui::{Align, Layout};
 use pdfcraft_engine::actions::{Action, Step, builtin};
 
+use crate::PdfCraftApp;
 use crate::theme::{self, Tokens};
-use crate::{PdfCraftApp, widgets};
 
 /// The Action Wizard's state.
 #[derive(Clone, Debug, Default, PartialEq)]
@@ -288,15 +288,14 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool
                 app.wizard.selected = None;
             }
         }
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl_ctx!("action wizard", "Start"), true).clicked() {
-                close = true;
-                app.start_selected_action();
-            }
-            if widgets::pill_button(ui, tl!("Close"), false).clicked() {
-                close = true;
-            }
-        });
+        let (start, closed) = crate::dialog_chrome::footer(ui, tl!("Close"), tl_ctx!("action wizard", "Start"), true);
+        if start {
+            close = true;
+            app.start_selected_action();
+        }
+        if closed {
+            close = true;
+        }
     });
     close
 }
@@ -361,12 +360,14 @@ fn edit_body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool {
     }
     let (mut done, mut cancel) = (false, false);
     let ok = !name.is_empty() && !taken && !a.steps.is_empty();
+    crate::dialog_chrome::divider(ui);
     ui.horizontal(|ui| {
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if ui.add_enabled_ui(ok, |ui| widgets::pill_button(ui, tl!("Save"), true)).inner.clicked() {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
+            if ui.add_enabled_ui(ok, |ui| crate::dialog_chrome::button(ui, tl!("Save"), true)).inner.clicked() {
                 done = true;
             }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Cancel"), false).clicked() {
                 cancel = true;
             }
         });

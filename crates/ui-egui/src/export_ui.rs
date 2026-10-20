@@ -5,12 +5,11 @@
 
 use std::sync::{Arc, Mutex};
 
-use egui::{Align, Layout};
 use pdfcraft_engine::export::{ExportSource, Exporter, ImageFormat};
 
+use crate::PdfCraftApp;
 use crate::marks_ui::PageRange;
 use crate::theme::{self, Tokens};
-use crate::{PdfCraftApp, widgets};
 
 #[derive(Clone, Copy, Debug, PartialEq, Eq)]
 pub enum ExportKind {
@@ -111,17 +110,8 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens, kind: E
     ui.label(egui::RichText::new(tl!("Pages")).font(theme::semibold(12.5)));
     d.range.ui(ui, count);
     ui.add_space(12.0);
-    let (mut apply, mut cancel) = (false, false);
-    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-        let ok = !d.range.pages(count).is_empty();
-        if ui.add_enabled_ui(ok, |ui| widgets::pill_button(ui, tl!("Export"), true)).inner.clicked() {
-            apply = true;
-        }
-        if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-            cancel = true;
-        }
-    });
-    (apply, cancel)
+    let ok = !d.range.pages(count).is_empty();
+    crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Export"), ok)
 }
 
 /// Write the files (`name`, bytes) produced for `pages`, reporting progress.

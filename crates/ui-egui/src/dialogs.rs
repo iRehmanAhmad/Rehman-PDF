@@ -1,7 +1,5 @@
 //! Modal dialogs: Document Properties, Keyboard Shortcuts, About (with the Contributors and Models credits).
 
-use egui::{Align, Layout};
-
 use crate::theme::{self, Tokens};
 use pdfcraft_engine::Edit;
 
@@ -89,40 +87,45 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 return;
             }
             Dialog::Properties(tab) => {
-                ui.label(egui::RichText::new(tl!("Document Properties")).font(theme::semibold(18.0)));
-                ui.add_space(8.0);
-                ui.horizontal_wrapped(|ui| {
-                    for (tb, label) in [
+                crate::dialog_chrome::title(ui, tl!("Document Properties"));
+                if let Some(tb) = crate::dialog_chrome::tab_bar(
+                    ui,
+                    &[
                         (PropsTab::Description, tl!("Description")),
                         (PropsTab::InitialView, tl!("Initial View")),
                         (PropsTab::Security, tl!("Security")),
                         (PropsTab::Fonts, tl!("Fonts")),
                         (PropsTab::Advanced, tl!("Advanced")),
-                    ] {
-                        if widgets::mode_tab(ui, label, tab == tb).clicked() {
-                            next = Dialog::Properties(tb);
-                        }
-                    }
-                });
-                ui.separator();
+                    ],
+                    tab,
+                ) {
+                    next = Dialog::Properties(tb);
+                }
                 let units = app.units;
                 let Some((_, id)) = app.active_ids() else { return };
                 let Some(doc) = app.session.get(id) else { return };
                 let i = &doc.info;
                 let row = |ui: &mut egui::Ui, k: &str, v: String| {
                     // Row labels are UI chrome; values are document data and stay as they are.
-                    ui.label(egui::RichText::new(tl!(k)).color(t.text_muted));
-                    ui.label(if v.is_empty() { egui::RichText::new("—").color(t.text_faint) } else { egui::RichText::new(v) });
+                    // Mockup: 12.5 px muted labels, 12.5 medium values, 150 px label column.
+                    ui.label(egui::RichText::new(tl!(k)).font(theme::regular(12.5)).color(t.text_muted));
+                    ui.label(if v.is_empty() {
+                        egui::RichText::new("—").font(theme::regular(12.5)).color(t.text_faint)
+                    } else {
+                        egui::RichText::new(v).font(theme::medium(12.5))
+                    });
                     ui.end_row();
                 };
-                egui::ScrollArea::vertical().max_height(460.0).auto_shrink([false, true]).show(ui, |ui| {
-                    egui::Grid::new("props").num_columns(2).spacing([18.0, 8.0]).min_col_width(140.0).show(ui, |ui| match tab {
+                // The Advanced tab holds ~15 rows; the mockup's 11 pt row gap needs
+                // headroom so the Revisions row stays above the fold (T-003 fix round 2).
+                egui::ScrollArea::vertical().max_height(520.0).auto_shrink([false, true]).show(ui, |ui| {
+                    egui::Grid::new("props").num_columns(2).spacing([18.0, 11.0]).min_col_width(150.0).show(ui, |ui| match tab {
                         PropsTab::Description => {
                             row(ui, "File", crate::bidi::visual(&doc.name).into_owned());
                             match app.props_draft.as_mut() {
                                 Some((_, draft)) if doc.allows_modification() => {
                                     for (k, v) in INFO_KEYS.iter().zip(draft.iter_mut()) {
-                                        let l = ui.label(egui::RichText::new(tl!(k)).color(t.text_muted));
+                                        let l = ui.label(egui::RichText::new(tl!(k)).font(theme::regular(12.5)).color(t.text_muted));
                                         ui.add(widgets::line(v).desired_width(420.0).background_color(t.field).id_salt(("info", *k)))
                                             .labelled_by(l.id);
                                         ui.end_row();
@@ -393,8 +396,7 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 });
             }
             Dialog::Split => {
-                ui.label(egui::RichText::new(tl!("Split document")).font(theme::semibold(18.0)));
-                ui.add_space(8.0);
+                crate::dialog_chrome::title(ui, tl!("Split document"));
                 let Some((vi, id)) = app.active_ids() else { return };
                 let n = app.session.get(id).map(|d| d.info.pages.len()).unwrap_or(0);
                 let selected: Vec<usize> = app.views[vi].selected.iter().copied().filter(|p| *p > 0).collect();
@@ -455,7 +457,8 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     }
                     None => crate::i18n::fmt(tl!("Each file holds as many of the {n} pages as fit."), &[("n", &n.to_string())]),
                 };
-                ui.label(egui::RichText::new(text).color(t.text_muted));
+                // The mockup's summary banner: accent-soft, rounded.
+                crate::dialog_chrome::summary(ui, egui::RichText::new(text));
                 if files.is_none_or(|f| f > 1) {
                     split_ready = Some(plan);
                 }
@@ -497,16 +500,9 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     .small()
                     .color(t.text_faint),
                 );
-                ui.add_space(10.0);
-                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                    if ui.add_enabled_ui(fits, |ui| widgets::pill_button(ui, tl!("OK"), true)).inner.clicked() {
-                        replace_now = true;
-                        close = true;
-                    }
-                    if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                        close = true;
-                    }
-                });
+                let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("OK"), fits);
+                replace_now = go;
+                close = go || cancel;
                 return;
             }
             Dialog::RedactPages => {
@@ -574,16 +570,11 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 });
                 ui.add(widgets::checkbox(&mut app.extract_draft.delete, tl!("Delete pages after extracting")));
                 ui.add(widgets::checkbox(&mut app.extract_draft.separate, tl!("Extract pages as separate files")));
-                ui.add_space(12.0);
-                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                    if widgets::pill_button(ui, tl!("Extract"), true).clicked() {
-                        extract_now = true;
-                        close = true;
-                    }
-                    if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                        close = true;
-                    }
-                });
+                let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Extract"), true);
+                if go {
+                    extract_now = true;
+                }
+                close = go || cancel;
                 return;
             }
             Dialog::RotatePages => {
@@ -647,16 +638,9 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     ui.end_row();
                 });
                 d.to = d.to.max(d.from);
-                ui.add_space(12.0);
-                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                    if widgets::pill_button(ui, tl!("OK"), true).clicked() {
-                        rotate_now = true;
-                        close = true;
-                    }
-                    if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                        close = true;
-                    }
-                });
+                let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("OK"), true);
+                rotate_now = go;
+                close = go || cancel;
                 return;
             }
             Dialog::DuplicateField => {
@@ -677,17 +661,12 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     ui.label(crate::i18n::fmt(tl!("of {name}"), &[("name", &n.to_string())]));
                 });
                 d.to = d.to.max(d.from);
-                ui.add_space(12.0);
-                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                    if widgets::pill_button(ui, tl!("OK"), true).clicked() {
-                        let pages: Vec<usize> = if d.all { (0..n).collect() } else { (d.from - 1..d.to.min(n)).collect() };
-                        duplicate_now = Some(Edit::DuplicateField { name: d.name.clone(), pages });
-                        close = true;
-                    }
-                    if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                        close = true;
-                    }
-                });
+                let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("OK"), true);
+                if go {
+                    let pages: Vec<usize> = if d.all { (0..n).collect() } else { (d.from - 1..d.to.min(n)).collect() };
+                    duplicate_now = Some(Edit::DuplicateField { name: d.name.clone(), pages });
+                }
+                close = go || cancel;
                 return;
             }
             Dialog::Optimize => {
@@ -746,16 +725,9 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                         }
                     });
                 });
-                ui.add_space(12.0);
-                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                    if widgets::pill_button(ui, tl!("Create PDF Comment Summary"), true).clicked() {
-                        summarize_now = true;
-                        close = true;
-                    }
-                    if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                        close = true;
-                    }
-                });
+                let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Create PDF Comment Summary"), true);
+                summarize_now = go;
+                close = go || cancel;
                 return;
             }
             Dialog::Revert => {
@@ -766,16 +738,9 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     tl!("Revert to the previously saved version of “{name}”? Changes since then can't be undone afterwards."),
                     &[("name", &name)],
                 ));
-                ui.add_space(12.0);
-                ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-                    if widgets::pill_button(ui, tl!("Revert"), true).clicked() {
-                        revert_now = true;
-                        close = true;
-                    }
-                    if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                        close = true;
-                    }
-                });
+                let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Revert"), true);
+                revert_now = go;
+                close = go || cancel;
                 return;
             }
             Dialog::Print => {
@@ -1081,16 +1046,10 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 // Tabs About · Contributors · Models (craftrules standards/contributors.md).
                 let tab_id = egui::Id::new("about_tab");
                 let mut tab = ui.data_mut(|d| d.get_temp::<u8>(tab_id)).unwrap_or(0);
-                ui.horizontal_wrapped(|ui| {
-                    for (i, label) in ["About", "Contributors", "Models"].into_iter().enumerate() {
-                        let i = i as u8;
-                        if widgets::mode_tab(ui, tl!(label), tab == i).clicked() {
-                            tab = i;
-                        }
-                    }
-                });
+                if let Some(i) = crate::dialog_chrome::tab_bar(ui, &[(0u8, tl!("About")), (1u8, tl!("Contributors")), (2u8, tl!("Models"))], tab) {
+                    tab = i;
+                }
                 ui.data_mut(|d| d.insert_temp(tab_id, tab));
-                ui.separator();
                 match tab {
                     1 => crate::credits::contributors_ui(ui),
                     2 => crate::credits::models_ui(ui),
@@ -1118,46 +1077,38 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 }
             }
         }
-        ui.add_space(16.0);
         let changed = draft_changes(app).is_some_and(|c| !c.is_empty());
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if dialog == Dialog::Recovery {
-                if widgets::pill_button(ui, tl!("Recover"), true).clicked() {
-                    recover = Some(true);
-                    close = true;
-                }
-                if widgets::pill_button(ui, tl!("Discard"), false).clicked() {
-                    recover = Some(false);
-                    close = true;
-                }
-            } else if dialog == Dialog::NumberPages {
-                if widgets::pill_button(ui, tl!("OK"), true).clicked() {
-                    apply_number = true;
-                    close = true;
-                }
-                if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                    close = true;
-                }
-            } else if dialog == Dialog::Split {
-                if ui.add_enabled_ui(split_ready.is_some(), |ui| widgets::pill_button(ui, tl!("Split"), true)).inner.clicked() {
-                    split_now = split_ready.clone();
-                    close = true;
-                }
-                if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                    close = true;
-                }
-            } else if changed {
-                if widgets::pill_button(ui, tl!("OK"), true).clicked() {
-                    apply = true;
-                    close = true;
-                }
-                if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                    close = true;
-                }
-            } else if widgets::pill_button(ui, tl!("Close"), true).clicked() {
+        // Every dialog shares the mockup's footer chrome (divider + Cancel/primary, mirrored in
+        // RTL): Recovery keeps Recover/Discard, Split keeps Split, Properties' description
+        // edits Save, everything else keeps OK, and read-only dialogs get a lone Close.
+        if dialog == Dialog::Recovery {
+            let (yes, no) = crate::dialog_chrome::footer(ui, tl!("Discard"), tl!("Recover"), true);
+            if yes {
+                recover = Some(true);
+                close = true;
+            } else if no {
+                recover = Some(false);
                 close = true;
             }
-        });
+        } else if dialog == Dialog::NumberPages {
+            let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("OK"), true);
+            if go {
+                apply_number = true;
+            }
+            close = go || cancel;
+        } else if dialog == Dialog::Split {
+            let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Split"), split_ready.is_some());
+            if go {
+                split_now = split_ready.clone();
+            }
+            close = go || cancel;
+        } else if changed {
+            let (go, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Save"), true);
+            apply = go;
+            close = go || cancel;
+        } else if crate::dialog_chrome::footer_single(ui, tl!("Close")) {
+            close = true;
+        }
     });
     if let Some(yes) = recover {
         let keys: Vec<String> = app.recoverable.iter().map(|m| m.key.clone()).collect();
@@ -1407,15 +1358,18 @@ fn save_prompt(app: &mut PdfCraftApp, ctx: &egui::Context) {
         ui.add_space(6.0);
         ui.label(egui::RichText::new(tl!("Your changes will be lost if you don't save them.")).color(t.text_muted));
         ui.add_space(14.0);
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl!("Save"), true).clicked() {
+        // Three buttons: Save is the default; the row mirrors in RTL like every dialog footer.
+        crate::dialog_chrome::divider(ui);
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
+            if crate::dialog_chrome::button(ui, tl!("Save"), true).clicked() {
                 choice = Some(Some(true));
             }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Cancel"), false).clicked() {
                 choice = Some(None);
             }
             ui.add_space(24.0);
-            if widgets::pill_button(ui, tl!("Don't save"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Don't save"), false).clicked() {
                 choice = Some(Some(false));
             }
         });
@@ -1489,14 +1443,14 @@ fn link_prompt(app: &mut PdfCraftApp, ctx: &egui::Context) {
             .small(),
         );
         ui.add_space(14.0);
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl!("Cancel"), true).clicked() {
-                choice = Some(false);
-            }
-            if widgets::pill_button(ui, open, false).clicked() {
-                choice = Some(true);
-            }
-        });
+        // Cancel is the default here (the safe choice), styled primary; the footer still
+        // mirrors in RTL.
+        let (cancelled, opened) = crate::dialog_chrome::footer(ui, open, tl!("Cancel"), true);
+        if cancelled {
+            choice = Some(false);
+        } else if opened {
+            choice = Some(true);
+        }
     });
     if choice.is_none() && modal.should_close() {
         choice = Some(false);
@@ -1521,14 +1475,14 @@ fn remote_link_prompt(app: &mut PdfCraftApp, ctx: &egui::Context) {
         ui.add_space(8.0);
         ui.label(tl!("Only allow this if you trust the source document."));
         ui.add_space(14.0);
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, tl!("Cancel"), true).clicked() {
-                choice = Some(false);
-            }
-            if widgets::pill_button(ui, tl!("Allow"), false).clicked() {
-                choice = Some(true);
-            }
-        });
+        // Cancel is the default here (the safe choice), styled primary; the footer still
+        // mirrors in RTL.
+        let (cancelled, allowed) = crate::dialog_chrome::footer(ui, tl!("Allow"), tl!("Cancel"), true);
+        if cancelled {
+            choice = Some(false);
+        } else if allowed {
+            choice = Some(true);
+        }
     });
     if choice.is_none() && modal.should_close() {
         choice = Some(false);
@@ -1582,14 +1536,12 @@ fn password_modal(
             ui.label(egui::RichText::new(tl!(e)).color(egui::Color32::from_rgb(0xD1, 0x3B, 0x3B)));
         }
         ui.add_space(12.0);
-        ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-            if widgets::pill_button(ui, ok, true).clicked() {
-                answer = Some(PasswordAnswer::Submit);
-            }
-            if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-                answer = Some(PasswordAnswer::Cancel);
-            }
-        });
+        let (submit, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), ok, true);
+        if submit {
+            answer = Some(PasswordAnswer::Submit);
+        } else if cancel {
+            answer = Some(PasswordAnswer::Cancel);
+        }
     });
     answer.or(modal.should_close().then_some(PasswordAnswer::Cancel))
 }

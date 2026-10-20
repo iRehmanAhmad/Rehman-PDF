@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rehman-PDF — ⌘K palette (dark) · T-003 mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --titlebar:#17171A; --chrome:#1E1E22; --pasteboard:#101013; --card:#26262B;
+    --border:#36363C; --divider:#2E2E33;
+    --text:#EDEDF0; --muted:#A9A9B2; --faint:#8A8A92; --icon:#CFCFD6;
+    --hover:#2C2C32; --pressed:#38383E; --selected:#2B3358;
+    --accent:#818CF8; --accent-soft:#232A52; --field:#1C1C20; --danger:#F04438;
+    --tile-blue:#2B3358; --tile-green:#1D3A24; --tile-orange:#3D2A17; --tile-purple:#33244D;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; color:var(--text);
+       background:var(--pasteboard); font-size:13px; -webkit-font-smoothing:antialiased;
+       min-height:100vh; display:flex; justify-content:center; padding-top:12vh;}
+  .wrap{width:600px;}
+  .cap{font-size:12px; font-weight:600; color:var(--muted); letter-spacing:.4px;
+       text-transform:uppercase; margin:0 4px 10px;}
+  .palette{background:var(--card); border:1px solid var(--border); border-radius:16px;
+            box-shadow:0 24px 70px rgba(20,20,45,.20); overflow:hidden;}
+  .input{display:flex; align-items:center; gap:12px; padding:15px 18px;
+         border-bottom:1px solid var(--divider);}
+  .input svg{flex-shrink:0;}
+  .query{font-size:15px; font-weight:500; flex:1;}
+  .query .caret{display:inline-block; width:2px; height:17px; background:var(--accent);
+                vertical-align:-2px; margin-left:1px; animation:blink 1.1s steps(1) infinite;}
+  @keyframes blink{50%{opacity:0;}}
+  .kbd{font-size:11px; font-weight:600; color:var(--muted); background:var(--hover);
+       border:1px solid var(--border); border-radius:6px; padding:3px 8px;}
+  .results{padding:8px; max-height:392px;}
+  .row{display:flex; align-items:center; gap:12px; padding:8px 10px; border-radius:10px;}
+  .row.sel{background:var(--accent-soft);}
+  .tile{width:34px; height:34px; border-radius:9px; display:flex; align-items:center;
+        justify-content:center; flex-shrink:0;}
+  .t-blue{background:var(--tile-blue);} .t-green{background:var(--tile-green);}
+  .t-orange{background:var(--tile-orange);} .t-purple{background:var(--tile-purple);}
+  .name{font-size:13.5px; font-weight:500; flex:1;}
+  .row.sel .name{font-weight:600;}
+  .grp{font-size:11.5px; color:var(--faint); font-weight:500;}
+  .foot{display:flex; gap:16px; padding:11px 18px; border-top:1px solid var(--divider);
+        font-size:11.5px; color:var(--faint);}
+  .foot b{color:var(--muted); font-weight:600;}
+  .note{margin:26px 4px 0; font-size:12px; color:var(--faint); line-height:1.7;}
+  mark{background:none; color:var(--accent); font-weight:600;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="cap">⌘K palette — searching “page”</div>
+  <div class="palette">
+    <div class="input">
+      <svg width="17" height="17" viewBox="0 0 20 20" fill="none" stroke="#A9A9B2" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5 L18 18"/></svg>
+      <span class="query">page<span class="caret"></span></span>
+      <span class="kbd">esc</span>
+    </div>
+    <div class="results">
+      <div class="row sel">
+        <span class="tile t-blue"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h7l4 4v10H4z"/><path d="M11 3v4h4"/></svg></span>
+        <span class="name">Organize <mark>page</mark>s</span><span class="grp">Organize</span>
+      </div>
+      <div class="row">
+        <span class="tile t-purple"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#C4A5F5" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="4" width="6" height="8" rx="1.5"/><rect x="11" y="4" width="6" height="8" rx="1.5"/><rect x="3" y="14" width="6" height="3" rx="1"/><rect x="11" y="14" width="6" height="3" rx="1"/></svg></span>
+        <span class="name"><mark>Page</mark> thumbnails</span><span class="grp">View</span>
+      </div>
+      <div class="row">
+        <span class="tile t-orange"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#E8A85C" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="6.5"/><circle cx="10" cy="10" r="1.6" fill="#E8A85C"/></svg></span>
+        <span class="name">Go to <mark>page</mark>…</span><span class="grp">Navigate</span>
+      </div>
+      <div class="row">
+        <span class="tile t-blue"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a6 6 0 1 1-2-4.5"/><path d="M16 3v4h-4"/></svg></span>
+        <span class="name">Rotate <mark>page</mark>s…</span><span class="grp">Organize</span>
+      </div>
+      <div class="row">
+        <span class="tile t-blue"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round"><path d="M10 4v9M5.5 9.5L10 14l4.5-4.5"/><path d="M4 16.5h12"/></svg></span>
+        <span class="name">Insert <mark>page</mark>s from file…</span><span class="grp">Organize</span>
+      </div>
+      <div class="row">
+        <span class="tile t-blue"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h12M8 6V4h4v2M6 6l1 11h6l1-11"/></svg></span>
+        <span class="name">Delete <mark>page</mark>s</span><span class="grp">Organize</span>
+      </div>
+      <div class="row">
+        <span class="tile t-green"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#7BC48A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14V6M6 10l4-4 4 4"/><path d="M4 17.5h12"/></svg></span>
+        <span class="name">Extract <mark>page</mark>s…</span><span class="grp">Organize</span>
+      </div>
+      <div class="row">
+        <span class="tile t-blue"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round"><path d="M5 7h10M5 10.5h10M5 14h6"/></svg></span>
+        <span class="name">Number <mark>page</mark>s…</span><span class="grp">Organize</span>
+      </div>
+    </div>
+    <div class="foot"><span><b>↑↓</b> navigate</span><span><b>↵</b> run</span><span><b>esc</b> close</span></div>
+  </div>
+  <p class="note">Builder notes: the palette is one floating card (radius 16, card bg, 24px/70px shadow).
+  Match substring highlighted in accent semibold. Selected row = <b>accent-soft</b> fill, never an
+  outline. Each row shows the tool group it belongs to (faint, right). Tiles reuse the tool-hue
+  system (Organize = blue, View = purple, Navigate = orange). No shortcuts shown — group label
+  only, per the upstream contract.</p>
+</div>
+</body>
+</html>

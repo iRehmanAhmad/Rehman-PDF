@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rehman-PDF — Home (dark) · T-003 mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --titlebar:#17171A; --chrome:#1E1E22; --pasteboard:#141417; --card:#26262B;
+    --border:#36363C; --divider:#2E2E33;
+    --text:#EDEDF0; --muted:#A9A9B2; --faint:#8A8A92; --icon:#CFCFD6;
+    --hover:#2C2C32; --pressed:#38383E; --selected:#2B3358;
+    --accent:#818CF8; --accent-soft:#232A52; --field:#1C1C20; --danger:#F04438;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; color:var(--text);
+       background:var(--pasteboard); font-size:13px; -webkit-font-smoothing:antialiased;}
+  .win{max-width:1180px; margin:24px auto; border:1px solid var(--border); border-radius:14px;
+       overflow:hidden; background:var(--chrome); box-shadow:0 12px 40px rgba(0,0,0,.45);}
+  .titlebar{display:flex; align-items:center; gap:8px; background:var(--titlebar);
+            border-bottom:1px solid var(--divider); padding:8px 14px;}
+  .traffic{display:flex; gap:7px; margin-right:6px;}
+  .traffic i{width:11px; height:11px; border-radius:50%; display:block;}
+  .traffic i:nth-child(1){background:#FF5F57;} .traffic i:nth-child(2){background:#FEBC2E;}
+  .traffic i:nth-child(3){background:#28C840;}
+  .apptitle{font-weight:600; font-size:12.5px; color:var(--muted); letter-spacing:.2px;}
+  .tabs{display:flex; gap:6px; margin-left:14px;}
+  .tab{display:flex; align-items:center; gap:8px; padding:6px 10px 6px 12px; border-radius:8px;
+       font-size:12.5px; color:var(--muted); background:transparent; border:1px solid transparent;}
+  .tab.active{background:var(--chrome); border-color:var(--border); color:var(--text); font-weight:500;}
+  .titlebar .sp{flex:1;}
+  .iconbtn{width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center;
+           border-radius:8px; color:var(--icon);}
+  .iconbtn svg{width:17px; height:17px;}
+  .modebar{display:flex; align-items:center; gap:6px; padding:8px 14px; background:var(--chrome);
+           border-bottom:1px solid var(--divider);}
+  .menubtn{font-size:12.5px; color:var(--icon); padding:7px 9px; border-radius:8px; font-weight:500;}
+  .vline{width:1px; height:20px; background:var(--divider); margin:0 8px;}
+  .modetabs{display:flex; background:#141417; border-radius:10px; padding:3px; gap:2px; border:1px solid var(--divider);}
+  .modetab{font-size:12.5px; font-weight:500; color:var(--muted); padding:6px 14px; border-radius:8px;}
+  .modetab.active{background:var(--card); color:var(--text); box-shadow:0 1px 3px rgba(0,0,0,.4);}
+  .modebar .sp{flex:1;}
+  .toolbtn{display:inline-flex; align-items:center; gap:7px; padding:7px 11px; border-radius:8px;
+           color:var(--icon); font-size:12.5px; font-weight:500;}
+  .toolbtn svg{width:16px; height:16px;}
+  .toolbtn.dim{opacity:.38;}
+  .kbdsearch{display:flex; align-items:center; gap:8px; border:1px solid var(--border); border-radius:8px;
+             padding:7px 11px; color:var(--faint); font-size:12.5px; background:var(--field); min-width:230px;}
+  .kbdsearch .kbd{margin-left:auto; background:var(--hover); border:1px solid var(--border);
+                  border-radius:5px; padding:1px 6px; font-size:11px; color:var(--muted); font-weight:600;}
+  .content{padding:28px 36px 40px; background:var(--chrome);}
+  h1{font-size:24px; font-weight:600; letter-spacing:-.3px;}
+  .tagline{color:var(--muted); font-size:14px; margin-top:5px;}
+  .card{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px 18px; margin-top:16px;}
+  .card h2{font-size:15px; font-weight:600;}
+  .card p.sub{color:var(--muted); margin-top:3px;}
+  .btnrow{display:flex; gap:10px; margin-top:12px;}
+  .btn{display:inline-flex; align-items:center; gap:8px; padding:8px 15px; border-radius:9px;
+       font-size:12.5px; font-weight:600; border:1px solid var(--border); background:var(--field); color:var(--text);}
+  .btn.primary{background:var(--accent); border-color:var(--accent); color:#101014;}
+  .btn svg{width:15px; height:15px;}
+  .sectitle{font-size:15px; font-weight:600; margin-top:26px;}
+  .toolgrid{display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; margin-top:12px;}
+  .toolcard{background:var(--card); border:1px solid var(--border); border-radius:12px; padding:16px;
+            box-shadow:0 1px 2px rgba(0,0,0,.3);}
+  .toolcard .glyph{width:40px; height:40px; border-radius:11px; display:flex; align-items:center;
+                   justify-content:center; margin-bottom:12px;}
+  .toolcard .glyph svg{width:21px; height:21px;}
+  .toolcard h3{font-size:13.5px; font-weight:600;}
+  .toolcard .blurb{color:var(--muted); font-size:12px; margin-top:4px; line-height:1.55; min-height:37px;}
+  .toolcard .use{color:var(--accent); font-size:12px; font-weight:600; margin-top:10px;}
+  .opencard{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px;
+            border:1.5px dashed var(--border); border-radius:12px; color:var(--muted); font-weight:500;
+            font-size:13px; min-height:170px; background:var(--pasteboard);}
+  .opencard svg{width:28px; height:28px; color:var(--icon);}
+  .sechead{display:flex; align-items:center; margin-top:28px;}
+  .sechead h2{font-size:17px; font-weight:600;}
+  .sechead .sp{flex:1;}
+  .ghost{display:inline-flex; align-items:center; gap:7px; color:var(--muted); font-size:12.5px;
+         font-weight:500; padding:7px 10px; border-radius:8px;}
+  .ghost svg{width:15px; height:15px;}
+  .recent{margin-top:12px; border:1px solid var(--border); border-radius:12px; overflow:hidden; background:var(--card);}
+  .row{display:flex; align-items:center; gap:13px; padding:12px 16px; border-bottom:1px solid var(--divider);}
+  .row:last-child{border-bottom:none;}
+  .row .ficon{width:36px; height:36px; border-radius:9px; background:#3A2326; display:flex;
+              align-items:center; justify-content:center; flex-shrink:0;}
+  .row .ficon svg{width:19px; height:19px; color:#F04438;}
+  .row .meta{min-width:0;}
+  .row .name{font-size:13px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .row .path{font-size:11.5px; color:var(--faint); margin-top:2px;}
+  .row .sp{flex:1;}
+  .row .when{font-size:12px; color:var(--faint);}
+  .row .rm{width:28px; height:28px; border-radius:7px; display:flex; align-items:center; justify-content:center; color:var(--faint);}
+  .row .rm svg{width:14px; height:14px;}
+  .foot{margin-top:26px; color:var(--faint); font-size:12px; text-align:center;}
+</style>
+</head>
+<body>
+<div class="win">
+  <div class="titlebar">
+    <div class="traffic"><i></i><i></i><i></i></div>
+    <span class="apptitle">Rehman-PDF</span>
+    <div class="tabs"><div class="tab active">Home</div></div>
+    <div class="sp"></div>
+    <span class="iconbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></span>
+    <span class="iconbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M9.1 9a3 3 0 0 1 5.8 1c0 2-3 3-3 3M12 17h.01"/></svg></span>
+  </div>
+  <div class="modebar">
+    <span class="menubtn">☰&nbsp; Menu</span>
+    <span class="menubtn">File</span><span class="menubtn">Edit</span>
+    <span class="menubtn">Pages</span><span class="menubtn">View</span>
+    <div class="vline"></div>
+    <div class="modetabs">
+      <span class="modetab active">All tools</span><span class="modetab">Read</span>
+      <span class="modetab">Edit</span><span class="modetab">Convert</span><span class="modetab">E-Sign</span>
+    </div>
+    <div class="sp"></div>
+    <span class="toolbtn dim"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg></span>
+    <span class="toolbtn dim"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><path d="M17 21v-8H7v8M7 3v5h8"/></svg></span>
+    <span class="kbdsearch"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg> Find tools and commands <span class="kbd">⌘K</span></span>
+  </div>
+  <div class="content">
+    <h1>Welcome to Rehman-PDF</h1>
+    <p class="tagline">An open-source PDF workbench — local, private, and scriptable.</p>
+    <div class="card">
+      <h2>Rehman-PDF on the web</h2>
+      <p class="sub">Project page, source code and the author's site.</p>
+      <div class="btnrow">
+        <span class="btn primary"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.2 6.8 9.5.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.2-3.4-1.2-.4-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.6 2.4 1.1 3 .9.1-.7.4-1.1.6-1.4-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.2-.4-1.3.1-2.6 0 0 .8-.3 2.7 1a9.4 9.4 0 0 1 5 0c1.9-1.3 2.7-1 2.7-1 .5 1.3.2 2.4.1 2.6.6.7 1 1.6 1 2.7 0 3.9-2.4 4.7-4.6 5 .4.3.7.9.7 1.9v2.8c0 .3.2.6.7.5A10 10 0 0 0 22 12c0-5.5-4.5-10-10-10z"/></svg> GitHub</span>
+        <span class="btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a15 15 0 0 1 0 18M12 3a15 15 0 0 0 0 18"/></svg> rehmanahmad.com</span>
+      </div>
+    </div>
+    <div class="sectitle">Recommended tools</div>
+    <div class="toolgrid">
+      <div class="toolcard">
+        <div class="glyph" style="background:#1D3A24;"><svg viewBox="0 0 24 24" fill="none" stroke="#4ADE80" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></div>
+        <h3>Organize pages</h3><p class="blurb">Select, rotate, delete, insert and reorder pages · deep undo</p><p class="use">Use now →</p>
+      </div>
+      <div class="toolcard">
+        <div class="glyph" style="background:#3D2E17;"><svg viewBox="0 0 24 24" fill="none" stroke="#FBBF24" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+        <h3>Add comments</h3><p class="blurb">Sticky notes, highlights and markup · summarize to a report</p><p class="use">Use now →</p>
+      </div>
+      <div class="toolcard">
+        <div class="glyph" style="background:#2C2140;"><svg viewBox="0 0 24 24" fill="none" stroke="#A78BFA" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg></div>
+        <h3>Prepare a form</h3><p class="blurb">Add fillable fields, checkboxes and signatures · bulk edit</p><p class="use">Use now →</p>
+      </div>
+      <div class="toolcard">
+        <div class="glyph" style="background:#3D1F30;"><svg viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="1.8"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5z"/></svg></div>
+        <h3>Edit a PDF</h3><p class="blurb">Fix text, images and links in place · RTL-aware editing</p><p class="use">Use now →</p>
+      </div>
+      <div class="toolcard">
+        <div class="glyph" style="background:#1E2A52;"><svg viewBox="0 0 24 24" fill="none" stroke="#818CF8" stroke-width="1.8"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div>
+        <h3>Protect a PDF</h3><p class="blurb">Passwords and permissions · certificates and redaction</p><p class="use">Use now →</p>
+      </div>
+      <div class="opencard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+        Open file<br><span style="font-weight:400; font-size:11.5px; color:var(--faint);">or drop a PDF anywhere</span>
+      </div>
+    </div>
+    <div class="sechead">
+      <h2>Recent</h2><div class="sp"></div>
+      <span class="ghost"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg> Clear</span>
+    </div>
+    <div class="recent">
+      <div class="row">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <div class="meta"><div class="name">Class-5-Urdu-Worksheet.pdf</div><div class="path">~/Documents/School</div></div>
+        <div class="sp"></div><span class="when">2 hours ago</span>
+        <span class="rm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+      </div>
+      <div class="row">
+        <div class="ficon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/></svg></div>
+        <div class="meta"><div class="name">NSB-Bank-Letter.pdf</div><div class="path">~/Documents/School/Letters</div></div>
+        <div class="sp"></div><span class="when">Yesterday</span>
+        <span class="rm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg></span>
+      </div>
+    </div>
+    <p class="foot">Free and open source · your files never leave this computer</p>
+  </div>
+</div>
+</body>
+</html>

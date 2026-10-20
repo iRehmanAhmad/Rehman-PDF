@@ -165,13 +165,13 @@
 	Next page	اگلا صفحہ
 	Previous page	پچھلا صفحہ
 	Current page — type a page number or label (such as iv) and press Enter	موجودہ صفحہ — صفحے کا نمبر یا لیبل (جیسے iv) لکھیں اور Enter دبائیں
-	Welcome to PdfCraft	Rehman-PDF میں خوش آمدید
+	Welcome to Rehman-PDF	Rehman-PDF میں خوش آمدید
 	An open-source PDF workbench — local, private, and scriptable.	ایک اوپن سورس PDF ورک بینچ — مقامی، نجی، اور اسکرپٹ کے قابل۔
 	Recommended tools	تجویز کردہ ٹولز
 	Use now	ابھی استعمال کریں
 	Open file	فائل کھولیں
 	Recent	حالیہ
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Rehman-PDF میں جو فائلیں آپ کھولتے ہیں وہ یہاں نظر آتی ہیں۔ کھولنے کے لیے کسی بھی جگہ PDF ڈراپ کریں۔
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	Rehman-PDF میں جو فائلیں آپ کھولتے ہیں وہ یہاں نظر آتی ہیں۔ کھولنے کے لیے کسی بھی جگہ PDF ڈراپ کریں۔
 	Privacy	رازداری
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	Rehman-PDF آف لائن کام کرتا ہے۔ کوئی ٹیلی میٹری نہیں، کوئی اکاؤنٹ نہیں، اور کوئی کلاؤڈ پروسیسنگ نہیں جب تک آپ کوئی فراہم کنندہ شامل نہ کریں۔
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	اسکرپٹس فائل یا نیٹ ورک رسائی کے بغیر سینڈ باکس میں چلتی ہیں۔ JavaScript بند ہونے پر بھی، Acrobat کے معیاری فارمیٹ، validate اور calculate فنکشنز کام کرتے ہیں۔
@@ -2338,3 +2338,23 @@ animation effects	Off	آف
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	ویب پر Rehman-PDF
 	Project page, source code and the author's site.	پروجیکٹ صفحہ، سورس کوڈ اور مصنف کی سائٹ۔
+
+	or drop a PDF anywhere	or drop a PDF anywhere
+	Free and open source · your files never leave this computer	Free and open source · your files never leave this computer
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Select, rotate, delete, insert and reorder pages · deep undo
+	Sticky notes, highlights and markup · summarize to a report	Sticky notes, highlights and markup · summarize to a report
+	Add fillable fields, checkboxes and signatures · bulk edit	Add fillable fields, checkboxes and signatures · bulk edit
+	Fix text, images and links in place · RTL-aware editing	Fix text, images and links in place · RTL-aware editing
+	Passwords and permissions · certificates and redaction	Passwords and permissions · certificates and redaction
+	Annotate	Annotate
+	of {count}	of {count}
+	Custom zoom	Custom zoom
+	Select all	سب منتخب کریں
+	Rotate left	بائیں گھمائیں
+	Rotate right	دائیں گھمائیں
+	Insert from file	فائل سے داخل کریں
+	{n} of {total} pages selected	{total} میں سے {n} صفحات منتخب
+	navigate	نیویگیٹ
+	run	چلائیں
+	Thumbnail size	تھمب نیل کا سائز

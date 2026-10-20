@@ -2,7 +2,6 @@
 //! properties"): Appearance (colour, fill, opacity, line thickness, note icon), General (author,
 //! subject, modified) and Review History (status changes), with Acrobat's Locked box.
 
-use egui::{Align, Layout};
 use pdfcraft_engine::{CommentProps, Edit, LineEnding, NoteIcon};
 
 use crate::comments::swatch_grid;
@@ -261,14 +260,5 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> (boo
     }
     ui.add_space(12.0);
     ui.add(widgets::checkbox(&mut d.edited.locked, tl!("Locked")));
-    let (mut apply, mut cancel) = (false, false);
-    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-        if widgets::pill_button(ui, tl!("OK"), true).clicked() {
-            apply = true;
-        }
-        if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-            cancel = true;
-        }
-    });
-    (apply, cancel)
+    crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("OK"), true)
 }

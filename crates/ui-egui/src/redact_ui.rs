@@ -268,7 +268,7 @@ pub(crate) fn pages_body(ui: &mut egui::Ui, d: &mut PagesDraft, pages: usize, _t
     });
     d.to = d.to.max(d.from);
     ui.add_space(12.0);
-    buttons(ui, "OK", true)
+    buttons(ui, "OK")
 }
 
 /// Find text and redact. Returns (search, cancel, import a word list).
@@ -321,7 +321,7 @@ pub(crate) fn search_body(ui: &mut egui::Ui, d: &mut SearchDraft, t: &Tokens) ->
         );
     }
     ui.add_space(12.0);
-    let (go, cancel) = buttons(ui, "Mark all", true);
+    let (go, cancel) = buttons(ui, "Mark all");
     (go || enter, cancel, import)
 }
 
@@ -430,7 +430,7 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
         ui.end_row();
     });
     ui.add_space(12.0);
-    buttons(ui, "OK", true)
+    buttons(ui, "OK")
 }
 
 /// Apply redactions confirmation. Returns (apply, cancel).
@@ -450,21 +450,12 @@ pub(crate) fn apply_body(ui: &mut egui::Ui, marks: usize, t: &Tokens) -> (bool, 
             .color(t.text_muted),
     );
     ui.add_space(12.0);
-    buttons(ui, "Apply", true)
+    buttons(ui, "Apply")
 }
 
-fn buttons(ui: &mut egui::Ui, ok: &str, primary: bool) -> (bool, bool) {
-    let (mut a, mut c) = (false, false);
-    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-        // `ok` stays English internally; only the display is translated.
-        if widgets::pill_button(ui, tl!(ok), primary).clicked() {
-            a = true;
-        }
-        if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-            c = true;
-        }
-    });
-    (a, c)
+fn buttons(ui: &mut egui::Ui, ok: &str) -> (bool, bool) {
+    // `ok` stays English internally; only the display is translated.
+    crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!(ok), true)
 }
 
 /// Remove Hidden Information: each category with what was found, checked by default when
@@ -507,16 +498,7 @@ pub(crate) fn hidden_body(ui: &mut egui::Ui, d: &mut HiddenDraft, t: &Tokens) ->
     );
     ui.add_space(12.0);
     let any = d.found.iter().any(|f| f.2 && f.1 > 0);
-    let (mut a, mut c) = (false, false);
-    ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
-        if ui.add_enabled_ui(any && total > 0, |ui| widgets::pill_button(ui, tl!("Remove"), true)).inner.clicked() {
-            a = true;
-        }
-        if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-            c = true;
-        }
-    });
-    (a, c)
+    crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Remove"), any && total > 0)
 }
 
 /// Sanitize Document confirmation. Returns (sanitize, cancel).
@@ -532,5 +514,5 @@ pub(crate) fn sanitize_body(ui: &mut egui::Ui, t: &Tokens) -> (bool, bool) {
             .color(t.text_muted),
     );
     ui.add_space(12.0);
-    buttons(ui, "Sanitize", true)
+    buttons(ui, "Sanitize")
 }

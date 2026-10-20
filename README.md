@@ -1,8 +1,9 @@
 <h1 align="center">Rehman-PDF</h1>
 
 <p align="center">
-  <b>The Urdu-first PDF workbench</b><br>
-  Read, organize, combine, split and secure PDFs in a fast, native app, written in Rust from the ground up.<br>
+  <b>A complete PDF editor for everyone — with full Urdu support</b><br>
+  Read, organize, combine, split and secure PDFs in a fast, native app, written in Rust from the ground up.
+  Interface in 20+ languages, Urdu among them.<br>
   macOS · Windows · Linux · FreeBSD · the web
 </p>
 
@@ -60,7 +61,7 @@
 
 Rehman-PDF is a **fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft)'s open-source PDF engine** (dual-licensed MIT OR Apache-2.0), pinned at its **v0.8.0** release. It is not a rebrand of an unrelated product: every page you render, every combine and split, runs on PdfCraft's Rust engine, with full credit to its authors.
 
-What makes this fork different is its **Urdu-first direction**:
+What makes this fork different is that it **speaks your language**:
 
 - **Urdu (`ur`) interface localization** — the whole UI in Urdu, following the same i18n pattern the engine already uses for its 22 interface languages (including Arabic with full right-to-left layout).
 - **Right-to-left text editing** — the engine's own roadmap admits editing right-to-left text is a real gap; this fork works on closing it.
@@ -406,7 +407,7 @@ The summary is in **[ROADMAP.md](ROADMAP.md)**; the full assessment by dimension
 Rehman-PDF is dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE), at your option, inherited from the upstream engine.
 Copyright (c) 2026 ArtCraft Team and the PdfCraft contributors. Required notices are in [NOTICE](NOTICE).
 
-Rehman-PDF is a fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft) (pinned at v0.8.0), rebranded and extended toward an Urdu-first PDF workbench by Rehman Ahmad Chaudhary. Per the upstream trademark terms, the ArtCraft name, logos and brand assets were removed from this fork; the engine code remains under the same open license.
+Rehman-PDF is a fork of [storytold/pdfcraft](https://github.com/storytold/pdfcraft) (pinned at v0.8.0), rebranded and extended as a complete PDF editor that supports maximum languages, Urdu included. Per the upstream trademark terms, the ArtCraft name, logos and brand assets were removed from this fork; the engine code remains under the same open license.
 
 Bundled fonts, icons, images and other assets keep their own open licenses; each one is listed
 with its author, source and license in [ATTRIBUTION.md](ATTRIBUTION.md). Release builds also embed

@@ -20,7 +20,9 @@ fn harness(setup: impl FnOnce(&mut PdfCraftApp) + 'static) -> Harness<'static, P
 #[test]
 fn project_button_in_the_top_bar_opens_the_project_page() {
     let mut h = harness(|_| {});
-    h.get_by_label("Rehman-PDF").click();
+    // The tab strip also carries a plain "Rehman-PDF" text label, so the button needs the
+    // role qualifier; it replaced the old "Discord" button in the redesign.
+    h.get_by_role_and_label(egui::accesskit::Role::Button, "Rehman-PDF").click();
     h.run_steps(2);
     assert_eq!(h.state().last_opened_url.as_deref(), Some(links::APP_PAGE));
     assert_eq!(links::APP_PAGE, "https://github.com/iRehmanAhmad/Rehman-PDF");
@@ -28,7 +30,8 @@ fn project_button_in_the_top_bar_opens_the_project_page() {
 
 #[test]
 fn home_screen_links() {
-    for (label, url) in [("Rehman-PDF project page", links::APP_PAGE), ("Rehman-PDF on GitHub", links::GITHUB), ("rehmanahmad.com", links::WEBSITE)] {
+    // The redesign's "Rehman-PDF on the web" card: GitHub + rehmanahmad.com buttons.
+    for (label, url) in [("GitHub", links::GITHUB), ("rehmanahmad.com", links::WEBSITE)] {
         let mut h = harness(|_| {});
         h.get_by_label("Rehman-PDF on the web");
         h.get_by_label(label).click();

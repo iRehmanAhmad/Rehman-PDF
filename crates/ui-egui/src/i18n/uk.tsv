@@ -158,13 +158,13 @@
 	Next page	Наступна сторінка
 	Previous page	Попередня сторінка
 	Current page — type a page number or label (such as iv) and press Enter	Поточна сторінка — введіть номер або позначку сторінки (наприклад iv) і натисніть Enter
-	Welcome to PdfCraft	Вітаємо в PdfCraft
+	Welcome to Rehman-PDF	Вітаємо в PdfCraft
 	An open-source PDF workbench — local, private, and scriptable.	Відкритий інструментарій для PDF — локальний, приватний і з підтримкою сценаріїв.
 	Recommended tools	Рекомендовані інструменти
 	Use now	Використати зараз
 	Open file	Відкрити файл
 	Recent	Нещодавні
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	Тут з’являються файли, які ви відкриваєте в PdfCraft. Перетягніть PDF будь-куди, щоб відкрити його.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	Тут з’являються файли, які ви відкриваєте в PdfCraft. Перетягніть PDF будь-куди, щоб відкрити його.
 	Privacy	Приватність
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft працює офлайн. Без телеметрії, облікового запису та хмарної обробки, якщо ви не додасте постачальника.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	Сценарії виконуються в ізольованому середовищі без доступу до файлів і мережі. Коли JavaScript вимкнено, стандартні функції форматування, перевірки й обчислення Acrobat усе одно працюють.
@@ -2374,3 +2374,23 @@ animation effects	Off	Вимкнено
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Rehman-PDF в інтернеті
 	Project page, source code and the author's site.	Сторінка проєкту, вихідний код і сайт автора.
+
+	or drop a PDF anywhere	або перетягніть PDF куди завгодно
+	Free and open source · your files never leave this computer	Безкоштовно та з відкритим кодом · ваші файли ніколи не покинуть цей комп'ютер
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Вибір, обертання, видалення, вставлення та перевпорядкування сторінок · глибоке скасування
+	Sticky notes, highlights and markup · summarize to a report	Липкі нотатки, виділення та розмітка · зведення у звіт
+	Add fillable fields, checkboxes and signatures · bulk edit	Додавання полів для заповнення, прапорців і підписів · масове редагування
+	Fix text, images and links in place · RTL-aware editing	Виправлення тексту, зображень і посилань на місці · редагування з урахуванням RTL
+	Passwords and permissions · certificates and redaction	Паролі та дозволи · сертифікати й редагування
+	Annotate	Додати анотацію
+	of {count}	із {count}
+	Custom zoom	Довільний масштаб
+	Select all	Вибрати все
+	Rotate left	Повернути ліворуч
+	Rotate right	Повернути праворуч
+	Insert from file	Вставити з файлу
+	{n} of {total} pages selected	Вибрано {n} з {total} сторінок
+	navigate	навігація
+	run	запустити
+	Thumbnail size	Розмір мініатюр

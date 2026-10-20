@@ -1024,7 +1024,7 @@ fn image_preview(ui: &egui::Ui, rect: egui::Rect, image: &SignatureImage, cache:
 }
 
 fn pad_buttons(ui: &mut egui::Ui, d: &mut SigDraft) -> (bool, bool) {
-    ui.add_space(10.0);
+    crate::dialog_chrome::divider(ui);
     let (mut apply, mut cancel) = (false, false);
     ui.horizontal(|ui| {
         if ui.button(tl!("Clear")).clicked() {
@@ -1035,12 +1035,13 @@ fn pad_buttons(ui: &mut egui::Ui, d: &mut SigDraft) -> (bool, bool) {
                 d.scan = None;
             }
         }
-        ui.with_layout(egui::Layout::right_to_left(egui::Align::Center), |ui| {
+        ui.with_layout(crate::dialog_chrome::footer_layout(), |ui| {
+            ui.spacing_mut().item_spacing.x = 10.0;
             let ready = d.ready();
-            if ui.add_enabled_ui(ready, |ui| crate::widgets::pill_button(ui, tl!("Apply"), true)).inner.clicked() {
+            if ui.add_enabled_ui(ready, |ui| crate::dialog_chrome::button(ui, tl!("Apply"), true)).inner.clicked() {
                 apply = true;
             }
-            if crate::widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
+            if crate::dialog_chrome::button(ui, tl!("Cancel"), false).clicked() {
                 cancel = true;
             }
         });

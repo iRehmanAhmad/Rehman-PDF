@@ -1,12 +1,14 @@
-PdfCraft app icon (pdfcraft.svg, pdfcraft-small.svg and every file derived from them in this
+Rehman-PDF app icon (pdfcraft.svg, pdfcraft-small.svg and every file derived from them in this
 directory: pdfcraft-1024.png, pdfcraft.icns, pdfcraft.ico, hicolor/).
 
-Original artwork made for this project by the project owner, drawn by the project owner and vectorised for
-PdfCraft (no third-party material). Licensed like the rest of PdfCraft, under either of
+Original artwork for the Rehman-PDF fork: the app mark (indigo tile, stacked pages, R) chosen by
+the project author for the T-003 redesign — his own AI-generated icon, redrawn here as the vector
+masters (no third-party material). Licensed like the rest of Rehman-PDF, under either of
 
   * Apache License, Version 2.0 (https://www.apache.org/licenses/LICENSE-2.0)
   * MIT license (https://opensource.org/licenses/MIT)
 
 at your option.
 
-Regenerate the derived files with packaging/icons.sh.
+Regenerate the derived files with the dev-team's tasks/T-003/icons/regenerate.py (Pillow only),
+or with packaging/icons.sh.

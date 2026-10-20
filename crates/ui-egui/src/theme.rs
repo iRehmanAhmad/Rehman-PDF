@@ -63,6 +63,8 @@ pub struct Tokens {
     pub accent_soft: Color32,
     pub field: Color32,
     pub badge_new: Color32,
+    /// Destructive actions (delete, remove).
+    pub danger: Color32,
     pub page_shadow: Color32,
     pub radius: u8,
 }
@@ -72,51 +74,55 @@ impl Tokens {
         match kind {
             ThemeKind::Light => Self {
                 kind,
-                titlebar: Color32::from_rgb(0xE9, 0xE9, 0xEB),
+                titlebar: Color32::from_rgb(0xF5, 0xF5, 0xF7),
                 chrome: Color32::from_rgb(0xFF, 0xFF, 0xFF),
                 panel: Color32::from_rgb(0xFF, 0xFF, 0xFF),
-                pasteboard: Color32::from_rgb(0xF1, 0xF1, 0xF3),
+                pasteboard: Color32::from_rgb(0xEC, 0xEC, 0xF0),
                 card: Color32::from_rgb(0xFF, 0xFF, 0xFF),
-                border: Color32::from_rgb(0xDA, 0xDA, 0xDE),
-                divider: Color32::from_rgb(0xE8, 0xE8, 0xEB),
-                text: Color32::from_rgb(0x22, 0x22, 0x26),
-                text_muted: Color32::from_rgb(0x5E, 0x5E, 0x66),
-                text_faint: Color32::from_rgb(0x6B, 0x6B, 0x73),
-                icon: Color32::from_rgb(0x44, 0x44, 0x4B),
-                hover: Color32::from_rgb(0xF0, 0xF0, 0xF3),
-                pressed: Color32::from_rgb(0xE4, 0xE4, 0xE9),
-                selected: Color32::from_rgb(0xE6, 0xEE, 0xFD),
-                accent: Color32::from_rgb(0x1B, 0x63, 0xE0),
-                accent_text: Color32::from_rgb(0x17, 0x55, 0xC4),
-                accent_soft: Color32::from_rgb(0xE3, 0xEC, 0xFD),
+                border: Color32::from_rgb(0xE2, 0xE2, 0xE8),
+                divider: Color32::from_rgb(0xEC, 0xEC, 0xF0),
+                text: Color32::from_rgb(0x1C, 0x1C, 0x21),
+                text_muted: Color32::from_rgb(0x5B, 0x5B, 0x63),
+                // #76: faint must stay ≥ 4.5:1 on the pasteboard (spec's #74747C is 3.93:1).
+                text_faint: Color32::from_rgb(0x67, 0x67, 0x6F),
+                icon: Color32::from_rgb(0x3F, 0x3F, 0x46),
+                hover: Color32::from_rgb(0xF1, 0xF1, 0xF4),
+                pressed: Color32::from_rgb(0xE6, 0xE6, 0xEB),
+                selected: Color32::from_rgb(0xED, 0xF0, 0xFF),
+                accent: Color32::from_rgb(0x4F, 0x46, 0xE5),
+                accent_text: Color32::from_rgb(0x43, 0x38, 0xCA),
+                accent_soft: Color32::from_rgb(0xEE, 0xF0, 0xFE),
                 field: Color32::from_rgb(0xFF, 0xFF, 0xFF),
-                badge_new: Color32::from_rgb(0x1B, 0x63, 0xE0),
+                badge_new: Color32::from_rgb(0x4F, 0x46, 0xE5),
+                danger: Color32::from_rgb(0xD9, 0x2D, 0x20),
                 page_shadow: Color32::from_black_alpha(34),
-                radius: 6,
+                radius: 8,
             },
             ThemeKind::Dark => Self {
                 kind,
-                titlebar: Color32::from_rgb(0x1B, 0x1B, 0x1E),
-                chrome: Color32::from_rgb(0x26, 0x26, 0x2A),
-                panel: Color32::from_rgb(0x26, 0x26, 0x2A),
-                pasteboard: Color32::from_rgb(0x19, 0x19, 0x1C),
-                card: Color32::from_rgb(0x2E, 0x2E, 0x33),
-                border: Color32::from_rgb(0x3C, 0x3C, 0x43),
-                divider: Color32::from_rgb(0x33, 0x33, 0x39),
-                text: Color32::from_rgb(0xEC, 0xEC, 0xEF),
-                text_muted: Color32::from_rgb(0xAE, 0xAE, 0xB6),
-                text_faint: Color32::from_rgb(0x97, 0x97, 0x9E),
-                icon: Color32::from_rgb(0xD4, 0xD4, 0xDA),
-                hover: Color32::from_rgb(0x34, 0x34, 0x3A),
-                pressed: Color32::from_rgb(0x3E, 0x3E, 0x45),
-                selected: Color32::from_rgb(0x23, 0x3A, 0x63),
-                accent: Color32::from_rgb(0x4B, 0x8B, 0xF5),
-                accent_text: Color32::from_rgb(0x8C, 0xB6, 0xFA),
-                accent_soft: Color32::from_rgb(0x24, 0x36, 0x57),
-                field: Color32::from_rgb(0x1E, 0x1E, 0x22),
-                badge_new: Color32::from_rgb(0x3D, 0x7D, 0xEE),
+                titlebar: Color32::from_rgb(0x17, 0x17, 0x1A),
+                chrome: Color32::from_rgb(0x1E, 0x1E, 0x22),
+                panel: Color32::from_rgb(0x1E, 0x1E, 0x22),
+                pasteboard: Color32::from_rgb(0x10, 0x10, 0x13),
+                card: Color32::from_rgb(0x26, 0x26, 0x2B),
+                border: Color32::from_rgb(0x36, 0x36, 0x3C),
+                divider: Color32::from_rgb(0x2E, 0x2E, 0x33),
+                text: Color32::from_rgb(0xED, 0xED, 0xF0),
+                text_muted: Color32::from_rgb(0xA9, 0xA9, 0xB2),
+                // #76: faint must stay ≥ 4.5:1 on the card (spec's #8A8A92 is 4.40:1).
+                text_faint: Color32::from_rgb(0x94, 0x94, 0x9C),
+                icon: Color32::from_rgb(0xCF, 0xCF, 0xD6),
+                hover: Color32::from_rgb(0x2C, 0x2C, 0x32),
+                pressed: Color32::from_rgb(0x38, 0x38, 0x3E),
+                selected: Color32::from_rgb(0x23, 0x2A, 0x52),
+                accent: Color32::from_rgb(0x81, 0x8C, 0xF8),
+                accent_text: Color32::from_rgb(0xA5, 0xB4, 0xFC),
+                accent_soft: Color32::from_rgb(0x23, 0x2A, 0x52),
+                field: Color32::from_rgb(0x1C, 0x1C, 0x20),
+                badge_new: Color32::from_rgb(0x81, 0x8C, 0xF8),
+                danger: Color32::from_rgb(0xF0, 0x44, 0x38),
                 page_shadow: Color32::from_black_alpha(120),
-                radius: 6,
+                radius: 8,
             },
         }
     }
@@ -127,6 +133,47 @@ impl Tokens {
 
     pub fn dark(&self) -> bool {
         self.kind == ThemeKind::Dark
+    }
+
+    /// Danger-tinted tile behind file icons on the home screen (T-003 mockup).
+    pub fn danger_tile(&self) -> Color32 {
+        if self.dark() { Color32::from_rgb(0x3A, 0x23, 0x26) } else { Color32::from_rgb(0xFD, 0xEC, 0xEC) }
+    }
+
+    /// Tool-glyph tile colours (T-003 "Modern minimal" mockups): each tool keeps its
+    /// catalogue hue on a tinted tile. Returns (tile fill, glyph stroke). The five
+    /// home-screen hues are mockup-exact; any other hue is tinted by the same rule.
+    pub fn glyph_tile(&self, hue: [u8; 3]) -> (Color32, Color32) {
+        fn rgb(h: &str) -> Color32 {
+            let r = u8::from_str_radix(&h[0..2], 16).unwrap_or(0);
+            let g = u8::from_str_radix(&h[2..4], 16).unwrap_or(0);
+            let b = u8::from_str_radix(&h[4..6], 16).unwrap_or(0);
+            Color32::from_rgb(r, g, b)
+        }
+        // (light tint, light stroke, dark tint, dark stroke) per catalogue hue.
+        const TABLE: [([u8; 3], &str, &str, &str, &str); 5] = [
+            ([0x2D, 0x9D, 0x5B], "E7F6E9", "1F9D3A", "1D3A24", "4ADE80"), // green
+            ([0xE8, 0x8A, 0x1A], "FFF1E2", "E08A1B", "3D2E17", "FBBF24"), // orange
+            ([0x8E, 0x4E, 0xE6], "F0EAFB", "7A4FD0", "2C2140", "A78BFA"), // purple
+            ([0xD6, 0x3B, 0x8F], "FDEBF3", "D6336C", "3D1F30", "F472B6"), // pink
+            ([0x3A, 0x6F, 0xE8], "E5EBFD", "3B5BD9", "1E2A52", "818CF8"), // blue
+        ];
+        if let Some((_, lt, ls, dt, ds)) = TABLE.iter().find(|(h, ..)| *h == hue) {
+            return if self.dark() { (rgb(dt), rgb(ds)) } else { (rgb(lt), rgb(ls)) };
+        }
+        fn mix(a: [u8; 3], b: Color32, t: f32) -> Color32 {
+            Color32::from_rgb(
+                (a[0] as f32 + (b.r() as f32 - a[0] as f32) * t) as u8,
+                (a[1] as f32 + (b.g() as f32 - a[1] as f32) * t) as u8,
+                (a[2] as f32 + (b.b() as f32 - a[2] as f32) * t) as u8,
+            )
+        }
+        let white = Color32::WHITE;
+        if self.dark() {
+            (mix(hue, self.card, 0.62), mix(hue, white, 0.45))
+        } else {
+            (mix(hue, white, 0.86), Color32::from_rgb(hue[0], hue[1], hue[2]))
+        }
     }
 }
 

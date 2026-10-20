@@ -81,7 +81,9 @@ fn backgrounds_and_watermarks_from_a_file() {
     let mut h = harness();
     h.state_mut().execute("edit.background");
     h.run_steps(2);
-    h.get_by_label("File").click();
+    // The redesign's menubar has a top-level "File" menu button; the background dialog's
+    // source selector is the RadioButton.
+    h.get_by_role_and_label(egui::accesskit::Role::RadioButton, "File").click();
     h.run_steps(2);
     h.get_by_label("No file chosen");
     assert!(h.query_by(|n| n.label().as_deref() == Some("OK") && n.is_disabled()).is_some(), "OK waits for a file");

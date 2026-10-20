@@ -368,7 +368,8 @@ fn initial_view_is_edited_and_honoured_on_open() {
     h.run_steps(2);
     // The dialog's height settles a frame after it opens; egui centers from the previous size.
     h.run_steps(2);
-    h.get_by_label("OK").click();
+    // The redesign's Properties footer is Cancel/Save once the draft changed (was OK).
+    h.get_by_label("Save").click();
     h.run_steps(3);
     let s = h.state();
     let id = s.views[s.active.unwrap()].id;

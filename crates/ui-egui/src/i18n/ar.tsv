@@ -160,13 +160,13 @@
 	Next page	الصفحة التالية
 	Previous page	الصفحة السابقة
 	Current page — type a page number or label (such as iv) and press Enter	الصفحة الحالية — اكتب رقم صفحة أو تسميتها (مثل iv) ثم اضغط Enter
-	Welcome to PdfCraft	مرحبًا بك في PdfCraft
+	Welcome to Rehman-PDF	مرحبًا بك في PdfCraft
 	An open-source PDF workbench — local, private, and scriptable.	منضدة عمل مفتوحة المصدر لملفات PDF — محلية وخاصة وقابلة للبرمجة.
 	Recommended tools	أدوات مقترحة
 	Use now	استخدم الآن
 	Open file	فتح ملف
 	Recent	الأخيرة
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	الملفات التي تفتحها في PdfCraft تظهر هنا. أفلت ملف PDF في أي مكان لفتحه.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	الملفات التي تفتحها في PdfCraft تظهر هنا. أفلت ملف PDF في أي مكان لفتحه.
 	Privacy	الخصوصية
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	يعمل PdfCraft دون اتصال. لا قياس عن بُعد ولا حساب ولا معالجة سحابية إلا إذا أضفت مزوّدًا.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	تعمل السكربتات في بيئة معزولة دون وصول إلى الملفات أو الشبكة. عند إيقاف JavaScript تبقى دوال Acrobat القياسية للتنسيق والتحقق والحساب تعمل.
@@ -2373,3 +2373,23 @@ animation effects	Off	معطّلة
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Rehman-PDF on the web
 	Project page, source code and the author's site.	Project page, source code and the author's site.
+
+	or drop a PDF anywhere	or drop a PDF anywhere
+	Free and open source · your files never leave this computer	Free and open source · your files never leave this computer
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Select, rotate, delete, insert and reorder pages · deep undo
+	Sticky notes, highlights and markup · summarize to a report	Sticky notes, highlights and markup · summarize to a report
+	Add fillable fields, checkboxes and signatures · bulk edit	Add fillable fields, checkboxes and signatures · bulk edit
+	Fix text, images and links in place · RTL-aware editing	Fix text, images and links in place · RTL-aware editing
+	Passwords and permissions · certificates and redaction	Passwords and permissions · certificates and redaction
+	Annotate	Annotate
+	of {count}	of {count}
+	Custom zoom	Custom zoom
+	Select all	Select all
+	Rotate left	Rotate left
+	Rotate right	Rotate right
+	Insert from file	Insert from file
+	{n} of {total} pages selected	{n} of {total} pages selected
+	navigate	navigate
+	run	run
+	Thumbnail size	Thumbnail size

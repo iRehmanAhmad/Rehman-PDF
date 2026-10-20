@@ -2,7 +2,7 @@
 //! dialog snapshots d13, d14, d12d). Each has the shared Page Range Options and a schematic
 //! preview of the current page. "Update" opens the same dialog in replace mode.
 
-use egui::{Align, Color32, CornerRadius, Layout, Rect, Stroke, pos2, vec2};
+use egui::{Color32, CornerRadius, Rect, Stroke, pos2, vec2};
 use pdfcraft_engine::{Background, Edit, HeaderFooter, MarkKind, Watermark};
 
 use crate::theme::{self, Tokens};
@@ -385,26 +385,18 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens, kind: M
         });
     });
     ui.add_space(10.0);
-    let (mut apply, mut cancel) = (false, false);
-    ui.with_layout(Layout::right_to_left(Align::Center), |ui| {
-        let ready = match kind {
-            MarkKind::HeaderFooter => d.hf.text.iter().any(|x| !x.trim().is_empty()),
-            MarkKind::Watermark => {
-                if d.use_file {
-                    d.file.is_some()
-                } else {
-                    !d.wm.text.trim().is_empty()
-                }
+    let ready = match kind {
+        MarkKind::HeaderFooter => d.hf.text.iter().any(|x| !x.trim().is_empty()),
+        MarkKind::Watermark => {
+            if d.use_file {
+                d.file.is_some()
+            } else {
+                !d.wm.text.trim().is_empty()
             }
-            MarkKind::Background => !d.use_file || d.file.is_some(),
-        } && !d.range.pages(count).is_empty();
-        if ui.add_enabled_ui(ready, |ui| widgets::pill_button(ui, tl!("OK"), true)).inner.clicked() {
-            apply = true;
         }
-        if widgets::pill_button(ui, tl!("Cancel"), false).clicked() {
-            cancel = true;
-        }
-    });
+        MarkKind::Background => !d.use_file || d.file.is_some(),
+    } && !d.range.pages(count).is_empty();
+    let (apply, cancel) = crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("OK"), ready);
     // Browse…: the picker answers on a later frame, into the draft.
     #[cfg(not(target_arch = "wasm32"))]
     if browse {

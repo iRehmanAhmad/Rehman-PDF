@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Rehman-PDF — All-tools catalogue (dark) · T-003 mockup</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Nastaliq+Urdu:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --titlebar:#17171A; --chrome:#1E1E22; --pasteboard:#101013; --card:#26262B;
+    --border:#36363C; --divider:#2E2E33;
+    --text:#EDEDF0; --muted:#A9A9B2; --faint:#8A8A92; --icon:#CFCFD6;
+    --hover:#2C2C32; --pressed:#38383E; --selected:#2B3358;
+    --accent:#818CF8; --accent-soft:#232A52; --field:#1C1C20; --danger:#F04438;
+    --tile-blue:#2B3358; --tile-green:#1D3A24; --tile-orange:#3D2A17;
+    --tile-purple:#33244D; --tile-pink:#3A2330; --tile-slate:#2C2C32;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{font-family:'Inter',system-ui,-apple-system,'Segoe UI',sans-serif; color:var(--text);
+       background:var(--pasteboard); font-size:13px; -webkit-font-smoothing:antialiased;
+       padding:32px 20px 70px;}
+  .wrap{max-width:920px; margin:0 auto;}
+  .cap{font-size:12px; font-weight:600; color:var(--muted); letter-spacing:.4px;
+       text-transform:uppercase; margin:0 2px 10px;}
+  .head{display:flex; align-items:center; gap:16px; margin-bottom:6px;}
+  .head h1{font-size:24px; font-weight:600; letter-spacing:-.3px; flex:1;}
+  .search{display:flex; align-items:center; gap:9px; background:var(--field);
+          border:1px solid var(--border); border-radius:9px; padding:8px 13px;
+          color:var(--faint); font-size:12.5px; width:250px;}
+  .sec-t{font-size:13px; font-weight:600; color:var(--muted); margin:24px 2px 10px;
+         letter-spacing:.2px;}
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:10px;}
+  .card{display:flex; gap:12px; align-items:flex-start; background:var(--card);
+        border:1px solid var(--border); border-radius:12px; padding:13px 14px;}
+  .card:hover{background:var(--hover);}
+  .tile{width:40px; height:40px; border-radius:10px; display:flex; align-items:center;
+        justify-content:center; flex-shrink:0;}
+  .t-blue{background:var(--tile-blue);} .t-green{background:var(--tile-green);}
+  .t-orange{background:var(--tile-orange);} .t-purple{background:var(--tile-purple);}
+  .t-pink{background:var(--tile-pink);} .t-slate{background:var(--tile-slate);}
+  .t-indigo{background:var(--accent-soft);}
+  .t{font-size:13px; font-weight:600; margin-bottom:3px;}
+  .d{font-size:12px; color:var(--muted); line-height:1.5;}
+  .note{margin:30px 2px 0; font-size:12px; color:var(--faint); line-height:1.7;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="cap">All-tools catalogue</div>
+  <div class="head">
+    <h1>All tools</h1>
+    <div class="search"><svg width="15" height="15" viewBox="0 0 20 20" fill="none" stroke="#8A8A92" stroke-width="1.8" stroke-linecap="round"><circle cx="9" cy="9" r="6"/><path d="M13.5 13.5 L18 18"/></svg>Search tools…</div>
+  </div>
+
+  <div class="sec-t">Organize</div>
+  <div class="grid">
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h7l4 4v10H4z"/><path d="M11 3v4h4"/></svg></span><div><div class="t">Organize pages</div><div class="d">Rearrange, rotate, insert and delete pages</div></div></div>
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="6" width="9" height="11" rx="1.5"/><path d="M6 6V4.5A1.5 1.5 0 0 1 7.5 3h7A1.5 1.5 0 0 1 16 4.5V15"/></svg></span><div><div class="t">Combine files</div><div class="d">Merge several PDFs into one document</div></div></div>
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3L4 10l3 7M13 3l3 7-3 7"/></svg></span><div><div class="t">Split document</div><div class="d">Divide a PDF every n pages or by bookmarks</div></div></div>
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 14V6M6 10l4-4 4 4"/><path d="M4 17.5h12"/></svg></span><div><div class="t">Extract pages…</div><div class="d">Copy the selected pages into a new file</div></div></div>
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round"><path d="M10 4v9M5.5 9.5L10 14l4.5-4.5"/><path d="M4 16.5h12"/></svg></span><div><div class="t">Insert pages from file…</div><div class="d">Add pages from another PDF</div></div></div>
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h12M8 6V4h4v2M6 6l1 11h6l1-11"/></svg></span><div><div class="t">Delete pages</div><div class="d">Remove the selected pages</div></div></div>
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M16 10a6 6 0 1 1-2-4.5"/><path d="M16 3v4h-4"/></svg></span><div><div class="t">Rotate pages…</div><div class="d">Turn pages left or right</div></div></div>
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round"><path d="M4 8V4h4M16 12v4h-4"/><rect x="7" y="7" width="6" height="6" rx="1"/></svg></span><div><div class="t">Crop pages</div><div class="d">Trim page margins and boxes</div></div></div>
+    <div class="card"><span class="tile t-blue"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round"><path d="M7 4L5 16M13 4l-2 12M4 8.5h12M4 13.5h12"/></svg></span><div><div class="t">Number pages…</div><div class="d">Stamp Bates-style page numbers</div></div></div>
+  </div>
+
+  <div class="sec-t">Create</div>
+  <div class="grid">
+    <div class="card"><span class="tile t-green"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#7BC48A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="4" width="10" height="13" rx="1.5"/><path d="M8 4V2.8h4V4M8 9.5h4"/></svg></span><div><div class="t">Create PDF from clipboard</div><div class="d">Build a PDF from clipboard content</div></div></div>
+  </div>
+
+  <div class="sec-t">Edit</div>
+  <div class="grid">
+    <div class="card"><span class="tile t-orange"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E8A85C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16l1-4.5L14.5 2l3.5 3.5L8.5 15z"/><path d="M13 3.5l3.5 3.5"/></svg></span><div><div class="t">Edit a PDF</div><div class="d">Change text and images in place</div></div></div>
+    <div class="card"><span class="tile t-orange"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E8A85C" stroke-width="1.8" stroke-linecap="round"><path d="M5 5h10M10 5v10"/></svg></span><div><div class="t">Add text</div><div class="d">Type new text anywhere on the page</div></div></div>
+    <div class="card"><span class="tile t-orange"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E8A85C" stroke-width="1.8" stroke-linecap="round"><path d="M8.5 11.5a3.5 3.5 0 0 0 5 0l2-2a3.5 3.5 0 0 0-5-5l-1 1M11.5 8.5a3.5 3.5 0 0 0-5 0l-2 2a3.5 3.5 0 0 0 5 5l1-1"/></svg></span><div><div class="t">Add or edit links</div><div class="d">Create and manage hyperlinks</div></div></div>
+    <div class="card"><span class="tile t-orange"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E8A85C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h11M12 4l3 3-3 3M16 13H5M8 10l-3 3 3 3"/></svg></span><div><div class="t">Replace pages…</div><div class="d">Swap pages with another file</div></div></div>
+  </div>
+
+  <div class="sec-t">Review</div>
+  <div class="grid">
+    <div class="card"><span class="tile t-pink"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E58BB0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h12v9H9l-4 3v-3H4z"/></svg></span><div><div class="t">Add a sticky note</div><div class="d">Pin a note to any spot on the page</div></div></div>
+    <div class="card"><span class="tile t-pink"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E58BB0" stroke-width="1.8" stroke-linecap="round"><rect x="4" y="6" width="12" height="8" rx="1.5"/><path d="M7 9.5h6"/></svg></span><div><div class="t">Add a text box</div><div class="d">Place a bordered text annotation</div></div></div>
+    <div class="card"><span class="tile t-pink"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E58BB0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h6v4a2 2 0 0 1 2 2v1H5v-1a2 2 0 0 1 2-2z"/><path d="M10 10v4M7.5 16.5h5"/></svg></span><div><div class="t">Add a stamp</div><div class="d">Stamp Approved, Draft and more</div></div></div>
+    <div class="card"><span class="tile t-pink"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E58BB0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 5h14v8h-7l-4 3.5v-3.5H3z"/><path d="M6.5 9h7M6.5 11.5h4.5"/></svg></span><div><div class="t">Comments panel</div><div class="d">Read and reply in threaded comments</div></div></div>
+    <div class="card"><span class="tile t-pink"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#E58BB0" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16a3.5 3.5 0 0 1-.6-6.9A5 5 0 0 1 15 10.5 3 3 0 0 1 14 16z"/></svg></span><div><div class="t">Draw a cloud</div><div class="d">Cloud-shaped markup around an area</div></div></div>
+  </div>
+
+  <div class="sec-t">Forms</div>
+  <div class="grid">
+    <div class="card"><span class="tile t-purple"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#C4A5F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 3h12v14H4z"/><path d="M7 7h3M7 10.5h6M7 14h4"/></svg></span><div><div class="t">Prepare a form</div><div class="d">Author fillable form fields</div></div></div>
+    <div class="card"><span class="tile t-purple"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#C4A5F5" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="7" width="14" height="7" rx="1.5"/><path d="M7 10.5h4"/></svg></span><div><div class="t">Add a text field</div><div class="d">Single-line text input</div></div></div>
+    <div class="card"><span class="tile t-purple"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#C4A5F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="12" height="12" rx="2.5"/><path d="M7.5 10.2l2.4 2.4 4-4.4"/></svg></span><div><div class="t">Add a checkbox</div><div class="d">Toggleable checkbox field</div></div></div>
+    <div class="card"><span class="tile t-purple"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#C4A5F5" stroke-width="1.8"><circle cx="10" cy="10" r="6.5"/><circle cx="10" cy="10" r="2.4" fill="#C4A5F5" stroke="none"/></svg></span><div><div class="t">Add a radio button</div><div class="d">One-of-many choice field</div></div></div>
+    <div class="card"><span class="tile t-purple"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#C4A5F5" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="5" width="14" height="10" rx="2"/><path d="M12.5 9.5l2 2 2.5-2.5" transform="translate(-2.5 0)"/><path d="M6 9.5h6"/></svg></span><div><div class="t">Add a drop-down list</div><div class="d">Popup list field</div></div></div>
+    <div class="card"><span class="tile t-purple"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#C4A5F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 2.5l1.6 3.9 4.2.4-3.2 2.8.9 4.1-3.5-2.2-3.5 2.2.9-4.1-3.2-2.8 4.2-.4z"/></svg></span><div><div class="t">Detect form fields</div><div class="d">Find fields on scanned pages</div></div></div>
+    <div class="card"><span class="tile t-purple"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#C4A5F5" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h12M7 4.5L4 8l3 3.5M16 12l3 3.5-3 3.5" transform="translate(0 -1)"/><path d="M4 15.5h12"/></svg></span><div><div class="t">Clear form</div><div class="d">Reset all field values</div></div></div>
+  </div>
+
+  <div class="sec-t">Protect &amp; Sign</div>
+  <div class="grid">
+    <div class="card"><span class="tile t-indigo"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8.5" width="10" height="8" rx="1.5"/><path d="M7 8.5V6.5a3 3 0 0 1 6 0v2"/></svg></span><div><div class="t">Protect a PDF</div><div class="d">Passwords and permissions</div></div></div>
+    <div class="card"><span class="tile t-indigo"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round"><rect x="3" y="7" width="14" height="6" rx="1.5" fill="#A5B4FC" stroke="none" opacity=".85"/></svg></span><div><div class="t">Redact pages…</div><div class="d">Permanently black out content</div></div></div>
+    <div class="card"><span class="tile t-indigo"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 16c1.5-4.5 4-7.5 8.5-9.5L11 5l-1 1.5C7.5 8.5 5.5 11.5 4.5 15.5z"/><path d="M12.5 6.5l3-1.5"/></svg></span><div><div class="t">Digitally sign</div><div class="d">Sign with a certificate</div></div></div>
+    <div class="card"><span class="tile t-indigo"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#A5B4FC" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3l1.4 3.6 3.9.5-2.9 2.6.8 3.9-3.2-1.9-3.2 1.9.8-3.9-2.9-2.6 3.9-.5z"/></svg></span><div><div class="t">Sanitize document…</div><div class="d">Strip hidden metadata</div></div></div>
+  </div>
+
+  <div class="sec-t">Measure &amp; Access</div>
+  <div class="grid">
+    <div class="card"><span class="tile t-slate"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#CFCFD6" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 13.5l9.5-9.5 3.5 3.5-9.5 9.5z"/><path d="M7.5 12.5l1.5 1.5M10 10l1.5 1.5M12.5 7.5L14 9"/></svg></span><div><div class="t">Measure distance</div><div class="d">Measure between two points</div></div></div>
+    <div class="card"><span class="tile t-slate"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#CFCFD6" stroke-width="1.8" stroke-linecap="round" stroke-dasharray="3 2.4"><rect x="4" y="5" width="12" height="10" rx="1.5"/></svg></span><div><div class="t">Measure area</div><div class="d">Measure a region's area</div></div></div>
+    <div class="card"><span class="tile t-slate"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#CFCFD6" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="5.5" r="2.2"/><path d="M10 9v4M10 10.5c-2.8 0-4.5.8-5.5 2M10 10.5c2.8 0 4.5.8 5.5 2M7.5 16.5h5"/></svg></span><div><div class="t">Accessibility Checker</div><div class="d">Check tags and reading order</div></div></div>
+  </div>
+
+  <p class="note">Builder notes: sections follow the catalogue's real tool groups; every card name is a
+  real command string from the codebase, blurbs describe the real feature. Card = radius 12,
+  tile 40px / radius 10 with the tool-hue system (Organize blue · Create green · Edit orange ·
+  Review pink · Forms purple · Protect indigo · Measure neutral). In the <b>ur</b> locale the
+  grid flows right-to-left; Latin tool names keep bidi isolation.</p>
+</div>
+</body>
+</html>

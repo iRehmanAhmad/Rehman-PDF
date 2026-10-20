@@ -137,13 +137,13 @@ comment menu	Edit	సవరించు
 	Next page	తదుపరి పేజీ
 	Previous page	మునుపటి పేజీ
 	Current page — type a page number or label (such as iv) and press Enter	ప్రస్తుత పేజీ — పేజీ సంఖ్యను లేదా లేబుల్‌ను (iv వంటిది) టైప్ చేసి Enter నొక్కండి
-	Welcome to PdfCraft	PdfCraftకు స్వాగతం
+	Welcome to Rehman-PDF	PdfCraftకు స్వాగతం
 	An open-source PDF workbench — local, private, and scriptable.	ఓపెన్-సోర్స్ PDF వర్క్‌బెంచ్ — మీ కంప్యూటర్‌లోనే నడుస్తుంది, గోప్యంగా ఉంటుంది, స్క్రిప్ట్‌లతో ఆటోమేట్ చేయవచ్చు.
 	Recommended tools	సిఫార్సు చేసిన సాధనాలు
 	Use now	ఇప్పుడే ఉపయోగించు
 	Open file	ఫైల్‌ను తెరువు
 	Recent	ఇటీవలి
-	Files you open in PdfCraft appear here. Drop a PDF anywhere to open it.	PdfCraftలో మీరు తెరిచే ఫైల్‌లు ఇక్కడ కనిపిస్తాయి. PDFను తెరవడానికి దాన్ని ఎక్కడైనా లాగి వదలండి.
+	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	PdfCraftలో మీరు తెరిచే ఫైల్‌లు ఇక్కడ కనిపిస్తాయి. PDFను తెరవడానికి దాన్ని ఎక్కడైనా లాగి వదలండి.
 	Privacy	గోప్యత
 	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	PdfCraft ఆఫ్‌లైన్‌లో పనిచేస్తుంది. టెలిమెట్రీ లేదు, ఖాతా అవసరం లేదు, మీరు ప్రొవైడర్‌ను జోడిస్తే తప్ప క్లౌడ్ ప్రాసెసింగ్ ఉండదు.
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	స్క్రిప్ట్‌లు ఫైల్ లేదా నెట్‌వర్క్ యాక్సెస్ లేని శాండ్‌బాక్స్‌లో నడుస్తాయి. JavaScript ఆఫ్‌లో ఉన్నా, Acrobat ప్రామాణిక ఫార్మాట్, ధృవీకరణ, గణన ఫంక్షన్‌లు పనిచేస్తాయి.
@@ -2265,3 +2265,23 @@ animation effects	Off	ఆఫ్
 	rehmanahmad.com	rehmanahmad.com
 	Rehman-PDF on the web	Rehman-PDF on the web
 	Project page, source code and the author's site.	Project page, source code and the author's site.
+
+	or drop a PDF anywhere	or drop a PDF anywhere
+	Free and open source · your files never leave this computer	Free and open source · your files never leave this computer
+	GitHub	GitHub
+	Select, rotate, delete, insert and reorder pages · deep undo	Select, rotate, delete, insert and reorder pages · deep undo
+	Sticky notes, highlights and markup · summarize to a report	Sticky notes, highlights and markup · summarize to a report
+	Add fillable fields, checkboxes and signatures · bulk edit	Add fillable fields, checkboxes and signatures · bulk edit
+	Fix text, images and links in place · RTL-aware editing	Fix text, images and links in place · RTL-aware editing
+	Passwords and permissions · certificates and redaction	Passwords and permissions · certificates and redaction
+	Annotate	Annotate
+	of {count}	of {count}
+	Custom zoom	Custom zoom
+	Select all	Select all
+	Rotate left	Rotate left
+	Rotate right	Rotate right
+	Insert from file	Insert from file
+	{n} of {total} pages selected	{n} of {total} pages selected
+	navigate	navigate
+	run	run
+	Thumbnail size	Thumbnail size

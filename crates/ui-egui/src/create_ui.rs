@@ -32,13 +32,7 @@ pub(crate) fn image_import_body(ui: &mut egui::Ui, app: &mut PdfCraftApp) -> (bo
     ui.add_enabled(draft.choice == ResolutionChoice::Custom, egui::DragValue::new(&mut draft.dpi).range(1.0..=1200.0).suffix(" DPI"));
     ui.label(tl!("DPI sets the printed page size without resampling the image."));
     ui.add_space(12.0);
-    let mut go = false;
-    let mut cancel = false;
-    ui.horizontal(|ui| {
-        go = crate::widgets::pill_button(ui, tl!("Create"), true).clicked();
-        cancel = crate::widgets::pill_button(ui, tl!("Cancel"), false).clicked();
-    });
-    (go, cancel)
+    crate::dialog_chrome::footer(ui, tl!("Cancel"), tl!("Create"), true)
 }
 
 /// File types Open accepts besides PDF (converted on open).

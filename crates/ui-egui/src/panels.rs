@@ -790,6 +790,41 @@ pub fn right_panel(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
     }
 }
 
+/// The read-mode page-thumbnails strip (T-003 mockup): just the page grid from [`pages`],
+/// no panel header — the rail's thumbnails button toggles it. Clicking a thumbnail navigates,
+/// like the right panel's Pages tab does.
+pub(crate) fn pages_strip(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
+    let t = Tokens::get(ui.ctx());
+    let Some((index, id)) = app.active_ids() else { return };
+    let Some(doc) = app.session.get(id) else { return };
+    let editable = doc.allows_assembly() && doc.read_only_reason.is_none();
+    // A dialog or the palette owns the keyboard: the strip leaves Escape/Delete to it.
+    let modal = app.dialog.is_some() || app.palette_open;
+    let info = &doc.info;
+    let mut nav: Option<Nav> = None;
+    {
+        let view = &mut app.views[index];
+        egui::ScrollArea::vertical().auto_shrink([false, false]).show(ui, |ui| {
+            pages(ui, &t, info, view, modal, editable, &mut nav);
+        });
+    }
+    // `pages` only ever navigates to a page; the other variants are unreachable here but
+    // handled the same way as [`right_panel`] so a future change can't silently drop them.
+    match nav {
+        Some(Nav::Page(p)) => app.views[index].go_to_page(p),
+        Some(Nav::Dest(p, dest)) => match app.session.get(id) {
+            Some(doc) => app.views[index].go_to_dest(p, dest, &doc.info),
+            None => app.views[index].go_to_page(p),
+        },
+        Some(Nav::Flash(p, r)) => {
+            let v = &mut app.views[index];
+            v.go_to_page(p);
+            v.flash = Some((p, r, 0.0));
+        }
+        None => {}
+    }
+}
+
 fn empty(ui: &mut egui::Ui, t: &Tokens, icon: &str, text: &str) {
     ui.add_space(40.0);
     ui.vertical_centered(|ui| {

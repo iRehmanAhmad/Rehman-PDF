@@ -641,6 +641,69 @@ fn added_arabic_text_is_shaped_in_display_order_and_stays_searchable() {
     }
 }
 
+#[test]
+fn added_urdu_text_is_shaped_in_nastaliq_and_stays_searchable() {
+    // "اردو" plus joined words carrying Urdu's own letters (ڑ ٹ ے) and its full stop (۔):
+    // the line is Urdu, so it must shape with the Nastaliq face, not the Arabic one.
+    let logical = "اردو بڑا ٹیسٹ ہے۔";
+    let mut doc = fixture();
+    let text = AddedText { rect: [72.0, 600.0, 400.0, 700.0], text: logical.into(), size: 14.0, ..AddedText::default() };
+    if pdfcraft_fonts::document_urdu_font().is_none() {
+        if pdfcraft_fonts::document_arabic_font().is_none() {
+            // No shaped face at all: the existing clear error, and nothing is written.
+            let err = add_content(&mut doc, 0, &Content::Text(text)).unwrap_err();
+            assert!(matches!(&err, EditError::Invalid(m) if m.contains("CRAFT_FONTS_DIR")), "{err:?}");
+            assert!(!doc.is_modified(), "nothing is written when the font is missing");
+        } else {
+            eprintln!("skipping the Urdu drawing checks: Arabic face present but no Nastaliq face (set CRAFT_FONTS_DIR with Noto Nastaliq Urdu)");
+        }
+        return;
+    }
+    add_content(&mut doc, 0, &Content::Text(text)).unwrap();
+    let doc = reopen(&doc);
+    let added = list_added(&doc);
+    let Content::Text(t) = &added[0].content else { panic!() };
+    assert_eq!(t.text, logical, "the logical text is kept for editing");
+    // The item was drawn with Type 3 fonts named from the Nastaliq face, whose
+    // ToUnicode maps give back every Urdu letter, and whose ActualText keeps typing order.
+    let p = &pdfcraft_model::pages(&doc)[0];
+    let res = doc.resolve(p.dict.get(b"Resources").unwrap());
+    let fonts = doc.resolve(res.as_dict().unwrap().get(b"Font").unwrap()).as_dict().unwrap().clone();
+    let shaped: Vec<_> = fonts.iter().filter(|(k, _)| k.starts_with(b"PCAr")).map(|(_, v)| doc.resolve(v).as_dict().unwrap().clone()).collect();
+    assert_eq!(shaped.len(), 1, "one shaped font for the item");
+    let f = &shaped[0];
+    assert_eq!(f.name(b"Subtype"), Some(&b"Type3"[..]));
+    let descriptor = doc.dict(f.get(b"FontDescriptor").unwrap()).unwrap().clone();
+    let family = descriptor.get(b"FontFamily").and_then(|o| doc.resolve(o).as_string().map(|s| s.to_text())).unwrap_or_default();
+    assert_eq!(family, "Noto Nastaliq Urdu", "the glyphs come from the Nastaliq face, not the Arabic one");
+    let mapped = String::from_utf8_lossy(&stream_bytes(&doc, f.get(b"ToUnicode").unwrap()).unwrap()).into_owned();
+    // Urdu-specific letters survive the round trip through the shaped font's map.
+    for letter in ["0679", "0691", "06D2", "06D4", "0627", "0631", "062F", "0648"] {
+        assert!(mapped.contains(&format!("<{letter}>")) || mapped.contains(letter), "{letter} in {mapped}");
+    }
+    // Reading order: the content stream's ActualText holds the line in logical order,
+    // which is what extraction returns for these Type 3 items.
+    let item = streams(&doc, 0).into_iter().find(|s| s.contains("ActualText")).unwrap();
+    let hex: String = logical.encode_utf16().map(|u| format!("{u:04X}")).collect();
+    assert!(item.contains(&format!("<FEFF{hex}>")), "logical order in {item}");
+}
+
+#[test]
+fn urdu_text_without_any_shaped_face_is_a_clear_error_not_a_panic() {
+    // Holds in every build: with a Nastaliq face the add succeeds; without any shaped
+    // face it fails with the CRAFT_FONTS_DIR error and leaves the document untouched.
+    let mut doc = fixture();
+    let text = AddedText { rect: [72.0, 600.0, 400.0, 700.0], text: "ٹھیک ہے۔".into(), size: 14.0, ..AddedText::default() };
+    let r = add_content(&mut doc, 0, &Content::Text(text));
+    if pdfcraft_fonts::document_urdu_font().is_some() || pdfcraft_fonts::document_arabic_font().is_some() {
+        assert!(r.is_ok(), "{r:?}");
+    } else {
+        let err = r.unwrap_err();
+        assert!(matches!(&err, EditError::Invalid(m) if m.contains("CRAFT_FONTS_DIR")), "{err:?}");
+        assert!(!doc.is_modified());
+    }
+}
+
 /// The `PCAr` font names in page `page`'s resources.
 fn arabic_font_names(doc: &Document, page: usize) -> Vec<String> {
     let p = &pdfcraft_model::pages(doc)[page];

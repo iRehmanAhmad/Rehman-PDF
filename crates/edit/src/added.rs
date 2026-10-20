@@ -11,7 +11,9 @@
 use std::collections::{HashMap, HashSet};
 
 use pdfcraft_cos::{Dict, Document, ObjRef, Object, PdfString, Stream};
-use pdfcraft_fonts::{GlyphError, GlyphOutline, ShapedCluster, ShapedScript, Std14, literal, shape_arabic, shape_thai, shaped_glyph, win_ansi};
+use pdfcraft_fonts::{
+    GlyphError, GlyphOutline, ShapedCluster, ShapedScript, Std14, literal, shape_arabic, shape_thai, shape_urdu, shaped_glyph, win_ansi,
+};
 use unicode_bidi::{Level, ParagraphBidiInfo};
 
 use crate::{EditError, MarkKind, check, contents, n, page_list, place_tagged};
@@ -313,6 +315,16 @@ fn is_arabic(c: char) -> bool {
     matches!(u32::from(c), 0x0600..=0x06FF | 0x0750..=0x077F | 0x0870..=0x08FF | 0xFB50..=0xFDFF | 0xFE70..=0xFEFC)
 }
 
+/// Letters and punctuation that mark a line as Urdu rather than Arabic: ٹ ڈ ڑ ں ھ ہ ے and
+/// the Urdu full stop ۔. A line with any of them shapes with the Nastaliq face when the
+/// build has one (see `shaped_layout`); without one it keeps the Arabic path. A word using
+/// only letters Urdu shares with Arabic (e.g. "اردو" alone) carries no marker like this —
+/// `AddedText` has no language tag, so such a line is shaped with the Arabic face, still
+/// joined and extractable, just not in Nastaliq.
+fn is_urdu(c: char) -> bool {
+    matches!(c, '\u{0679}' | '\u{0688}' | '\u{0691}' | '\u{06BA}' | '\u{06BE}' | '\u{06C1}' | '\u{06D2}' | '\u{06D4}')
+}
+
 /// The first character of `t` that would be drawn as `?`: outside WinAnsiEncoding and not drawn
 /// with the craft-fonts Arabic face (#125), or Arabic that the face can't draw (or that has no
 /// face to draw it). Page-content tools refuse such text; the Add-text editor keeps it open.
@@ -324,11 +336,12 @@ pub fn first_undrawable(t: &AddedText) -> Option<char> {
         let rest = AddedText { text: t.text.chars().filter(|c| !is_thai(*c)).collect(), ..t.clone() };
         return first_undrawable(&rest);
     }
-    // Arabic that nothing can draw: there's no face, or the face lacks it.
-    if let Some(c) = t.text.chars().find(|c| shaped_arabic(*c) && !pdfcraft_fonts::arabic_has(*c)) {
+    // Arabic-script text that nothing can draw: there's no face, or neither face has it
+    // (an Urdu line is drawn by the Nastaliq face, so its letters count as drawn by it).
+    if let Some(c) = t.text.chars().find(|c| shaped_arabic(*c) && !pdfcraft_fonts::arabic_has(*c) && !pdfcraft_fonts::urdu_has(*c)) {
         return Some(c);
     }
-    if pdfcraft_fonts::document_arabic_font().is_none() || !t.text.chars().any(is_arabic) {
+    if (pdfcraft_fonts::document_arabic_font().is_none() && pdfcraft_fonts::document_urdu_font().is_none()) || !t.text.chars().any(is_arabic) {
         // Drawn line by line in the item's standard font (`\n` splits lines). Without the face
         // that is also how `draw` redraws an existing item, so it's checked that way.
         return t.text.split('\n').find_map(pdfcraft_fonts::first_non_win_ansi);
@@ -383,6 +396,9 @@ fn shaped_layout(t: &AddedText, line: &str, rtl: bool) -> Result<(Vec<Piece>, f6
     if line.is_empty() {
         return Ok((Vec::new(), 0.0));
     }
+    // A line marked as Urdu (see `is_urdu`) shapes its Arabic-script runs with the Nastaliq
+    // face when the build has one; without one it keeps the Arabic face's path, as before.
+    let urdu = line.chars().any(is_urdu) && pdfcraft_fonts::document_urdu_font().is_some();
     let base = if rtl { Level::rtl() } else { Level::ltr() };
     let info = ParagraphBidiInfo::new(line, Some(base));
     let (levels, runs) = info.visual_runs(0..line.len());
@@ -397,8 +413,8 @@ fn shaped_layout(t: &AddedText, line: &str, rtl: bool) -> Result<(Vec<Piece>, f6
         for c in text.chars().filter(|c| !is_bidi_control(*c)) {
             let script = if is_thai(c) {
                 Some(ShapedScript::Thai)
-            } else if is_arabic(c) || (run_rtl && !c.is_alphanumeric() && pdfcraft_fonts::arabic_has(c)) {
-                Some(ShapedScript::Arabic)
+            } else if is_arabic(c) || (run_rtl && !c.is_alphanumeric() && (pdfcraft_fonts::arabic_has(c) || urdu && pdfcraft_fonts::urdu_has(c))) {
+                Some(if urdu { ShapedScript::Urdu } else { ShapedScript::Arabic })
             } else {
                 None
             };
@@ -414,6 +430,7 @@ fn shaped_layout(t: &AddedText, line: &str, rtl: bool) -> Result<(Vec<Piece>, f6
             pieces.push(if let Some(script) = script {
                 let shaped = match script {
                     ShapedScript::Arabic => shape_arabic(&s, run_rtl).map_err(|e| arabic_error(e, &s))?,
+                    ShapedScript::Urdu => shape_urdu(&s, run_rtl).map_err(|e| urdu_error(e, &s))?,
                     ShapedScript::Thai => shape_thai(&s).map_err(|e| thai_error(e, &s))?,
                 };
                 Piece::Shaped(shaped)
@@ -447,6 +464,16 @@ fn arabic_error(e: GlyphError, text: &str) -> EditError {
             .into(),
         GlyphError::Missing => format!("the Arabic font can't show \"{text}\""),
         GlyphError::TooComplex => format!("the Arabic font's glyphs for \"{text}\" are too complex"),
+    })
+}
+
+fn urdu_error(e: GlyphError, text: &str) -> EditError {
+    EditError::Invalid(match e {
+        GlyphError::NoFont => "Urdu text needs PdfCraft's Urdu font (Noto Nastaliq Urdu), which this build doesn't include \
+                               (to build it in, set CRAFT_FONTS_DIR to a craft-fonts checkout that has a Nastaliq face)"
+            .into(),
+        GlyphError::Missing => format!("the Urdu font can't show \"{text}\""),
+        GlyphError::TooComplex => format!("the Urdu font's glyphs for \"{text}\" are too complex"),
     })
 }
 
@@ -524,6 +551,7 @@ fn draw_laid_shaped(
             if let std::collections::hash_map::Entry::Vacant(entry) = outlines.entry((c.script, *id)) {
                 entry.insert(outline(c.script, *id).map_err(|e| match c.script {
                     ShapedScript::Arabic => arabic_error(e, &c.text),
+                    ShapedScript::Urdu => urdu_error(e, &c.text),
                     ShapedScript::Thai => thai_error(e, &c.text),
                 })?);
             }
@@ -663,6 +691,7 @@ fn type3_shaped(doc: &mut Document, clusters: &[&ShapedCluster], outlines: &Hash
         Some(script) => script.font().map_or(
             match script {
                 ShapedScript::Arabic => "Arabic",
+                ShapedScript::Urdu => "Urdu",
                 ShapedScript::Thai => "Thai",
             },
             |f| f.family,
@@ -715,7 +744,10 @@ fn draw(doc: &mut Document, c: &Content, view: [f64; 6], taken: &Dict, existing:
             }
             let mut fonts = Dict::new();
             fonts.set(name.clone().into_bytes(), Object::Dict(font));
-            if t.text.chars().any(is_thai) || (t.text.chars().any(is_arabic) && (pdfcraft_fonts::document_arabic_font().is_some() || !existing)) {
+            if t.text.chars().any(is_thai)
+                || (t.text.chars().any(is_arabic)
+                    && (pdfcraft_fonts::document_arabic_font().is_some() || pdfcraft_fonts::document_urdu_font().is_some() || !existing))
+            {
                 draw_shaped(doc, t, taken, &mut fonts, &mut out)?;
                 res.set(b"Font".to_vec(), Object::Dict(fonts));
                 out.extend_from_slice(b"Q\n");
@@ -950,7 +982,10 @@ fn validate(c: &Content) -> Result<(), EditError> {
             // Without the Arabic face, `draw` decides for the Arabic letters themselves (#403): a new
             // item is refused with what's missing, and one that already holds Arabic stays movable.
             // Everything else in it is drawn in the standard font, so it still has to fit.
-            let undrawable = if t.text.chars().any(shaped_arabic) && pdfcraft_fonts::document_arabic_font().is_none() {
+            let undrawable = if t.text.chars().any(shaped_arabic)
+                && pdfcraft_fonts::document_arabic_font().is_none()
+                && pdfcraft_fonts::document_urdu_font().is_none()
+            {
                 t.text.split('\n').find_map(|line| {
                     line.chars()
                         .find(|c| !(shaped_arabic(*c) || is_thai(*c) && pdfcraft_fonts::thai_has(*c) || pdfcraft_fonts::win_ansi_encodable(*c)))

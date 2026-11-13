@@ -1,12 +1,13 @@
 [package]
 name = "pdfcraft-cli"
-description = "PdfCraft command-line tool: inspect, render and robustness-check PDFs"
+description = "Rehman-PDF command-line tool: inspect, render and robustness-check PDFs"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
+# The shipped binary is RehmanPDF-cli.exe (T-018 brand scrub); the package name stays `pdfcraft-cli`.
 [[bin]]
-name = "pdfcraft-cli"
+name = "RehmanPDF-cli"
 path = "src/main.rs"
 
 [lints]
@@ -28,10 +29,10 @@ base64 = "0.22"
 rustix = { version = "1", features = ["process"] }
 
 [build-dependencies]
-# VERSIONINFO for pdfcraft-cli.exe; build.rs only uses it when targeting Windows.
+# VERSIONINFO for RehmanPDF-cli.exe; build.rs only uses it when targeting Windows.
 winresource = "0.1"
 
 [features]
 default = ["mcp"]
-# The opt-in MCP server (`pdfcraft-cli mcp`). Build with --no-default-features to leave it out.
+# The opt-in MCP server (`RehmanPDF-cli mcp`). Build with --no-default-features to leave it out.
 mcp = ["pdfcraft-automation/mcp"]

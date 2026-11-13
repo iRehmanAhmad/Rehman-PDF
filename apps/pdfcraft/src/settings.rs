@@ -19,16 +19,23 @@ pub fn directory(
         return Ok(legacy);
     }
     // XDG requires absolute environment paths; empty and relative overrides are ignored.
-    let preferred = config_home.filter(|p| p.is_absolute()).or_else(|| home.filter(|p| p.is_absolute()).map(|p| p.join(".config")));
-    let Some(preferred) = preferred.map(|p| p.join("pdfcraft")) else { return Ok(legacy) };
+    let base = config_home.filter(|p| p.is_absolute()).or_else(|| home.filter(|p| p.is_absolute()).map(|p| p.join(".config")));
+    let Some(base) = base else { return Ok(legacy) };
+    // T-018: the config folder was renamed `pdfcraft` → `rehmanpdf`; preferences saved under
+    // the old folder (or in the legacy data folder) are migrated like-for-like below.
+    let preferred = base.join("rehmanpdf");
     let target = preferred.join("app.ron");
     if std::fs::symlink_metadata(&target).is_ok() {
         return Ok(Some(preferred));
     }
     create_private_directory(&preferred)?;
-    if let Some(source) = legacy.map(|p| p.join("app.ron")) {
+    let sources = [legacy.map(|p| p.join("app.ron")), Some(base.join("pdfcraft").join("app.ron"))];
+    for source in sources.into_iter().flatten() {
         match std::fs::File::open(&source) {
-            Ok(mut source) => migrate(&mut source, &preferred, &target)?,
+            Ok(mut source) => {
+                migrate(&mut source, &preferred, &target)?;
+                break;
+            }
             Err(e) if e.kind() == std::io::ErrorKind::NotFound => {}
             Err(e) => return Err(e),
         }
@@ -93,7 +100,7 @@ mod tests {
         let fixture = Fixture::new();
         let home = fixture.0.join("home");
         let data = home.join(".local/share/pdfcraft");
-        assert_eq!(directory(true, None, Some(data), None, Some(home.clone())).unwrap(), Some(home.join(".config/pdfcraft")));
+        assert_eq!(directory(true, None, Some(data), None, Some(home.clone())).unwrap(), Some(home.join(".config/rehmanpdf")));
     }
 
     struct Fixture(PathBuf);
@@ -116,9 +123,9 @@ mod tests {
         let f = Fixture::new();
         let home = f.0.join("home");
         let config = f.0.join("custom-config");
-        assert_eq!(directory(true, None, None, Some(config.clone()), Some(home.clone())).unwrap(), Some(config.join("pdfcraft")));
+        assert_eq!(directory(true, None, None, Some(config.clone()), Some(home.clone())).unwrap(), Some(config.join("rehmanpdf")));
         for invalid in [PathBuf::new(), PathBuf::from("relative")] {
-            assert_eq!(directory(true, None, None, Some(invalid), Some(home.clone())).unwrap(), Some(home.join(".config/pdfcraft")));
+            assert_eq!(directory(true, None, None, Some(invalid), Some(home.clone())).unwrap(), Some(home.join(".config/rehmanpdf")));
         }
         assert_eq!(directory(true, None, Some(f.0.clone()), None, None).unwrap(), Some(f.0.clone()));
     }
@@ -133,7 +140,7 @@ mod tests {
         std::fs::write(data.join("recovery/unsaved.pdf"), b"UNSAVED").unwrap();
         std::fs::write(data.join("digital-id.p12"), b"KEY").unwrap();
         let selected = directory(true, None, Some(data.clone()), Some(config.clone()), None).unwrap().unwrap();
-        assert_eq!(selected, config.join("pdfcraft"));
+        assert_eq!(selected, config.join("rehmanpdf"));
         assert_eq!(std::fs::read(selected.join("app.ron")).unwrap(), std::fs::read(data.join("app.ron")).unwrap());
         assert_eq!(std::fs::read(data.join("recovery/unsaved.pdf")).unwrap(), b"UNSAVED");
         assert_eq!(std::fs::read(data.join("digital-id.p12")).unwrap(), b"KEY");
@@ -143,6 +150,20 @@ mod tests {
         assert_eq!(directory(true, None, Some(data), Some(config), None).unwrap(), Some(selected.clone()));
         assert_eq!(std::fs::read(selected.join("app.ron")).unwrap(), b"NEW");
         assert_eq!(std::fs::read_dir(selected).unwrap().count(), 1);
+    }
+
+    #[test]
+    fn migration_from_the_pre_rename_xdg_folder() {
+        // T-018: preferences in the old `pdfcraft` config folder move to `rehmanpdf`.
+        let f = Fixture::new();
+        let config = f.0.join("config");
+        let old = config.join("pdfcraft");
+        std::fs::create_dir_all(&old).unwrap();
+        std::fs::write(old.join("app.ron"), b"(theme:Dark)").unwrap();
+        let selected = directory(true, None, None, Some(config.clone()), None).unwrap().unwrap();
+        assert_eq!(selected, config.join("rehmanpdf"));
+        assert_eq!(std::fs::read(selected.join("app.ron")).unwrap(), b"(theme:Dark)");
+        assert_eq!(std::fs::read(old.join("app.ron")).unwrap(), b"(theme:Dark)", "the old file is copied, not moved");
     }
 
     #[test]
@@ -172,7 +193,7 @@ mod tests {
     #[test]
     fn portable_and_non_xdg_platforms_keep_their_locations() {
         let f = Fixture::new();
-        let portable = f.0.join("PdfCraftData");
+        let portable = f.0.join("RehmanPDFData");
         for xdg in [true, false] {
             assert_eq!(directory(xdg, Some(&portable), Some(f.0.clone()), Some(f.0.clone()), None).unwrap(), Some(portable.clone()));
         }

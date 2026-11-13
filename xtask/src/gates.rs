@@ -20,7 +20,7 @@ pub fn target_dir() -> PathBuf {
 
 /// The release `pdfcraft-cli` that `cargo build --release -p pdfcraft-cli` produced.
 pub fn release_cli() -> PathBuf {
-    target_dir().join("release").join(format!("pdfcraft-cli{}", std::env::consts::EXE_SUFFIX))
+    target_dir().join("release").join(format!("RehmanPDF-cli{}", std::env::consts::EXE_SUFFIX))
 }
 
 fn cargo() -> Command {

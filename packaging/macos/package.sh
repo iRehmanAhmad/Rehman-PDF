@@ -65,7 +65,8 @@ rm -rf "$WORK"
 mkdir -p "$WORK/bin"
 for bin in pdfcraft pdfcraft-cli; do
   inputs=()
-  for t in "${TARGETS[@]}"; do inputs+=("$CARGO_TARGET_DIR/$t/release/$bin"); done
+  # Cargo builds RehmanPDF / RehmanPDF-cli since T-018; the staged names stay as they were.
+  for t in "${TARGETS[@]}"; do inputs+=("$CARGO_TARGET_DIR/$t/release/${bin/pdfcraft/RehmanPDF}"); done
   lipo -create -output "$WORK/bin/$bin" "${inputs[@]}"
   lipo -info "$WORK/bin/$bin"
 done

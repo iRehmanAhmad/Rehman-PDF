@@ -173,7 +173,7 @@
 	Recent	حالیہ
 	Files you open in Rehman-PDF appear here. Drop a PDF anywhere to open it.	Rehman-PDF میں جو فائلیں آپ کھولتے ہیں وہ یہاں نظر آتی ہیں۔ کھولنے کے لیے کسی بھی جگہ PDF ڈراپ کریں۔
 	Privacy	رازداری
-	PdfCraft works offline. No telemetry, no account, and no cloud processing unless you add a provider.	Rehman-PDF آف لائن کام کرتا ہے۔ کوئی ٹیلی میٹری نہیں، کوئی اکاؤنٹ نہیں، اور کوئی کلاؤڈ پروسیسنگ نہیں جب تک آپ کوئی فراہم کنندہ شامل نہ کریں۔
+	Rehman-PDF works offline. No telemetry, no account, and no cloud processing unless you add a provider.	Rehman-PDF آف لائن کام کرتا ہے۔ کوئی ٹیلی میٹری نہیں، کوئی اکاؤنٹ نہیں، اور کوئی کلاؤڈ پروسیسنگ نہیں جب تک آپ کوئی فراہم کنندہ شامل نہ کریں۔
 	Scripts run in a sandbox without file or network access. With JavaScript off, Acrobat's standard format, validate and calculate functions still work.	اسکرپٹس فائل یا نیٹ ورک رسائی کے بغیر سینڈ باکس میں چلتی ہیں۔ JavaScript بند ہونے پر بھی، Acrobat کے معیاری فارمیٹ، validate اور calculate فنکشنز کام کرتے ہیں۔
 	Back to all tools	تمام ٹولز پر واپس
 	Close panel	پینل بند کریں
@@ -312,7 +312,7 @@
 	Number pages…	صفحات کو نمبر دیں…
 	Keyboard shortcuts	کی بورڈ شارٹ کٹس
 	Check for updates…	اپ ڈیٹس چیک کریں…
-	About PdfCraft	Rehman-PDF کے بارے میں
+	About Rehman-PDF	Rehman-PDF کے بارے میں
 	Export a PDF	PDF برآمد کریں
 	Export to	برآمد کریں بطور
 	Microsoft Word (.docx)	Microsoft Word (.docx)
@@ -767,9 +767,9 @@
 	Check for updates	اپ ڈیٹس چیک کریں
 	No check has run yet.	ابھی تک کوئی جانچ نہیں ہوئی۔
 	Checking for a newer version…	نئے ورژن کی جانچ ہو رہی ہے…
-	PdfCraft {v} is available.	Rehman-PDF {v} دستیاب ہے۔
+	Rehman-PDF {v} is available.	Rehman-PDF {v} دستیاب ہے۔
 	You have version {c}. Download the new version from its release page.	آپ کے پاس ورژن {c} ہے۔ اس کے ریلیز صفحے سے نیا ورژن ڈاؤن لوڈ کریں۔
-	PdfCraft {c} is up to date.	Rehman-PDF {c} تازہ ترین ہے۔
+	Rehman-PDF {c} is up to date.	Rehman-PDF {c} تازہ ترین ہے۔
 	Couldn't check for updates: {e}	اپ ڈیٹس چیک نہیں ہو سکے: {e}
 	You have version {c}. All releases are listed at {page}.	آپ کے پاس ورژن {c} ہے۔ تمام ریلیزز {page} پر درج ہیں۔
 	Asks GitHub for the latest release. Nothing is downloaded or installed automatically.	GitHub سے تازہ ترین ریلیز پوچھتا ہے۔ کچھ بھی خودکار طور پر ڈاؤن لوڈ یا انسٹال نہیں ہوتا۔
@@ -883,8 +883,8 @@
 	No changes allowed	کوئی تبدیلی کی اجازت نہیں
 	Annotations, form fill-in, and digital signatures	تشریحات، فارم پُر کرنا، اور ڈیجیٹل دستخط
 	Form fill-in and digital signatures	فارم پُر کرنا اور ڈیجیٹل دستخط
-	The key is in the macOS Keychain, which may ask to allow PdfCraft to use it.	کلید macOS Keychain میں ہے، جو Rehman-PDF کو اسے استعمال کرنے کی اجازت مانگ سکتا ہے۔
-	The key is in the Windows certificate store, which may ask to allow PdfCraft to use it.	کلید Windows سرٹیفکیٹ اسٹور میں ہے، جو Rehman-PDF کو اسے استعمال کرنے کی اجازت مانگ سکتا ہے۔
+	The key is in the macOS Keychain, which may ask to allow Rehman-PDF to use it.	کلید macOS Keychain میں ہے، جو Rehman-PDF کو اسے استعمال کرنے کی اجازت مانگ سکتا ہے۔
+	The key is in the Windows certificate store, which may ask to allow Rehman-PDF to use it.	کلید Windows سرٹیفکیٹ اسٹور میں ہے، جو Rehman-PDF کو اسے استعمال کرنے کی اجازت مانگ سکتا ہے۔
 	Digital ID password	ڈیجیٹل ID کا پاس ورڈ
 	Back	پیچھے
 	Validate all	سب کی توثیق کریں
@@ -1243,7 +1243,7 @@
 	Downsample to	ڈاؤن سیمپل کریں تا
 	Also recognize pages that already have text	ان صفحات کو بھی پہچانیں جن میں پہلے سے متن ہے
 	Pictures on those pages are recognized too; words already in the page's text are not added again	ان صفحات کی تصویریں بھی پہچانی جاتی ہیں؛ صفحے کے متن میں پہلے سے موجود الفاظ دوبارہ شامل نہیں ہوتے
-	Text recognition isn't installed: its model files are missing. Reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them.	متن کی پہچان انسٹال نہیں ہے: اس کی ماڈل فائلیں غائب ہیں۔ Rehman-PDF دوبارہ انسٹال کریں، یا PDFCRAFT_MODELS کو اس فولڈر پر سیٹ کریں جس میں وہ ہیں۔
+	Text recognition isn't installed: its model files are missing. Reinstall Rehman-PDF, or set PDFCRAFT_MODELS to the folder that holds them.	متن کی پہچان انسٹال نہیں ہے: اس کی ماڈل فائلیں غائب ہیں۔ Rehman-PDF دوبارہ انسٹال کریں، یا PDFCRAFT_MODELS کو اس فولڈر پر سیٹ کریں جس میں وہ ہیں۔
 	Settings	ترتیبات
 	Optional	اختیاری
 	Planned · {m}	منصوبہ بند · {m}
@@ -1387,7 +1387,7 @@
 	Anyone opening the document will need this password. It's applied when you save.	دستاویز کھولنے والے ہر شخص کو یہ پاس ورڈ درکار ہوگا۔ یہ محفوظ کرنے پر لاگو ہوتا ہے۔
 	The document opens without a password; this password is needed to change the restrictions. It's applied when you save.	دستاویز بغیر پاس ورڈ کے کھلتی ہے؛ پابندیاں تبدیل کرنے کے لیے یہ پاس ورڈ درکار ہے۔ یہ محفوظ کرنے پر لاگو ہوتا ہے۔
 	Recover unsaved documents?	غیر محفوظ شدہ دستاویزات بحال کریں؟
-	PdfCraft didn't shut down normally. These documents had changes that were autosaved:	Rehman-PDF عام طور پر بند نہیں ہوا۔ ان دستاویزات میں تبدیلیاں تھیں جو خودکار محفوظ ہوئیں:
+	Rehman-PDF didn't shut down normally. These documents had changes that were autosaved:	Rehman-PDF عام طور پر بند نہیں ہوا۔ ان دستاویزات میں تبدیلیاں تھیں جو خودکار محفوظ ہوئیں:
 	just now	ابھی
 	{n} min ago	{n} منٹ پہلے
 	{n} h ago	{n} گھنٹے پہلے
@@ -1545,10 +1545,10 @@
 	On the web, open or drop an image to convert it	ویب پر، تبدیل کرنے کے لیے تصویر کھولیں یا ڈراپ کریں
 	Couldn't optimize the file: {e}	فائل بہتر نہیں بن سکی: {e}
 	Couldn't write {path}: {e}	{path} نہیں لکھ سکا: {e}
-	The form asks to be submitted to {u}; PdfCraft doesn't send form data. Save the document to keep your entries.	فارم {u} کو جمع کرانے کا کہتا ہے؛ Rehman-PDF فارم ڈیٹا نہیں بھیجتا۔ اپنی اندراجات برقرار رکھنے کے لیے دستاویز محفوظ کریں۔
+	The form asks to be submitted to {u}; Rehman-PDF doesn't send form data. Save the document to keep your entries.	فارم {u} کو جمع کرانے کا کہتا ہے؛ Rehman-PDF فارم ڈیٹا نہیں بھیجتا۔ اپنی اندراجات برقرار رکھنے کے لیے دستاویز محفوظ کریں۔
 	This PDF uses the unsupported {s} action.	یہ PDF غیر تعاون یافتہ {s} ایکشن استعمال کرتی ہے۔
 	{name}: the {other} action isn't supported yet	{name}: {other} ایکشن ابھی تعاون یافتہ نہیں ہے
-	{name} submits the form to {url}; PdfCraft doesn't send form data. Save the document to keep your entries.	{name} فارم {url} کو جمع کراتا ہے؛ Rehman-PDF فارم ڈیٹا نہیں بھیجتا۔ اپنی اندراجات برقرار رکھنے کے لیے دستاویز محفوظ کریں۔
+	{name} submits the form to {url}; Rehman-PDF doesn't send form data. Save the document to keep your entries.	{name} فارم {url} کو جمع کراتا ہے؛ Rehman-PDF فارم ڈیٹا نہیں بھیجتا۔ اپنی اندراجات برقرار رکھنے کے لیے دستاویز محفوظ کریں۔
 	Export stopped: {e}	برآمد رک گئی: {e}
 	Exported 1 image	1 تصویر برآمد ہوئی
 	Exported {n} images	{n} تصاویر برآمد ہوئیں
@@ -1710,7 +1710,7 @@
 	Couldn't open {name}: {e}	{name} نہیں کھل سکی: {e}
 	Couldn't read {name}: {e}	{name} پڑھی نہیں جا سکی: {e}
 	Portable mode is off: {folder} can't be written ({error}). Settings are kept in your user folder instead.	پورٹیبل موڈ بند ہے: {folder} نہیں لکھی جا سکتی ({error})۔ ترتیبات اس کے بجائے آپ کے یوزر فولڈر میں رکھی جاتی ہیں۔
-	PdfCraft is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	Rehman-PDF گرافکس پروسیسر کے بغیر ڈرا کر رہا ہے، اس لیے یہ سست ہو سکتا ہے۔ گرافکس ڈرائیور اپ ڈیٹ کرنے سے مدد مل سکتی ہے۔
+	Rehman-PDF is drawing without a graphics processor, so it may be slow. Updating the graphics driver may help.	Rehman-PDF گرافکس پروسیسر کے بغیر ڈرا کر رہا ہے، اس لیے یہ سست ہو سکتا ہے۔ گرافکس ڈرائیور اپ ڈیٹ کرنے سے مدد مل سکتی ہے۔
 	Couldn't save: {e}	محفوظ نہیں ہو سکا: {e}
 	Downloading attachments on the web arrives with M3.10 ({n} bytes ready)	ویب پر منسلکات ڈاؤن لوڈ کرنا M3.10 ({n} بائٹس تیار) کے ساتھ آتا ہے
 	`{command}` {when}	`{command}` {when}
@@ -1784,9 +1784,9 @@
 	Signed and all signatures are valid.	دستخط شدہ اور تمام دستخط درست ہیں۔
 	At least one signature has problems.	کم از کم ایک دستخط میں مسائل ہیں۔
 	This document is secured. Some changes are restricted by its security settings.	یہ دستاویز محفوظ ہے۔ اس کی سیکیورٹی ترتیبات سے کچھ تبدیلیاں محدود ہیں۔
-	This is a dynamic XFA form, which PdfCraft can't display yet. What you see is the file's placeholder page.	یہ ایک متحرک XFA فارم ہے، جسے Rehman-PDF ابھی دکھا نہیں سکتا۔ جو آپ دیکھتے ہیں وہ فائل کا پلیس ہولڈر صفحہ ہے۔
+	This is a dynamic XFA form, which Rehman-PDF can't display yet. What you see is the file's placeholder page.	یہ ایک متحرک XFA فارم ہے، جسے Rehman-PDF ابھی دکھا نہیں سکتا۔ جو آپ دیکھتے ہیں وہ فائل کا پلیس ہولڈر صفحہ ہے۔
 	This form's scripts are turned off because one ran too long. Reopen the document to run them again.	اس فارم کے اسکرپٹس بند ہیں کیونکہ ایک بہت دیر چلا۔ انہیں دوبارہ چلانے کے لیے دستاویز دوبارہ کھولیں۔
-	This form also contains XFA data, which PdfCraft doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	اس فارم میں XFA ڈیٹا بھی ہے، جسے Rehman-PDF ابھی پڑھتا نہیں۔ آپ اس کے فیلڈز پُر کر سکتے ہیں، لیکن Acrobat اس کے بجائے XFA قدریں دکھا سکتا ہے۔
+	This form also contains XFA data, which Rehman-PDF doesn't read yet. You can fill its fields, but Acrobat may show the XFA values instead.	اس فارم میں XFA ڈیٹا بھی ہے، جسے Rehman-PDF ابھی پڑھتا نہیں۔ آپ اس کے فیلڈز پُر کر سکتے ہیں، لیکن Acrobat اس کے بجائے XFA قدریں دکھا سکتا ہے۔
 	This document contains {n} interactive form fields.	اس دستاویز میں {n} انٹرایکٹو فارم فیلڈز ہیں۔
 	This file was damaged and has been repaired. Saving keeps the repaired version.	یہ فائل خراب تھی اور اس کی مرمت کر دی گئی ہے۔ محفوظ کرنے سے مرمت شدہ ورژن برقرار رہتا ہے۔
 	Dismiss	مسترد کریں
@@ -1835,7 +1835,7 @@
 	there are no pages to print	پرنٹ کرنے کے لیے کوئی صفحات نہیں ہیں
 	the document has no tags	دستاویز میں کوئی ٹیگز نہیں ہیں
 	{0}: {1}	{0}: {1}
-	the text recognition models are not installed (reinstall PdfCraft, or set PDFCRAFT_MODELS to the folder that holds them)	متن کی پہچان کے ماڈلز انسٹال نہیں ہیں (Rehman-PDF دوبارہ انسٹال کریں، یا PDFCRAFT_MODELS کو اس فولڈر پر سیٹ کریں جس میں وہ ہیں)
+	the text recognition models are not installed (reinstall Rehman-PDF, or set PDFCRAFT_MODELS to the folder that holds them)	متن کی پہچان کے ماڈلز انسٹال نہیں ہیں (Rehman-PDF دوبارہ انسٹال کریں، یا PDFCRAFT_MODELS کو اس فولڈر پر سیٹ کریں جس میں وہ ہیں)
 	the image is empty	تصویر خالی ہے
 	this file isn't XFDF, FDF, XML or text form data	یہ فائل XFDF، FDF، XML یا ٹیکسٹ فارم ڈیٹا نہیں ہے
 	nothing in the file matches this document	فائل میں کچھ بھی اس دستاویز سے مماثل نہیں
@@ -2042,11 +2042,11 @@
 	Couldn't import the signature image: {e}	دستخط کی تصویر درآمد نہیں ہو سکی: {e}
 	Go to page…	صفحے پر جائیں…
 	For page sizes and margins.	صفحے کے سائز اور مارجنز کے لیے۔
-	Reopen the files that were open when PdfCraft last closed	Rehman-PDF آخری بار بند ہونے پر جو فائلیں کھلی تھیں انہیں دوبارہ کھولیں
+	Reopen the files that were open when Rehman-PDF last closed	Rehman-PDF آخری بار بند ہونے پر جو فائلیں کھلی تھیں انہیں دوبارہ کھولیں
 	The PDF text fonts can't draw “{c}” ({code}). Choose supported text.	PDF متن کے فونٹس ”{c}“ ({code}) نہیں بنا سکتے۔ تعاون یافتہ متن منتخب کریں۔
 	The standard fonts can't draw “{c}” ({code}). Only Western European characters can be added as text for now.	معیاری فونٹس ”{c}“ ({code}) نہیں بنا سکتے۔ فی الحال صرف مغربی یورپی حروف متن کے طور پر شامل ہو سکتے ہیں۔
-	This field's font can't draw “{c}” ({code}), so PdfCraft shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	اس فیلڈ کا فونٹ ”{c}“ ({code}) نہیں بنا سکتا، اس لیے Rehman-PDF اس کی جگہ ? دکھاتا ہے۔ قدر محفوظ ہے، اور دیگر PDF ویوورز فیلڈ کو اس سے دوبارہ بناتے ہیں۔
-	The fonts PdfCraft writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	Rehman-PDF جن فونٹس سے لکھتا ہے وہ ”{c}“ ({code}) نہیں بنا سکتے، اس لیے یہ ہر PDF ویوور میں ? کے طور پر دکھتا ہے۔ متن محفوظ ہے۔
+	This field's font can't draw “{c}” ({code}), so Rehman-PDF shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	اس فیلڈ کا فونٹ ”{c}“ ({code}) نہیں بنا سکتا، اس لیے Rehman-PDF اس کی جگہ ? دکھاتا ہے۔ قدر محفوظ ہے، اور دیگر PDF ویوورز فیلڈ کو اس سے دوبارہ بناتے ہیں۔
+	The fonts Rehman-PDF writes with can't draw “{c}” ({code}), so it shows as ? in every PDF viewer. The text is saved.	Rehman-PDF جن فونٹس سے لکھتا ہے وہ ”{c}“ ({code}) نہیں بنا سکتے، اس لیے یہ ہر PDF ویوور میں ? کے طور پر دکھتا ہے۔ متن محفوظ ہے۔
 	Open arrow	کھلا تیر
 	Closed arrow	بند تیر
 	Butt	بٹ
@@ -2164,8 +2164,8 @@
 	Write this email?	یہ ای میل لکھیں؟
 	XFA form: its fields and its XFA data are kept in step, so other viewers show what you fill in.	XFA فارم: اس کے فیلڈز اور اس کا XFA ڈیٹا ہم آہنگ رکھے جاتے ہیں، تاکہ دوسرے ویوورز وہ دکھائیں جو آپ پُر کرتے ہیں۔
 	{n} contributors · {c} commits	{n} معاونین · {c} کمٹس
-	{who} in this document tried to open an address PdfCraft won't open: {e}.	اس دستاویز میں {who} نے وہ پتہ کھولنے کی کوشش کی جو Rehman-PDF نہیں کھولے گا: {e}۔
-	{who} in this document tried to open an address PdfCraft won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	اس دستاویز میں {who} نے وہ پتہ کھولنے کی کوشش کی جو Rehman-PDF نہیں کھولے گا: {e}۔ دستاویزات سے صرف ویب (http، https) اور ای میل (mailto) لنکس کھلتے ہیں۔
+	{who} in this document tried to open an address Rehman-PDF won't open: {e}.	اس دستاویز میں {who} نے وہ پتہ کھولنے کی کوشش کی جو Rehman-PDF نہیں کھولے گا: {e}۔
+	{who} in this document tried to open an address Rehman-PDF won't open: {e}. Only web (http, https) and email (mailto) links open from documents.	اس دستاویز میں {who} نے وہ پتہ کھولنے کی کوشش کی جو Rehman-PDF نہیں کھولے گا: {e}۔ دستاویزات سے صرف ویب (http، https) اور ای میل (mailto) لنکس کھلتے ہیں۔
 	{who} in this document wants to open this address in your browser:	اس دستاویز میں {who} آپ کے براؤزر میں یہ پتہ کھولنا چاہتا ہے:
 	{who} in this document wants to open your email app with this address:	اس دستاویز میں {who} اس پتے کے ساتھ آپ کی ای میل ایپ کھولنا چاہتا ہے:
 	ΔLOC	ΔLOC
@@ -2305,7 +2305,7 @@ animation effects	Off	آف
 	no output folder was chosen	کوئی آؤٹ پٹ فولڈر منتخب نہیں ہوا
 @plural	Downloaded {n} PDF|Downloaded {n} PDFs	{n} PDF ڈاؤن لوڈ ہوئی|{n} PDFs ڈاؤن لوڈ ہوئیں
 	Scan	اسکین کریں
-	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: PdfCraft finds the signature and removes the paper.	سفید کاغذ کی شیٹ پر دستخط کریں اور روشن، یکساں روشنی میں اس کی تصویر لیں (فلیش استعمال کریں)۔ تصویر منتخب کریں یا یہاں ڈراپ کریں: Rehman-PDF دستخط تلاش کرتا ہے اور کاغذ ہٹاتا ہے۔
+	Sign a sheet of white paper and take a photo of it in bright, even light (use the flash). Choose the photo or drop it here: Rehman-PDF finds the signature and removes the paper.	سفید کاغذ کی شیٹ پر دستخط کریں اور روشن، یکساں روشنی میں اس کی تصویر لیں (فلیش استعمال کریں)۔ تصویر منتخب کریں یا یہاں ڈراپ کریں: Rehman-PDF دستخط تلاش کرتا ہے اور کاغذ ہٹاتا ہے۔
 	Choose photo…	تصویر منتخب کریں…
 	No photo chosen	کوئی تصویر منتخب نہیں
 	Photo	تصویر
@@ -2499,7 +2499,7 @@ animation effects	Off	آف
 	Panel layout could not be restored: {error}	Panel layout could not be restored: {error}
 	Panel move was not applied: {error}	Panel move was not applied: {error}
 	Paste	Paste
-	PdfCraft can't check this signature yet: {}.	PdfCraft can't check this signature yet: {}.
+	Rehman-PDF can't check this signature yet: {}.	Rehman-PDF can't check this signature yet: {}.
 	Previous	Previous
 	Previous (⇧⌘G)	Previous (⇧⌘G)
 	Print (⌘P)	Print (⌘P)
@@ -2591,7 +2591,7 @@ animation effects	Off	آف
 	The signed content is a constructed (segmented) OCTET STRING, as BER allows; it was read anyway.	The signed content is a constructed (segmented) OCTET STRING, as BER allows; it was read anyway.
 	The signer's certificate does not allow digital signatures (its key usage has neither digital signature nor non-repudiation).	The signer's certificate does not allow digital signatures (its key usage has neither digital signature nor non-repudiation).
 	The signer's certificate has been revoked ({}).	The signer's certificate has been revoked ({}).
-	The signer's certificate has critical extensions PdfCraft does not recognize ({}).	The signer's certificate has critical extensions PdfCraft does not recognize ({}).
+	The signer's certificate has critical extensions Rehman-PDF does not recognize ({}).	The signer's certificate has critical extensions Rehman-PDF does not recognize ({}).
 	The signer's certificate is not in the signature.	The signer's certificate is not in the signature.
 	The signer's certificate is not issued for signing documents (its extended key usage has no document-signing purpose).	The signer's certificate is not issued for signing documents (its extended key usage has no document-signing purpose).
 	The signer's certificate was not valid at the time of signing.	The signer's certificate was not valid at the time of signing.

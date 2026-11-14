@@ -1,12 +1,17 @@
 [package]
 name = "pdfcraft"
-description = "PdfCraft desktop app"
+description = "Rehman-PDF desktop app"
 version.workspace = true
 edition.workspace = true
 license.workspace = true
 
 [lints]
 workspace = true
+
+# The shipped binary is RehmanPDF.exe (T-018 brand scrub); the package name stays `pdfcraft`.
+[[bin]]
+name = "RehmanPDF"
+path = "src/main.rs"
 
 [dependencies]
 # Help ▸ Check for updates (issue #28): one HTTPS request to GitHub, over rustls with the OS's
@@ -66,5 +71,5 @@ windows = { version = "0.62", default-features = false, features = ["std", "UI_V
 uds_windows = "=1.2.1"
 
 [build-dependencies]
-# Icon + VERSIONINFO for pdfcraft.exe; build.rs only uses it when targeting Windows.
+# Icon + VERSIONINFO for RehmanPDF.exe; build.rs only uses it when targeting Windows.
 winresource = "0.1"

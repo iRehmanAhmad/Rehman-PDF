@@ -482,7 +482,7 @@ fn shaped_width(t: &AddedText, s: &str, rtl: bool) -> f64 {
 
 fn arabic_error(e: GlyphError, text: &str) -> EditError {
     EditError::Invalid(match e {
-        GlyphError::NoFont => "Arabic text needs PdfCraft's Arabic font, which this build doesn't include \
+        GlyphError::NoFont => "Arabic text needs Rehman-PDF's Arabic font, which this build doesn't include \
                                (to build it in, set CRAFT_FONTS_DIR to a craft-fonts checkout that has an Arab face)"
             .into(),
         GlyphError::Missing => format!("the Arabic font can't show \"{text}\""),
@@ -492,7 +492,7 @@ fn arabic_error(e: GlyphError, text: &str) -> EditError {
 
 fn hebrew_error(e: GlyphError, text: &str) -> EditError {
     EditError::Invalid(match e {
-        GlyphError::NoFont => "Hebrew text needs PdfCraft's Hebrew font, which this build doesn't include \
+        GlyphError::NoFont => "Hebrew text needs Rehman-PDF's Hebrew font, which this build doesn't include \
                                (to build it in, set CRAFT_FONTS_DIR to a craft-fonts checkout that has a Hebr face)"
             .into(),
         GlyphError::Missing => format!("the Hebrew font can't show \"{text}\""),
@@ -502,7 +502,7 @@ fn hebrew_error(e: GlyphError, text: &str) -> EditError {
 
 fn urdu_error(e: GlyphError, text: &str) -> EditError {
     EditError::Invalid(match e {
-        GlyphError::NoFont => "Urdu text needs PdfCraft's Urdu font (Noto Nastaliq Urdu), which this build doesn't include \
+        GlyphError::NoFont => "Urdu text needs Rehman-PDF's Urdu font (Noto Nastaliq Urdu), which this build doesn't include \
                                (to build it in, set CRAFT_FONTS_DIR to a craft-fonts checkout that has a Nastaliq face)"
             .into(),
         GlyphError::Missing => format!("the Urdu font can't show \"{text}\""),
@@ -736,7 +736,7 @@ fn type3_shaped(doc: &mut Document, clusters: &[&ShapedCluster], outlines: &Hash
             },
             |f| f.family,
         ),
-        None => "PdfCraft Shaped Text",
+        None => "Rehman-PDF Shaped Text",
     };
     let mut descriptor = Dict::new();
     descriptor.set(b"Type".to_vec(), Object::name("FontDescriptor"));

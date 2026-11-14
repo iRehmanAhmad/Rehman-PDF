@@ -185,8 +185,8 @@ pub(crate) fn page_input(ui: &egui::Ui, resp: &egui::Response, xf: &PageXform, p
     }
 }
 
-/// Where new digital IDs are saved: next to the recovery folder (`…/PdfCraft/Digital IDs`, or
-/// `PdfCraftData/Digital IDs` in portable mode).
+/// Where new digital IDs are saved: next to the recovery folder (`…/Rehman-PDF/Digital IDs`, or
+/// `RehmanPDFData/Digital IDs` in portable mode).
 fn id_dir() -> Option<PathBuf> {
     crate::recovery::RecoveryStore::default_dir().and_then(|d| d.parent().map(|p| p.join("Digital IDs")))
 }
@@ -1073,9 +1073,9 @@ fn sign_as(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool {
             ui.label("");
             ui.label(
                 egui::RichText::new(if entry.path.starts_with("windows:") {
-                    tl!("The key is in the Windows certificate store, which may ask to allow PdfCraft to use it.")
+                    tl!("The key is in the Windows certificate store, which may ask to allow Rehman-PDF to use it.")
                 } else {
-                    tl!("The key is in the macOS Keychain, which may ask to allow PdfCraft to use it.")
+                    tl!("The key is in the macOS Keychain, which may ask to allow Rehman-PDF to use it.")
                 })
                 .small()
                 .color(t.text_muted),

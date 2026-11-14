@@ -1,5 +1,5 @@
 //! Portable mode (#157): a marker file beside the executable ([`MARKERS`]) keeps the settings,
-//! log files, crash-recovery autosaves and new digital IDs in `<exe dir>/PdfCraftData`, so a
+//! log files, crash-recovery autosaves and new digital IDs in `<exe dir>/RehmanPDFData`, so a
 //! portable copy (on a USB stick, say) writes nothing to `%APPDATA%` or `%LOCALAPPDATA%`. The
 //! Windows portable zip ships with `portable.txt`; the MSI doesn't. PhotoCraft uses the same
 //! scheme (`photocraft/apps/photocraft/src/app_dirs.rs`).
@@ -11,14 +11,19 @@ use std::path::{Path, PathBuf};
 use std::sync::OnceLock;
 
 /// Files beside the executable that switch on portable mode (either one; contents are ignored).
-pub const MARKERS: [&str; 2] = ["portable.txt", "PdfCraft.portable"];
+/// `PdfCraft.portable` is the marker name from before the Rehman-PDF rename (T-018); it is still
+/// honoured so an upgraded portable copy keeps its mode (and its data folder is migrated by
+/// [`resolve`]).
+pub const MARKERS: [&str; 3] = ["portable.txt", "RehmanPDF.portable", "PdfCraft.portable"];
 /// The data folder created beside the executable in portable mode.
-pub const DATA_DIR: &str = "PdfCraftData";
+pub const DATA_DIR: &str = "RehmanPDFData";
+/// The data folder's name before the Rehman-PDF rename (T-018); migrated by [`resolve`].
+pub const LEGACY_DATA_DIR: &str = "PdfCraftData";
 
 /// The outcome of looking for a portable marker.
 #[derive(Clone, Debug, Default, PartialEq, Eq)]
 pub struct Portable {
-    /// `<exe dir>/PdfCraftData` when portable mode is on, `None` otherwise.
+    /// `<exe dir>/RehmanPDFData` when portable mode is on, `None` otherwise.
     pub dir: Option<PathBuf>,
     /// Set when a marker was found but its data folder can't be written.
     pub unwritable: Option<Unwritable>,
@@ -71,11 +76,27 @@ pub fn resolve(exe_dir: Option<&Path>) -> Portable {
     let Some((exe_dir, marker)) = exe_dir.and_then(|d| find_marker(d).map(|m| (d, m))) else {
         return Portable::default();
     };
-    let folder = exe_dir.join(DATA_DIR);
+    let folder = migrate_legacy_folder(exe_dir);
     match ensure_writable(&folder) {
         Ok(()) => Portable { dir: Some(folder), unwritable: None },
         Err(e) => Portable { dir: None, unwritable: Some(Unwritable { marker, folder, error: e.to_string() }) },
     }
+}
+
+/// The data folder to use beside the executable, moving the pre-rename folder
+/// ([`LEGACY_DATA_DIR`], T-018) to [`DATA_DIR`] once when only the old one exists — the
+/// PrintCraft→PdfCraft migration pattern (`apps/pdfcraft/src/main.rs`): best effort, and the
+/// old folder is left alone when the new one already exists or the move fails.
+fn migrate_legacy_folder(exe_dir: &Path) -> PathBuf {
+    let folder = exe_dir.join(DATA_DIR);
+    let legacy = exe_dir.join(LEGACY_DATA_DIR);
+    if !folder.exists() && legacy.is_dir() {
+        match std::fs::rename(&legacy, &folder) {
+            Ok(()) => log::info!("moved {} to {}", legacy.display(), folder.display()),
+            Err(e) => log::warn!("moving {} to {}: {e}", legacy.display(), folder.display()),
+        }
+    }
+    folder
 }
 
 /// The first marker file in `exe_dir`, if any. A folder with a marker's name is not a marker.
@@ -137,6 +158,46 @@ mod tests {
         std::fs::write(exe.join(DATA_DIR).join("app.ron"), b"()").unwrap();
         assert_eq!(resolve(Some(&exe)).dir, Some(exe.join(DATA_DIR)));
         assert_eq!(std::fs::read(exe.join(DATA_DIR).join("app.ron")).unwrap(), b"()", "existing settings are kept");
+        let _ = std::fs::remove_dir_all(&exe);
+    }
+
+    #[test]
+    fn a_legacy_data_folder_is_moved_to_the_new_name() {
+        let exe = temp("legacy-move");
+        std::fs::write(exe.join("portable.txt"), b"").unwrap();
+        std::fs::create_dir_all(exe.join(LEGACY_DATA_DIR).join("Recovery")).unwrap();
+        std::fs::write(exe.join(LEGACY_DATA_DIR).join("app.ron"), b"()").unwrap();
+        std::fs::write(exe.join(LEGACY_DATA_DIR).join("Recovery").join("unsaved.pdf"), b"UNSAVED").unwrap();
+        let p = resolve(Some(&exe));
+        assert_eq!(p.dir, Some(exe.join(DATA_DIR)));
+        assert!(!exe.join(LEGACY_DATA_DIR).exists(), "the old folder was moved, not copied");
+        assert_eq!(std::fs::read(exe.join(DATA_DIR).join("app.ron")).unwrap(), b"()");
+        assert_eq!(std::fs::read(exe.join(DATA_DIR).join("Recovery").join("unsaved.pdf")).unwrap(), b"UNSAVED");
+        let _ = std::fs::remove_dir_all(&exe);
+    }
+
+    #[test]
+    fn an_existing_new_data_folder_wins_over_the_legacy_one() {
+        let exe = temp("legacy-both");
+        std::fs::write(exe.join("portable.txt"), b"").unwrap();
+        std::fs::create_dir_all(exe.join(DATA_DIR)).unwrap();
+        std::fs::write(exe.join(DATA_DIR).join("app.ron"), b"NEW").unwrap();
+        std::fs::create_dir_all(exe.join(LEGACY_DATA_DIR)).unwrap();
+        std::fs::write(exe.join(LEGACY_DATA_DIR).join("app.ron"), b"OLD").unwrap();
+        let p = resolve(Some(&exe));
+        assert_eq!(p.dir, Some(exe.join(DATA_DIR)));
+        assert_eq!(std::fs::read(exe.join(DATA_DIR).join("app.ron")).unwrap(), b"NEW");
+        assert_eq!(std::fs::read(exe.join(LEGACY_DATA_DIR).join("app.ron")).unwrap(), b"OLD", "the legacy folder is left alone");
+        let _ = std::fs::remove_dir_all(&exe);
+    }
+
+    #[test]
+    fn the_legacy_marker_still_switches_portable_mode_on() {
+        let exe = temp("legacy-marker");
+        std::fs::write(exe.join("PdfCraft.portable"), b"").unwrap();
+        let p = resolve(Some(&exe));
+        assert_eq!(p.unwritable, None);
+        assert_eq!(p.dir, Some(exe.join(DATA_DIR)));
         let _ = std::fs::remove_dir_all(&exe);
     }
 

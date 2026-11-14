@@ -47,7 +47,7 @@ modules:
         CARGO_NET_OFFLINE: 'true'
     build-commands:
       - cargo --offline build --release --locked -p pdfcraft
-      - install -Dm755 target/release/pdfcraft /app/bin/pdfcraft
+      - install -Dm755 target/release/RehmanPDF /app/bin/pdfcraft
       - install -Dm644 packaging/linux/com.rehmanahmad.rehmanpdf.desktop /app/share/applications/com.rehmanahmad.rehmanpdf.desktop
       - install -Dm644 packaging/linux/com.rehmanahmad.rehmanpdf.mime.xml /app/share/mime/packages/com.rehmanahmad.rehmanpdf.xml
       - mkdir -p /app/share/icons && cp -R assets/app-icon/hicolor /app/share/icons/

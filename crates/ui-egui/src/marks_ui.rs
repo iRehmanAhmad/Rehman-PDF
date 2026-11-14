@@ -48,7 +48,9 @@ impl PageRange {
     }
 
     pub(crate) fn ui(&mut self, ui: &mut egui::Ui, count: usize) {
-        ui.horizontal(|ui| {
+        // Wraps on narrow windows (the Subset combo alone is ~180 pt); one
+        // line at desktop widths.
+        ui.horizontal_wrapped(|ui| {
             widgets::radio_value(ui, &mut self.all, true, tl!("All pages"));
             widgets::radio_value(ui, &mut self.all, false, tl!("Pages from"));
             ui.add_enabled(!self.all, egui::DragValue::new(&mut self.from).range(1..=count.max(1)));
@@ -160,7 +162,9 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens, kind: M
     ui.add_space(8.0);
     match kind {
         MarkKind::HeaderFooter => {
-            ui.horizontal(|ui| {
+            // The font/size/margins row is ~800 pt: one line at desktop, the
+            // margins wrap below on narrow windows.
+            ui.horizontal_wrapped(|ui| {
                 ui.label(tl!("Font: Helvetica"));
                 ui.label(tl!("Size"));
                 ui.add(egui::DragValue::new(&mut d.hf.font_size).range(4.0..=72.0).speed(0.5));
@@ -180,6 +184,9 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens, kind: M
                 }
             });
             ui.add_space(8.0);
+            // Three boxes of 220 pt at desktop; narrower windows shrink them
+            // (120 pt floor) instead of pushing the dialog past the edge.
+            let bw = 220.0f32.min((ui.available_width() - 20.0) / 3.0).max(120.0);
             egui::Grid::new("hf-boxes").num_columns(3).spacing([10.0, 4.0]).show(ui, |ui| {
                 for row in 0..2 {
                     for col in 0..3 {
@@ -188,7 +195,7 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens, kind: M
                     ui.end_row();
                     for col in 0..3 {
                         let k = row * 3 + col;
-                        let r = ui.add_sized([220.0, 40.0], crate::widgets::block(&mut d.hf.text[k]).desired_rows(2).id_salt(("hf-box", k)));
+                        let r = ui.add_sized([bw, 40.0], crate::widgets::block(&mut d.hf.text[k]).desired_rows(2).id_salt(("hf-box", k)));
                         if r.gained_focus() || r.has_focus() {
                             d.focused_box = k;
                         }
@@ -196,7 +203,9 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens, kind: M
                     ui.end_row();
                 }
             });
-            ui.horizontal(|ui| {
+            // Insert Page Number / Insert Date: one line at desktop, wraps
+            // when the dialog narrows.
+            ui.horizontal_wrapped(|ui| {
                 egui::ComboBox::from_id_salt("hf-page-format").selected_text(PAGE_FORMATS[d.page_format].trim_matches(['<', '>'])).show_ui(
                     ui,
                     |ui| {

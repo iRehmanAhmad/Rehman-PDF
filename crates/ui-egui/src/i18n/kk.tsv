@@ -2071,6 +2071,7 @@ calendar date	December	Желтоқсан
 	Clear Recent Files	Соңғы файлдарды тазарту
 	Remove from Recent	Соңғылардан алып тастау
 	Remove {name} from Recent	{name} дегенді соңғылардан алып тастау
+	{name} is no longer there — removed from Recent.	{name} енді жоқ — соңғылардан алып тасталды.
 	Inserted text	Енгізілген мәтін
 	Add {what}	Қосу: {what}
 	Use {what}	Қолдану: {what}

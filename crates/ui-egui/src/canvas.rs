@@ -4673,14 +4673,20 @@ pub(crate) fn grid_page_rect(cell: Rect, page: Vec2) -> Rect {
     if wide.intersects(checkbox) { fit(30.0) } else { wide }
 }
 
+/// One Organize action-bar button, icon-only in the bar's compact (narrow)
+/// mode and icon + label otherwise (T-019).
+fn organize_button(ui: &mut egui::Ui, icon: &str, label: &str, danger: bool, enabled: bool, compact: bool) -> egui::Response {
+    if compact { widgets::action_button_icon(ui, icon, label, danger, enabled) } else { widgets::action_button(ui, icon, label, danger, enabled) }
+}
+
 /// every action keeps its existing behavior.
 fn organize_toolbar(view: &mut DocView, info: &DocInfo, editable: bool, dirty: bool, unobstructed: bool, ui: &mut egui::Ui, t: &Tokens) {
     let bar = egui::Frame::NONE.fill(t.chrome).inner_margin(egui::Margin::symmetric(14, 8)).show(ui, |ui| {
         // Wide enough for the mockup's two-column bar: buttons wrap left, the slider
         // keeps its own right-aligned slot (never overlapping the buttons). On narrow
-        // windows the bar switches to a compact mode: the buttons ride a single
-        // horizontally-scrolling row of fixed height (wrapping them would tower and
-        // starve the page grid below), the slider sits on its own row, right-aligned.
+        // windows the bar switches to a compact mode: the buttons go icon-only and
+        // wrap to a second row if they still don't fit (T-019), the slider sits on
+        // its own row, right-aligned.
         if ui.available_width() > 560.0 {
             ui.horizontal(|ui| {
                 ui.spacing_mut().item_spacing.x = 4.0;
@@ -4690,7 +4696,7 @@ fn organize_toolbar(view: &mut DocView, info: &DocInfo, editable: bool, dirty: b
                 ui.allocate_ui_with_layout(vec2(buttons_w, 0.0), egui::Layout::left_to_right(egui::Align::Center), |ui| {
                     ui.horizontal_wrapped(|ui| {
                         ui.spacing_mut().item_spacing.x = 4.0;
-                        organize_action_buttons(view, info, editable, dirty, ui, t);
+                        organize_action_buttons(view, info, editable, dirty, ui, t, false);
                     });
                 });
                 ui.allocate_ui_with_layout(vec2(GRID_SLIDER_W, 0.0), egui::Layout::left_to_right(egui::Align::Center), |ui| {
@@ -4698,16 +4704,17 @@ fn organize_toolbar(view: &mut DocView, info: &DocInfo, editable: bool, dirty: b
                 });
             });
         } else {
-            // Narrow window: buttons scroll horizontally in a fixed-height row;
-            // wrapping them would tower and starve the page grid below. The slider
-            // keeps the allocate wrapper from wide mode — grid_zoom_slider's
-            // with_layout mis-sizes when called on the Frame's Ui directly.
-            ui.allocate_ui(vec2(ui.available_width(), 32.0), |ui| {
-                egui::ScrollArea::horizontal().show(ui, |ui| {
-                    ui.horizontal(|ui| {
-                        ui.spacing_mut().item_spacing.x = 4.0;
-                        organize_action_buttons(view, info, editable, dirty, ui, t);
-                    });
+            // Narrow window: the buttons go icon-only (tooltips and
+            // accessibility names already exist per button) and wrap to a
+            // second row if they still don't fit — a taller bar costs
+            // vertical space, which is allowed to scroll; the bar never
+            // scrolls sideways (T-019). The slider keeps the allocate
+            // wrapper from wide mode — grid_zoom_slider's with_layout
+            // mis-sizes when called on the Frame's Ui directly.
+            ui.allocate_ui(vec2(ui.available_width(), 0.0), |ui| {
+                ui.horizontal_wrapped(|ui| {
+                    ui.spacing_mut().item_spacing.x = 4.0;
+                    organize_action_buttons(view, info, editable, dirty, ui, t, true);
                 });
             });
             ui.allocate_ui_with_layout(vec2(ui.available_width(), 0.0), egui::Layout::left_to_right(egui::Align::Center), |ui| {
@@ -4756,19 +4763,24 @@ fn organize_toolbar(view: &mut DocView, info: &DocInfo, editable: bool, dirty: b
 /// The organize action bar's buttons: Close, the Select-pages filter, Rotate left/right,
 /// Extract, Split, Insert from file, Insert blank page, Delete in danger red, Save pages.
 /// Laid out in a wrapping row by [`organize_toolbar`]; every action keeps its existing behavior.
-fn organize_action_buttons(view: &mut DocView, info: &DocInfo, editable: bool, dirty: bool, ui: &mut egui::Ui, t: &Tokens) {
+fn organize_action_buttons(view: &mut DocView, info: &DocInfo, editable: bool, dirty: bool, ui: &mut egui::Ui, t: &Tokens, compact: bool) {
     let targets = view.target_pages();
     let n = info.pages.len();
     let last = targets.last().copied().unwrap_or(0);
     // Back to the document (leftmost).
-    if widgets::ghost_button(ui, "x", tl!("Close")).on_hover_text(tl!("Back to the document")).clicked() {
+    let close = if compact { widgets::ghost_button_icon(ui, "x", tl!("Close")) } else { widgets::ghost_button(ui, "x", tl!("Close")) };
+    if close.on_hover_text(tl!("Back to the document")).clicked() {
         view.organize = false;
     }
     action_divider(ui, t);
     // "Select pages" filter (restored T-003 PART 5): a dropdown on the action
     // bar with All/Odd/Even/Landscape/Portrait/None, same semantics as the
     // old filter popup (Acrobat's page-range selection in Organize Pages).
-    let filter = widgets::action_button_dropdown(ui, "list-checks", tl!("Select pages"));
+    let filter = if compact {
+        widgets::action_button_dropdown_icon(ui, "list-checks", tl!("Select pages")).on_hover_text(tl!("Select pages"))
+    } else {
+        widgets::action_button_dropdown(ui, "list-checks", tl!("Select pages"))
+    };
     egui::Popup::menu(&filter).show(|ui| {
         use pdfcraft_engine::{PageOrientation as O, PageParity as P, filter_pages};
         let all: Vec<usize> = (0..n).collect();
@@ -4790,24 +4802,24 @@ fn organize_action_buttons(view: &mut DocView, info: &DocInfo, editable: bool, d
         }
     });
     action_divider(ui, t);
-    if widgets::action_button(ui, "rotate-ccw", tl!("Rotate left"), false, editable).on_hover_text(tl!("Rotate counterclockwise")).clicked() {
+    if organize_button(ui, "rotate-ccw", tl!("Rotate left"), false, editable, compact).on_hover_text(tl!("Rotate counterclockwise")).clicked() {
         view.pending_edit = Some(Edit::RotatePages { pages: targets.clone(), degrees: -90 });
     }
-    if widgets::action_button(ui, "rotate-cw", tl!("Rotate right"), false, editable).on_hover_text(tl!("Rotate clockwise")).clicked() {
+    if organize_button(ui, "rotate-cw", tl!("Rotate right"), false, editable, compact).on_hover_text(tl!("Rotate clockwise")).clicked() {
         view.pending_edit = Some(Edit::RotatePages { pages: targets.clone(), degrees: 90 });
     }
     action_divider(ui, t);
-    if widgets::action_button(ui, "file-output", tl!("Extract"), false, editable).on_hover_text(tl!("Extract pages to a new document")).clicked() {
+    if organize_button(ui, "file-output", tl!("Extract"), false, editable, compact).on_hover_text(tl!("Extract pages to a new document")).clicked() {
         view.pending_action = Some(ViewAction::Extract);
     }
-    if widgets::action_button(ui, "scissors", tl!("Split"), false, editable).on_hover_text(tl!("Split into files…")).clicked() {
+    if organize_button(ui, "scissors", tl!("Split"), false, editable, compact).on_hover_text(tl!("Split into files…")).clicked() {
         view.pending_action = Some(ViewAction::Split);
     }
-    if widgets::action_button(ui, "file-input", tl!("Insert from file"), false, editable).on_hover_text(tl!("Insert pages from a file…")).clicked()
+    if organize_button(ui, "file-input", tl!("Insert from file"), false, editable, compact).on_hover_text(tl!("Insert pages from a file…")).clicked()
     {
         view.pending_action = Some(ViewAction::InsertFromFile);
     }
-    if widgets::action_button(ui, "file-plus", tl!("Insert blank page"), false, editable)
+    if organize_button(ui, "file-plus", tl!("Insert blank page"), false, editable, compact)
         .on_hover_text(tl!("Insert a blank page after the selection"))
         .clicked()
     {
@@ -4816,7 +4828,7 @@ fn organize_action_buttons(view: &mut DocView, info: &DocInfo, editable: bool, d
         view.pending_edit = Some(Edit::InsertBlankPage { at: last + 1, width: w, height: h });
     }
     let can_delete = editable && targets.len() < n;
-    if widgets::action_button(ui, "trash-2", tl!("Delete"), true, can_delete).on_hover_text(tl!("Delete pages (Delete)")).clicked() {
+    if organize_button(ui, "trash-2", tl!("Delete"), true, can_delete, compact).on_hover_text(tl!("Delete pages (Delete)")).clicked() {
         view.pending_edit = Some(Edit::DeletePages { pages: targets.clone() });
     }
     action_divider(ui, t);
@@ -6411,5 +6423,47 @@ trailer << /Root 1 0 R >>
         assert_eq!(v.find.as_ref().unwrap().current, Some(0));
         assert_eq!(v.find.as_ref().unwrap().matches, vec![(1, 5..9)]);
         assert!(v.goto.is_none());
+    }
+
+    /// T-019: the Organize bar never scrolls sideways — narrow windows go
+    /// icon-only (labels off, tooltips kept) and wrap to a second row, while
+    /// wide windows keep the labels.
+    #[test]
+    fn organize_toolbar_narrow_is_icon_only_and_wraps() {
+        // Pin English: the test looks up the "Rotate left" / "Save pages" labels.
+        crate::i18n::set_current(crate::i18n::Lang::EN);
+        let ctx = egui::Context::default();
+        ctx.set_fonts(theme::font_definitions());
+        let t = Tokens::get(&ctx);
+        for width in [560.0, 400.0, 300.0] {
+            let mut v = view(5, PageLayout::Single, true);
+            let info = thumbnail_info(5);
+            let output = ctx.run_ui(
+                egui::RawInput { screen_rect: Some(Rect::from_min_size(egui::Pos2::ZERO, vec2(width, 900.0))), ..Default::default() },
+                |ui| organize_toolbar(&mut v, &info, true, false, true, ui, &t),
+            );
+            for shape in &output.shapes {
+                let visible = shape.clip_rect.intersect(shape.shape.visual_bounding_rect());
+                if visible.is_positive() {
+                    assert!(visible.left() >= -1.0 && visible.right() <= width + 1.0, "organize bar overflows at {width}px: painted {visible:?}");
+                }
+            }
+            let texts: Vec<_> = output.shapes.iter().filter_map(|s| if let egui::Shape::Text(t) = &s.shape { Some(t) } else { None }).collect();
+            assert!(!texts.iter().any(|t| t.galley.job.text == "Rotate left"), "labels stay off in compact mode at {width}px");
+            assert!(texts.iter().any(|t| t.galley.job.text == "Save pages"), "Save keeps its label at {width}px");
+            output.drop_without_applying_deltas();
+        }
+        // Wide mode still shows the labels.
+        let mut v = view(5, PageLayout::Single, true);
+        let info = thumbnail_info(5);
+        let output = ctx
+            .run_ui(egui::RawInput { screen_rect: Some(Rect::from_min_size(egui::Pos2::ZERO, vec2(1000.0, 900.0))), ..Default::default() }, |ui| {
+                organize_toolbar(&mut v, &info, true, false, true, ui, &t)
+            });
+        assert!(
+            output.shapes.iter().any(|s| matches!(&s.shape, egui::Shape::Text(t) if t.galley.job.text == "Rotate left")),
+            "labels show in wide mode"
+        );
+        output.drop_without_applying_deltas();
     }
 }

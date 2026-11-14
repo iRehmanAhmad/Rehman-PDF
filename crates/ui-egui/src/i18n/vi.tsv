@@ -936,6 +936,7 @@ theme	Appearance	Giao diện
 	Remove unused objects and merge identical ones	Gỡ các đối tượng không dùng và gộp các đối tượng giống nhau
 	Remove {name}	Gỡ {name}
 	Remove {name} from Recent	Xóa {name} khỏi Gần đây
+	{name} is no longer there — removed from Recent.	{name} không còn ở đó nữa — đã xóa khỏi Gần đây.
 	Remove {n} files	Gỡ {n} tệp
 	Remove {n} pages	Gỡ {n} trang
 	Reopen Closed Tab	Mở lại thẻ đã đóng

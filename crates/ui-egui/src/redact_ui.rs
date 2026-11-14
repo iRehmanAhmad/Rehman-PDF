@@ -379,7 +379,7 @@ pub(crate) fn pages_body(ui: &mut egui::Ui, d: &mut PagesDraft, pages: usize, _t
 
 /// Find text and redact. Returns (search, cancel, import a word list).
 pub(crate) fn search_body(ui: &mut egui::Ui, d: &mut SearchDraft, t: &Tokens) -> (bool, bool, bool) {
-    ui.set_width(420.0);
+    ui.set_width(crate::widgets::dialog_width(ui.ctx(), 420.0));
     ui.label(egui::RichText::new(tl!("Find text and redact")).font(crate::theme::semibold(18.0)));
     ui.add_space(8.0);
     widgets::radio_value(ui, &mut d.mode, SearchMode::Phrase, tl!("Single word or phrase"));
@@ -433,16 +433,24 @@ pub(crate) fn search_body(ui: &mut egui::Ui, d: &mut SearchDraft, t: &Tokens) ->
 
 /// Redaction Tool Properties. Returns (apply, cancel).
 pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) -> (bool, bool) {
-    ui.set_width(780.0);
+    // The two columns need ~890 side by side (the left grid alone is ~520);
+    // the request matches that, so desktop keeps the two-column layout, and
+    // narrower windows stack the columns in a vertical scroll area instead
+    // of pushing the dialog past the window edge. Right-to-left locales stack
+    // at every width: their labels are far wider (the left grid alone is
+    // ~1070 pt in Urdu), so the two-column layout never fits the 900 pt
+    // dialog there. `cap` bounds the grids' columns in the stacked layout;
+    // side by side it is infinite, so desktop is unchanged.
+    ui.set_width(crate::widgets::dialog_width(ui.ctx(), 900.0));
     ui.label(egui::RichText::new(tl!("Redaction Tool Properties")).font(crate::theme::semibold(18.0)));
     ui.add_space(8.0);
     // Two columns, so three colour grids fit a short window: the redacted result and its
     // overlay text on the left, the mark's own look (Acrobat's third group) on
     // the right.
-    ui.horizontal_top(|ui| {
+    let left = |ui: &mut egui::Ui, d: &mut RedactPrefs, cap: f32| {
         ui.vertical(|ui| {
             ui.set_width(380.0);
-            egui::Grid::new("redact-props").num_columns(2).spacing([12.0, 10.0]).show(ui, |ui| {
+            egui::Grid::new("redact-props").num_columns(2).spacing([12.0, 10.0]).max_col_width(cap).show(ui, |ui| {
                 ui.label(tl!("Redacted area fill colour:"));
                 ui.horizontal(|ui| {
                     let mut none = d.fill.is_none();
@@ -457,16 +465,65 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                 }
                 ui.end_row();
                 ui.label("");
-                ui.add(widgets::checkbox(&mut d.use_overlay, tl!("Use overlay text")));
+                // Bare box plus a wrapping label, as in the font-size row
+                // below: the label is ~275 pt in Urdu and a checkbox never
+                // wraps its own text (T-019 fix round).
+                ui.horizontal_wrapped(|ui| {
+                    let check = ui.add(widgets::checkbox(&mut d.use_overlay, ""));
+                    // The label wraps at 240 pt: the grid's column cap does
+                    // not bind a checkbox's own text, and the label is ~275 pt
+                    // in Urdu (T-019 fix round).
+                    ui.scope(|ui| {
+                        ui.set_max_width(240.0);
+                        let lab = ui.add(egui::Label::new(tl!("Use overlay text")).wrap());
+                        let _ = check.labelled_by(lab.id);
+                    });
+                });
                 ui.end_row();
                 let on = d.use_overlay;
-                let l = ui.add_enabled(on, widgets::radio(!d.use_code, tl!("Custom text:")));
-                if l.clicked() {
+                // Stacked (narrow, cap finite): the Urdu label is ~270 pt
+                // and a radio never wraps its own text, so a bare circle
+                // plus a wrapping label, as in the overlay row above
+                // (T-019 fix round).
+                let (l_clicked, l_id) = if cap.is_finite() {
+                    let mut out = (false, egui::Id::NULL);
+                    ui.horizontal_wrapped(|ui| {
+                        let r = ui.add_enabled(on, widgets::radio(!d.use_code, ""));
+                        out = (r.clicked(), r.id);
+                        ui.scope(|ui| {
+                            ui.set_max_width(200.0);
+                            let lab = ui.add(egui::Label::new(tl!("Custom text:")).wrap());
+                            let _ = r.labelled_by(lab.id);
+                        });
+                    });
+                    out
+                } else {
+                    let r = ui.add_enabled(on, widgets::radio(!d.use_code, tl!("Custom text:")));
+                    (r.clicked(), r.id)
+                };
+                if l_clicked {
                     d.use_code = false;
                 }
-                ui.add_enabled(on && !d.use_code, crate::widgets::line(&mut d.overlay).desired_width(220.0)).labelled_by(l.id);
+                ui.add_enabled(on && !d.use_code, crate::widgets::line(&mut d.overlay).desired_width(220.0)).labelled_by(l_id);
                 ui.end_row();
-                if ui.add_enabled(on, widgets::radio(d.use_code, tl!("Redaction code:"))).clicked() {
+                // Stacked (narrow, cap finite): bare circle plus a wrapping
+                // label, as in the "Custom text:" row above (T-019 fix round).
+                let code_clicked = if cap.is_finite() {
+                    let mut clicked = false;
+                    ui.horizontal_wrapped(|ui| {
+                        let r = ui.add_enabled(on, widgets::radio(d.use_code, ""));
+                        clicked = r.clicked();
+                        ui.scope(|ui| {
+                            ui.set_max_width(200.0);
+                            let lab = ui.add(egui::Label::new(tl!("Redaction code:")).wrap());
+                            let _ = r.labelled_by(lab.id);
+                        });
+                    });
+                    clicked
+                } else {
+                    ui.add_enabled(on, widgets::radio(d.use_code, tl!("Redaction code:"))).clicked()
+                };
+                if code_clicked {
                     d.use_code = true;
                 }
                 let codes_on = on && d.use_code;
@@ -481,7 +538,11 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                     });
                 });
                 ui.end_row();
-                for row in d.code_set.codes.chunks(4) {
+                // Stacked (narrow, cap finite): four 62 pt code boxes are
+                // 272 pt side by side, wider than the stacked column; three
+                // per row keeps the row inside it (T-019 fix round).
+                let chunk = if cap.is_finite() { 3 } else { 4 };
+                for row in d.code_set.codes.chunks(chunk) {
                     ui.label("");
                     ui.add_enabled_ui(codes_on, |ui| {
                         ui.horizontal(|ui| {
@@ -510,15 +571,45 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                 ui.end_row();
                 ui.label(tl!("Font size:"));
                 ui.add_enabled_ui(on, |ui| {
-                    ui.horizontal(|ui| {
-                        let mut auto = look.size <= 0.0;
-                        if ui.add(widgets::checkbox(&mut auto, tl!("Auto-size text to fit redaction region"))).changed() {
-                            look.size = if auto { 0.0 } else { 10.0 };
-                        }
-                        if !auto {
-                            ui.add(egui::DragValue::new(&mut look.size).range(2.0..=144.0).suffix(" pt"));
-                        }
-                    });
+                    let mut auto = look.size <= 0.0;
+                    // A checkbox never wraps its own text, so a bare box
+                    // plus a wrapping label: the label is ~640 pt in Urdu.
+                    // Stacked (narrow, cap finite): the label is capped at
+                    // 240 pt and the DragValue drops below it, so the row
+                    // stays narrow. Side by side the row is inline as before
+                    // (T-019 fix round).
+                    if cap.is_finite() {
+                        ui.vertical(|ui| {
+                            ui.horizontal_wrapped(|ui| {
+                                let check = ui.add(widgets::checkbox(&mut auto, ""));
+                                let changed = check.changed();
+                                ui.scope(|ui| {
+                                    ui.set_max_width(240.0);
+                                    let lab = ui.add(egui::Label::new(tl!("Auto-size text to fit redaction region")).wrap());
+                                    let _ = check.labelled_by(lab.id);
+                                });
+                                if changed {
+                                    look.size = if auto { 0.0 } else { 10.0 };
+                                }
+                            });
+                            if !auto {
+                                ui.add(egui::DragValue::new(&mut look.size).range(2.0..=144.0).suffix(" pt"));
+                            }
+                        });
+                    } else {
+                        ui.horizontal(|ui| {
+                            let check = ui.add(widgets::checkbox(&mut auto, ""));
+                            let changed = check.changed();
+                            let lab = ui.add(egui::Label::new(tl!("Auto-size text to fit redaction region")).wrap());
+                            let _ = check.labelled_by(lab.id);
+                            if changed {
+                                look.size = if auto { 0.0 } else { 10.0 };
+                            }
+                            if !auto {
+                                ui.add(egui::DragValue::new(&mut look.size).range(2.0..=144.0).suffix(" pt"));
+                            }
+                        });
+                    }
                 });
                 ui.end_row();
                 ui.label(tl!("Font colour:"));
@@ -533,22 +624,34 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                 ui.end_row();
                 ui.label(tl!("Text alignment:"));
                 ui.add_enabled_ui(on, |ui| {
-                    ui.horizontal(|ui| {
-                        for (a, label) in [(0u8, tl!("Left")), (1, tl!("Center")), (2, tl!("Right"))] {
-                            widgets::radio_value(ui, &mut look.align, a, label);
-                        }
-                    });
+                    // Stacked (narrow, cap finite): the three Urdu radios are
+                    // ~334 pt side by side and a radio never wraps its own
+                    // text, so flow them over two lines instead (T-019 fix
+                    // round). Side by side they stay on one line as before.
+                    if cap.is_finite() {
+                        ui.horizontal_wrapped(|ui| {
+                            for (a, label) in [(0u8, tl!("Left")), (1, tl!("Center")), (2, tl!("Right"))] {
+                                widgets::radio_value(ui, &mut look.align, a, label);
+                            }
+                        });
+                    } else {
+                        ui.horizontal(|ui| {
+                            for (a, label) in [(0u8, tl!("Left")), (1, tl!("Center")), (2, tl!("Right"))] {
+                                widgets::radio_value(ui, &mut look.align, a, label);
+                            }
+                        });
+                    }
                 });
                 ui.end_row();
             });
         });
-        // No separator here: in a horizontal layout it would stretch to the window's bottom.
-        ui.add_space(28.0);
+    };
+    let right = |ui: &mut egui::Ui, d: &mut RedactPrefs, cap: f32| {
         ui.vertical(|ui| {
             ui.set_width(340.0);
             ui.label(egui::RichText::new(tl!("Redaction mark appearance")).strong());
             ui.add_space(6.0);
-            egui::Grid::new("redact-mark").num_columns(2).spacing([12.0, 10.0]).show(ui, |ui| {
+            egui::Grid::new("redact-mark").num_columns(2).spacing([12.0, 10.0]).max_col_width(cap).show(ui, |ui| {
                 ui.label(tl!("Outline colour:"));
                 if let Some(c) = crate::comments::swatch_grid(ui, Some(d.outline)) {
                     d.outline = c;
@@ -573,14 +676,35 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                 ui.end_row();
             });
         });
-    });
+    };
+    if ui.available_width() < 900.0 || crate::i18n::current().rtl() {
+        // Stacked: the columns scroll vertically together; the OK button
+        // below stays outside the scroll area, so it stays reachable.
+        // The 240 pt column cap keeps the stacked grids inside a 520 pt
+        // dialog: without it the Urdu grids are ~1070 pt wide and the modal
+        // grows to fit them even inside the scroll area (a scroll area clips
+        // paint, not layout width).
+        let max_h = (ui.ctx().viewport_rect().height() - 220.0).max(200.0);
+        egui::ScrollArea::vertical().max_height(max_h).auto_shrink([false, true]).show(ui, |ui| {
+            left(ui, &mut *d, 240.0);
+            ui.add_space(28.0);
+            right(ui, &mut *d, 240.0);
+        });
+    } else {
+        ui.horizontal_top(|ui| {
+            left(ui, &mut *d, f32::INFINITY);
+            // No separator here: in a horizontal layout it would stretch to the window's bottom.
+            ui.add_space(28.0);
+            right(ui, &mut *d, f32::INFINITY);
+        });
+    }
     ui.add_space(12.0);
     buttons(ui, "OK")
 }
 
 /// Apply redactions confirmation. Returns (apply, cancel).
 pub(crate) fn apply_body(ui: &mut egui::Ui, marks: usize, t: &Tokens) -> (bool, bool) {
-    ui.set_width(420.0);
+    ui.set_width(crate::widgets::dialog_width(ui.ctx(), 420.0));
     ui.label(egui::RichText::new(tl!("Apply redactions")).font(crate::theme::semibold(18.0)));
     ui.add_space(8.0);
     ui.label(if marks == 1 {
@@ -621,7 +745,7 @@ impl PdfCraftApp {
 
 /// Returns (remove, cancel).
 pub(crate) fn hidden_body(ui: &mut egui::Ui, d: &mut HiddenDraft, t: &Tokens) -> (bool, bool) {
-    ui.set_width(440.0);
+    ui.set_width(crate::widgets::dialog_width(ui.ctx(), 440.0));
     ui.label(egui::RichText::new(tl!("Remove hidden information")).font(crate::theme::semibold(18.0)));
     ui.add_space(4.0);
     ui.label(egui::RichText::new(tl!("Select the items to remove from this document.")).color(t.text_muted));
@@ -648,7 +772,7 @@ pub(crate) fn hidden_body(ui: &mut egui::Ui, d: &mut HiddenDraft, t: &Tokens) ->
 
 /// Sanitize Document confirmation. Returns (sanitize, cancel).
 pub(crate) fn sanitize_body(ui: &mut egui::Ui, t: &Tokens) -> (bool, bool) {
-    ui.set_width(440.0);
+    ui.set_width(crate::widgets::dialog_width(ui.ctx(), 440.0));
     ui.label(egui::RichText::new(tl!("Sanitize document")).font(crate::theme::semibold(18.0)));
     ui.add_space(8.0);
     ui.label(tl!("Sanitizing removes hidden information from the document: metadata, file attachments, comments, form fields (flattened), hidden text and layers, bookmarks, links, actions and scripts, and private application data."));

@@ -357,6 +357,35 @@ fn clear_recent_files_at_the_foot_of_open_recent_empties_the_list() {
     assert!(h.query_by(|n| n.label().as_deref() == Some("Open Recent") && n.is_disabled()).is_some(), "and Open Recent is disabled");
 }
 
+/// T-019 (Asma §2): a recent file deleted while the app runs prunes on click
+/// with a plain note — no raw OS error — in the menu as on Home.
+#[test]
+fn open_recent_of_a_missing_file_prunes_it_with_a_plain_note() {
+    let mut h = Harness::builder().with_size(egui::vec2(1400.0, 900.0)).build_eframe(|_cc| {
+        let mut app = PdfCraftApp::new();
+        app.set_option("language", "en").unwrap();
+        app.open_bytes("doc.pdf", None, fixture(3)).unwrap();
+        app.recent.extend([recent_file("first.pdf"), recent_file("gone.pdf")]);
+        app
+    });
+    h.run_steps(4);
+    h.get_by_label("Menu").click();
+    h.run_steps(2);
+    h.get_by_label("File ⏵").hover();
+    h.run_steps(3);
+    h.get_by_label("Open Recent ⏵").hover();
+    h.run_steps(3);
+    h.get_by_label_contains("gone.pdf").click();
+    h.run_steps(3);
+    let app = h.state();
+    assert!(!app.recent.iter().any(|r| r.path == "/nowhere/gone.pdf"), "the dead entry is pruned");
+    assert!(app.recent.iter().any(|r| r.path == "/nowhere/first.pdf"), "the live entries stay");
+    let toast = app.toast.clone().map(|(m, _)| m).unwrap_or_default();
+    assert!(toast.contains("gone.pdf") && toast.contains("is no longer there"), "plain prune toast, got {toast:?}");
+    assert!(!toast.contains("os error"), "no raw OS error in the toast, got {toast:?}");
+    assert!(!app.persist().contains("/nowhere/gone.pdf"), "the prune reaches the persisted list");
+}
+
 #[test]
 fn clear_recent_files_runs_from_the_palette_and_is_saved() {
     let mut app = PdfCraftApp::new();

@@ -922,7 +922,7 @@ fn skip_prompt(app: &mut PdfCraftApp, ctx: &egui::Context) {
     }
     let mut choice: Option<bool> = None;
     let modal = egui::Modal::new(egui::Id::new("combine-skip")).show(ctx, |ui| {
-        ui.set_width(460.0);
+        ui.set_width(crate::widgets::dialog_width(ui.ctx(), 460.0));
         ui.horizontal(|ui| {
             ui.add(icons::image("triangle-alert", 22.0, ERROR));
             ui.add(egui::Label::new(egui::RichText::new(tl!("Leave out files that can't be read?")).font(theme::semibold(16.0))).wrap());
@@ -1271,6 +1271,29 @@ fn add_menu(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
     });
 }
 
+/// Scale column widths to the available width (T-019: the Combine table
+/// reflows instead of scrolling sideways). Widths shrink proportionally
+/// toward their minima; if even the minima don't fit, they shrink
+/// proportionally anyway and the cells clip.
+fn fit_columns(widths: [f32; 5], available: f32) -> [f32; 5] {
+    let sum: f32 = widths.iter().sum();
+    if available <= 0.0 || sum <= available {
+        return widths;
+    }
+    let mins: [f32; 5] = std::array::from_fn(|i| SortKey::ALL[i].min_width());
+    let min_sum: f32 = mins.iter().sum();
+    if min_sum >= available {
+        // Even the minima don't fit: scale everything proportionally.
+        let f = available / sum;
+        return widths.map(|w| w * f);
+    }
+    // Shrink the slack above the minima proportionally.
+    let slack = sum - min_sum;
+    let target_slack = available - min_sum;
+    let f = if slack > 0.0 { target_slack / slack } else { 0.0 };
+    std::array::from_fn(|i| mins[i] + (widths[i] - mins[i]) * f)
+}
+
 /// The file table.
 fn table(
     app: &mut PdfCraftApp,
@@ -1290,13 +1313,20 @@ fn table(
         app.combine_tab.fitted = available;
         app.combine_tab.layout = app.combine_tab.layout.wrapping_add(1);
     }
-    let widths = app.combine_columns.resolved(available);
+    let widths = fit_columns(app.combine_columns.resolved(available), available);
+    // A column widened by hand keeps its width only while it fits: wider than
+    // the window, the columns re-fit instead of scrolling (T-019). The table
+    // state is keyed by the layout counter, so a re-fit bumps it to apply.
+    if app.combine_columns.widths.is_some_and(|w| w != widths) {
+        app.combine_columns.widths = Some(widths);
+        app.combine_tab.layout = app.combine_tab.layout.wrapping_add(1);
+    }
     let rows = Rows { checks, selected, twice, conflicts, dragging, sort: app.combine_tab.sort };
     let mut heading_event = None;
     let mut shown = None;
-    egui::ScrollArea::horizontal()
-        .id_salt("combine-files-h")
-        .show(ui, |ui| table_body(app, ui, t, &rows, widths, &mut events, &mut heading_event, &mut shown));
+    // No horizontal ScrollArea here (T-019): the columns fit the window and
+    // the cells clip, so the table can never scroll — or show a bar — sideways.
+    table_body(app, ui, t, &rows, widths, &mut events, &mut heading_event, &mut shown);
     // A column resized by hand keeps its width from now on.
     if let Some(shown) = shown
         && shown.iter().zip(&widths).any(|(a, b)| (a - b).abs() > 0.5)
@@ -2785,5 +2815,45 @@ mod tests {
         assert_eq!(removed_pages(&repeats, &BTreeSet::from([(1, 1)]), &mut new_id), Some(vec![part(1, 1, &[0])]));
         // A page that isn't there: nothing changes, and it says so.
         assert_eq!(removed_pages(&two, &BTreeSet::from([(1, 9)]), &mut new_id), None);
+    }
+
+    /// T-019: a column widened by hand re-fits instead of scrolling — no
+    /// horizontal ScrollArea, no bar, and the stored widths shrink to fit.
+    #[test]
+    fn combine_table_refits_wide_columns_instead_of_scrolling() {
+        let bytes = locked();
+        let mut app = PdfCraftApp::new();
+        app.stage_combine(vec![("a-very-long-file-name-that-would-need-truncating.pdf".into(), bytes)]);
+        app.combine_columns.widths = Some([800.0, 170.0, 84.0, 110.0, 200.0]);
+        let ctx = egui::Context::default();
+        ctx.set_fonts(theme::font_definitions());
+        let t = Tokens::get(&ctx);
+        let width = 600.0;
+        let output =
+            ctx.run_ui(egui::RawInput { screen_rect: Some(Rect::from_min_size(egui::Pos2::ZERO, vec2(width, 900.0))), ..Default::default() }, |ui| {
+                let _ = table(&mut app, ui, &t, &[Ok(1)], &[false], &[Vec::new()], &[false]);
+            });
+        for shape in &output.shapes {
+            let visible = shape.clip_rect.intersect(shape.shape.visual_bounding_rect());
+            if visible.is_positive() {
+                assert!(visible.left() >= -1.0 && visible.right() <= width + 1.0, "combine table overflows: painted {visible:?}");
+            }
+        }
+        output.drop_without_applying_deltas();
+        let stored = app.combine_columns.widths.expect("widths stay stored");
+        let sum: f32 = stored.iter().sum();
+        assert!(sum <= width, "widened columns re-fit to the window: {stored:?} sum {sum}");
+    }
+
+    /// The re-fit itself: proportional above the minima, never below them
+    /// while they fit, proportional again when even they don't.
+    #[test]
+    fn fit_columns_scales_to_the_window() {
+        assert_eq!(fit_columns([100.0, 100.0, 100.0, 100.0, 100.0], 600.0), [100.0, 100.0, 100.0, 100.0, 100.0]);
+        let fitted = fit_columns([800.0, 170.0, 84.0, 110.0, 200.0], 558.0);
+        assert!((fitted.iter().sum::<f32>() - 558.0).abs() < 1.0, "fits the window: {fitted:?}");
+        assert!(fitted.iter().zip(SortKey::ALL).all(|(w, k)| *w >= k.min_width()), "never below the minima: {fitted:?}");
+        let squeezed = fit_columns([800.0, 170.0, 84.0, 110.0, 200.0], 200.0);
+        assert!((squeezed.iter().sum::<f32>() - 200.0).abs() < 1.0, "scales even past the minima: {squeezed:?}");
     }
 }

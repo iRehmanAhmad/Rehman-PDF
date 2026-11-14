@@ -1385,10 +1385,18 @@ pub(crate) fn cert_viewer(ui: &mut egui::Ui, v: &mut CertViewer, trusted: &[Cert
     ui.add_space(8.0);
     let mut action = None;
     v.selected = v.selected.min(v.chain.len().saturating_sub(1));
+    // The two columns share the (clamped) dialog width: chain 200, gap 16,
+    // details 440 at desktop; narrower windows shrink the chain first and
+    // the details column takes what is left. The gap is 16 pt plus the
+    // horizontal's item spacing after the chain column (T-019 fix round).
+    let avail = ui.available_width();
+    let chain_w = 200.0f32.min(avail * 0.35);
+    let gap = 16.0 + ui.spacing().item_spacing.x;
+    let details_w = 440.0f32.min(avail - chain_w - gap);
     ui.horizontal_top(|ui| {
         // The chain, root at the top (as Acrobat shows it).
         ui.vertical(|ui| {
-            ui.set_width(200.0);
+            ui.set_width(chain_w);
             for (depth, i) in (0..v.chain.len()).rev().enumerate() {
                 let c = &v.chain[i];
                 ui.horizontal(|ui| {
@@ -1401,7 +1409,7 @@ pub(crate) fn cert_viewer(ui: &mut egui::Ui, v: &mut CertViewer, trusted: &[Cert
         });
         ui.add_space(16.0);
         ui.vertical(|ui| {
-            ui.set_width(440.0);
+            ui.set_width(details_w);
             let Some(c) = v.chain.get(v.selected).cloned() else { return };
             ui.horizontal(|ui| {
                 for (tab, label) in [(CertTab::Summary, tl!("Summary")), (CertTab::Details, tl!("Details")), (CertTab::Trust, tl!("Trust"))] {

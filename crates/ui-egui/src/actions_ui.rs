@@ -240,11 +240,14 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool
     if app.wizard.selected.as_ref().is_none_or(|s| !actions.iter().any(|a| &a.name == s)) {
         app.wizard.selected = actions.first().map(|a| a.name.clone());
     }
+    // The list takes 220 pt at desktop; narrower windows shrink it (the
+    // frame inside keeps its 12 pt of margin) so the details pane keeps room.
+    let list_w = 220.0f32.min(ui.available_width() * 0.42);
     ui.horizontal_top(|ui| {
         ui.vertical(|ui| {
-            ui.set_width(220.0);
+            ui.set_width(list_w);
             egui::Frame::new().fill(t.hover).corner_radius(egui::CornerRadius::same(6)).inner_margin(egui::Margin::same(6)).show(ui, |ui| {
-                ui.set_width(208.0);
+                ui.set_width(list_w - 12.0);
                 ui.set_min_height(260.0);
                 for a in &actions {
                     let on = app.wizard.selected.as_deref() == Some(a.name.as_str());
@@ -288,15 +291,18 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> bool
                 app.wizard.selected = None;
             }
         }
-        let (start, closed) = crate::dialog_chrome::footer(ui, tl!("Close"), tl_ctx!("action wizard", "Start"), true);
-        if start {
-            close = true;
-            app.start_selected_action();
-        }
-        if closed {
-            close = true;
-        }
     });
+    // The footer is its own row, not part of the button row: inside a
+    // horizontal its divider allocates the remaining width and the row grows
+    // past the window (T-019 fix round).
+    let (start, closed) = crate::dialog_chrome::footer(ui, tl!("Close"), tl_ctx!("action wizard", "Start"), true);
+    if start {
+        close = true;
+        app.start_selected_action();
+    }
+    if closed {
+        close = true;
+    }
     close
 }
 

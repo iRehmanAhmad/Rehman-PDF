@@ -2147,6 +2147,7 @@ calendar date	December	грудня
 	Clear Recent Files	Очистити список нещодавніх файлів
 	Remove from Recent	Вилучити з нещодавніх
 	Remove {name} from Recent	Вилучити {name} з нещодавніх
+	{name} is no longer there — removed from Recent.	{name} більше немає — вилучено з нещодавніх.
 	Inserted text	Вставлений текст
 
 # Labels that reach tl!() through a variable (Fill & Sign buttons, link prompts, notices, history labels, checker and certificate rows)

@@ -1456,6 +1456,7 @@
 	Remove watermark	Odstrani vodni žig
 	Remove {name}	Odstrani: {name}
 	Remove {name} from Recent	Odstrani {name} iz nedavnih
+	{name} is no longer there — removed from Recent.	{name} ni več tam — odstranjeno iz nedavnih.
 	Remove {n} files	Odstrani datoteke: {n}
 	Removed 1 hidden item. Save to remove them from the file.	Odstranjen je 1 skriti element. Shranite, da ga odstranite iz datoteke.
 	Removed {n} hidden items. Save to remove them from the file.	Odstranjenih skritih elementov: {n}. Shranite, da jih odstranite iz datoteke.

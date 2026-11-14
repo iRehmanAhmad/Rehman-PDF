@@ -278,8 +278,12 @@ pub(crate) fn audit_body(ui: &mut egui::Ui, rows: &[pdfcraft_engine::optimize::S
     let gap = 24.0;
     let width = |column: usize| table.iter().filter_map(|row| row.get(column)).map(|g| g.size().x).fold(0.0, f32::max);
     // The description takes what the numbers leave, so the striped rows span the dialog.
-    let numbers = width(1) + width(2) + 2.0 * gap;
-    let widths = [width(0).max(ui.available_width() - numbers), width(1), width(2)];
+    // The grid also enforces a minimum column width (the theme's interact size), so the
+    // number columns count at that minimum even when their text is narrower — the
+    // description must leave room for it, or the grid grows past the window (T-019).
+    let min_col = ui.spacing().interact_size.x;
+    let numbers = width(1).max(min_col) + width(2).max(min_col) + 2.0 * gap;
+    let widths = [width(0).max(ui.available_width() - numbers), width(1).max(min_col), width(2).max(min_col)];
     let height = table.iter().flatten().map(|g| g.size().y).fold(ui.spacing().interact_size.y, f32::max);
     egui::Grid::new("space-audit").num_columns(3).striped(true).spacing([gap, 4.0]).show(ui, |ui| {
         for row in table {

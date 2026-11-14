@@ -13,6 +13,23 @@ const FIELD_MIN_HEIGHT: f32 = 30.0;
 const DIALOG_PAD_X: i8 = 24;
 const DIALOG_PAD_Y: i8 = 20;
 
+/// How far the modal frame's shadow paints past the frame on each side
+/// (theme `window_shadow` blur 28; measured exactly 15 pt on every dialog
+/// in the T-019 fix-round baseline). The shadow is paint too: the brief's
+/// "nothing paints past the window edge" covers it.
+const DIALOG_SHADOW: f32 = 15.0;
+
+/// Clamp a dialog's requested content width to the window (T-019 fix round).
+/// `egui::Modal` is centre-anchored with no screen constraint, so without
+/// this a fixed-width dialog paints past the window edge on narrow windows.
+/// Total width is content + 2×24 pt frame + 2×15 pt shadow; the result
+/// leaves the shadow 1 pt inside the window edge at the narrowest width.
+/// The 200 pt floor keeps the smallest dialogs usable.
+pub fn dialog_width(ctx: &egui::Context, requested: f32) -> f32 {
+    let max = ctx.viewport_rect().width() - 2.0 * (f32::from(DIALOG_PAD_X) + DIALOG_SHADOW + 1.0);
+    requested.min(max.max(200.0))
+}
+
 fn dialog_frame(ctx: &egui::Context) -> egui::Frame {
     let t = Tokens::get(ctx);
     egui::Frame::new()
@@ -199,6 +216,57 @@ pub fn action_button_dropdown(ui: &mut egui::Ui, icon: &str, label: &str) -> Res
         14.0,
         t.text_faint,
     );
+    theme::hand(resp)
+}
+
+/// [`action_button`] with the label left off (T-019): the Organize bar's
+/// compact mode. The label stays the accessibility name, and the caller's
+/// hover text is the tooltip — nothing is lost, only deferred to hover.
+pub fn action_button_icon(ui: &mut egui::Ui, icon: &str, label: &str, danger: bool, enabled: bool) -> Response {
+    let t = Tokens::get(ui.ctx());
+    let enabled = enabled && ui.is_enabled();
+    // Disabled buttons fade instead of using the Ui's disabled opacity (which needs a scope).
+    let fade = if enabled { 1.0 } else { 0.35 };
+    let ink = (if danger { t.danger } else { t.icon }).gamma_multiply(fade);
+    let (rect, resp) = ui.allocate_exact_size(vec2(32.0, 32.0), if enabled { Sense::click() } else { Sense::hover() });
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, enabled, label));
+    let press = theme::Press::track(ui, &resp);
+    if enabled {
+        press.wash(ui, rect, 8, false);
+    }
+    let body = rect.translate(press.offset());
+    icons::paint(ui, Rect::from_min_size(egui::pos2(body.center().x - 8.0, body.center().y - 8.0), vec2(16.0, 16.0)), icon, 16.0, ink);
+    if enabled { theme::hand(resp) } else { resp }
+}
+
+/// [`action_button_dropdown`] with the label left off (T-019): icon + chevron.
+pub fn action_button_dropdown_icon(ui: &mut egui::Ui, icon: &str, label: &str) -> Response {
+    let t = Tokens::get(ui.ctx());
+    let (rect, resp) = ui.allocate_exact_size(vec2(42.0, 32.0), Sense::click());
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, ui.is_enabled(), label));
+    let press = theme::Press::track(ui, &resp);
+    press.wash(ui, rect, 8, false);
+    let body = rect.translate(press.offset());
+    icons::paint(ui, Rect::from_min_size(egui::pos2(body.left() + 8.0, body.center().y - 8.0), vec2(16.0, 16.0)), icon, 16.0, t.icon);
+    icons::paint(
+        ui,
+        Rect::from_min_size(egui::pos2(body.right() - 15.0, body.center().y - 6.0), vec2(12.0, 12.0)),
+        "chevron-down",
+        12.0,
+        t.text_faint,
+    );
+    theme::hand(resp)
+}
+
+/// [`ghost_button`] with the label left off (T-019): a 32 px square icon.
+pub fn ghost_button_icon(ui: &mut egui::Ui, icon: &str, label: &str) -> Response {
+    let t = Tokens::get(ui.ctx());
+    let (rect, resp) = ui.allocate_exact_size(vec2(32.0, 32.0), Sense::click());
+    resp.widget_info(|| egui::WidgetInfo::labeled(egui::WidgetType::Button, ui.is_enabled(), label));
+    let press = theme::Press::track(ui, &resp);
+    press.wash(ui, rect, 6, false);
+    let body = rect.translate(press.offset());
+    icons::paint(ui, Rect::from_min_size(body.min + vec2(7.0, 7.0), vec2(18.0, 18.0)), icon, 17.0, t.icon);
     theme::hand(resp)
 }
 

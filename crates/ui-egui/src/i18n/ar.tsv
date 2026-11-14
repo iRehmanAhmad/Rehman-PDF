@@ -2149,6 +2149,7 @@ calendar date	December	ديسمبر
 	Clear Recent Files	مسح الملفات الأخيرة
 	Remove from Recent	إزالة من الأخيرة
 	Remove {name} from Recent	إزالة {name} من الأخيرة
+	{name} is no longer there — removed from Recent.	{name} لم يعد موجودًا — أُزيل من الأخيرة.
 	Inserted text	نص مُدرَج
 	Add {what}	إضافة {what}
 	Use {what}	استخدام {what}

@@ -139,7 +139,11 @@ fn strip_middle(app: &mut PdfCraftApp, ui: &mut egui::Ui, t: &Tokens, tab_h: f32
     let mut drag_x = None;
     ui.scope(|ui| {
         ui.style_mut().always_scroll_the_only_direction = true;
-        let mut area = egui::ScrollArea::horizontal().id_salt("document_tabs").max_width(tabs_width).auto_shrink([true, true]);
+        let mut area = egui::ScrollArea::horizontal()
+            .id_salt("document_tabs")
+            .scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden)
+            .max_width(tabs_width)
+            .auto_shrink([true, true]);
         if let Some(x) = ui.data_mut(|d| d.remove_temp::<f32>(scroll_id.with("to"))) {
             area = area.horizontal_scroll_offset(x);
         }
@@ -395,8 +399,13 @@ fn appearance_menu(app: &mut PdfCraftApp, ui: &mut egui::Ui) {
 
 /// A tab's chrome around its name: the icon on the left, the close button on the right.
 const TAB_CHROME: f32 = 64.0;
-/// The narrowest a tab shrinks to before the strip scrolls: room for most of a name.
-const TAB_MIN_WIDTH: f32 = 180.0;
+/// The narrowest a tab shrinks to before the strip scrolls: ~76 pt of name
+/// beside the 64 pt chrome, still recognisable (T-019: lowered from 180 so the
+/// strip starts scrolling one tab later; the hover tooltip carries the full
+/// name, so nothing is lost, only deferred to hover). The strip's bar itself
+/// is always hidden (T-019): arrows, wheel scrolling, `scroll_to_me` and
+/// drag-at-edge scrolling are the indicators that more tabs lie off-screen.
+const TAB_MIN_WIDTH: f32 = 140.0;
 /// The arrows either side of tabs that don't fit.
 const TAB_ARROW: f32 = 24.0;
 

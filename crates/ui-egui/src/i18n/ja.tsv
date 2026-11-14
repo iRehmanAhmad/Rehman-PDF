@@ -35,6 +35,7 @@
 	Clear Recent Files	最近のファイルをクリア
 	Remove from Recent	最近のファイルから外す
 	Remove {name} from Recent	{name} を最近のファイルから外す
+	{name} is no longer there — removed from Recent.	{name} はもうありません — 最近のファイルから削除しました。
 	Pin folder to Home…	フォルダーをホームにピン留め…
 	Folders	フォルダー
 	Pin a folder…	フォルダーをピン留め…

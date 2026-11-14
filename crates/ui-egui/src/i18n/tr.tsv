@@ -2129,6 +2129,7 @@ action wizard	Start	Başlat
 	Clear Recent Files	Son kullanılan dosyaları temizle
 	Remove from Recent	Son kullanılanlardan kaldır
 	Remove {name} from Recent	{name} öğesini son kullanılanlardan kaldır
+	{name} is no longer there — removed from Recent.	{name} artık orada değil — son kullanılanlardan kaldırıldı.
 	The PDF text fonts can't draw “{c}” ({code}). Choose supported text.	PDF metin yazı tipleri “{c}” ({code}) karakterini çizemez. Desteklenen bir metin seçin.
 	Larger pages	Daha büyük sayfalar
 	Smaller pages	Daha küçük sayfalar

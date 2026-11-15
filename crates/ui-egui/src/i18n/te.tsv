@@ -2096,6 +2096,7 @@ action wizard	Start	ప్రారంభించు
 	Clear Recent Files	ఇటీవలి ఫైళ్లను క్లియర్ చేయి
 	Remove from Recent	ఇటీవలి ఫైళ్ల నుండి తీసివేయి
 	Remove {name} from Recent	{name}ను ఇటీవలి ఫైళ్ల నుండి తీసివేయి
+	{name} is no longer there — removed from Recent.	{name} ఇక అక్కడ లేదు — ఇటీవలి ఫైళ్ల నుండి తీసివేయబడింది.
 	Pin folder to Home…	ఫోల్డర్‌ను హోమ్‌కు పిన్ చేయి…
 	No recent files	ఇటీవలి ఫైళ్లు లేవు
 	Go to page…	పేజీకి వెళ్లు…

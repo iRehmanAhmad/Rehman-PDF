@@ -2134,6 +2134,7 @@ action wizard	Start	Старт
 	Clear Recent Files	Изчисти последно отваряните файлове
 	Remove from Recent	Премахни от последно отваряните
 	Remove {name} from Recent	Премахни {name} от последно отваряните
+	{name} is no longer there — removed from Recent.	{name} вече го няма — премахнато от последно отваряните.
 	The PDF text fonts can't draw “{c}” ({code}). Choose supported text.	Шрифтовете за PDF текст не могат да изобразят „{c}“ ({code}). Изберете поддържан текст.
 	The standard fonts can't draw “{c}” ({code}). Only Western European characters can be added as text for now.	Стандартните шрифтове не могат да покажат „{c}“ ({code}). Засега като текст могат да се добавят само западноевропейски символи.
 	This field's font can't draw “{c}” ({code}), so Rehman-PDF shows ? in its place. The value is saved, and other PDF viewers redraw the field from it.	Шрифтът на това поле не може да покаже „{c}“ ({code}), затова Rehman-PDF показва ? на негово място. Стойността е запазена и другите програми за PDF преначертават полето по нея.

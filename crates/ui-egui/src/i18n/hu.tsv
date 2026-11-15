@@ -2126,6 +2126,7 @@ action wizard	Start	Indítás
 	Clear Recent Files	Legutóbbi fájlok listájának törlése
 	Remove from Recent	Eltávolítás a legutóbbiak közül
 	Remove {name} from Recent	{name} eltávolítása a legutóbbiak közül
+	{name} is no longer there — removed from Recent.	{name} már nincs ott — eltávolítva a legutóbbiak közül.
 
 # Labels that reach tl!() through a variable (Fill & Sign buttons, link prompts, notices, history labels, checker and certificate rows)
 	Add {what}	{what} hozzáadása

@@ -266,7 +266,12 @@ pub fn contributors_ui(ui: &mut egui::Ui) {
     let counts = crate::i18n::fmt(crate::i18n::t("{n} contributors · {c} commits"), &[("n", &list.len().to_string()), ("c", &group(TOTAL_COMMITS))]);
     ui.label(RichText::new(counts).small().color(t.text_muted));
     ui.separator();
-    egui::ScrollArea::both().id_salt("credits_list").max_height(LIST_HEIGHT).auto_shrink([false, true]).show(ui, |ui| {
+    // The 10-column table is wider than a narrow About dialog; the bar is
+    // hidden so no horizontal scrollbar ever shows (T-019: no horizontal
+    // scrollbar on any of the app's own screens). Wheel/drag scrolling still
+    // works; egui has one visibility setting for both bars, so hiding the
+    // horizontal bar also hides the vertical one.
+    egui::ScrollArea::both().id_salt("credits_list").scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden).max_height(LIST_HEIGHT).auto_shrink([false, true]).show(ui, |ui| {
         if list.is_empty() {
             ui.label(crate::i18n::t("No contributor data was built into this copy."));
         } else if v.table {
@@ -326,7 +331,8 @@ pub fn models_ui(ui: &mut egui::Ui) {
         return;
     }
     let assisted: u64 = MODELS.iter().map(|m| m.commits).max().unwrap_or(0).max(1);
-    egui::ScrollArea::both().id_salt("credits_models").max_height(LIST_HEIGHT).auto_shrink([false, true]).show(ui, |ui| {
+    // Same as the contributors table above: no horizontal scrollbar, ever.
+    egui::ScrollArea::both().id_salt("credits_models").scroll_bar_visibility(egui::scroll_area::ScrollBarVisibility::AlwaysHidden).max_height(LIST_HEIGHT).auto_shrink([false, true]).show(ui, |ui| {
         egui::Grid::new("credits_models").striped(true).num_columns(6).show(ui, |ui| {
             for h in MODEL_COLUMNS {
                 ui.label(RichText::new(crate::i18n::t(h)).strong());

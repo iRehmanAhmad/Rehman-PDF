@@ -69,6 +69,7 @@
 	Clear Recent Files	清除最近的文件
 	Remove from Recent	从最近的文件中移除
 	Remove {name} from Recent	从最近的文件中移除{name}
+	{name} is no longer there — removed from Recent.	{name} 已不存在 — 已从最近的文件中移除。
 	Pin folder to Home…	将文件夹固定到主页…
 	Folders	文件夹
 	Pin a folder…	固定文件夹…

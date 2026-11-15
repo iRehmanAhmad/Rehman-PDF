@@ -1687,6 +1687,20 @@ impl PdfCraftApp {
         if let Some(i) = self.tab_showing(path) {
             self.active = Some(i);
         } else {
+            // A file deleted or moved while the app runs (restore() only filters
+            // dead entries at startup): prune it and say so plainly, instead of
+            // showing the worker's raw OS error (T-019; Asma §2). open_path
+            // itself stays untouched — it also serves drag-and-drop, CLI args
+            // and the Open dialog, where pruning would be wrong.
+            #[cfg(not(target_arch = "wasm32"))]
+            if !std::path::Path::new(path).exists() {
+                let name = self.recent.iter().find(|r| r.path == path).map(|r| r.name.clone()).unwrap_or_else(|| {
+                    std::path::Path::new(path).file_name().map(|n| n.to_string_lossy().into_owned()).unwrap_or_else(|| path.to_string())
+                });
+                self.recent.retain(|r| r.path != path);
+                self.notify(crate::i18n::fmt(tl!("{name} is no longer there — removed from Recent."), &[("name", &name)]));
+                return;
+            }
             #[cfg(not(target_arch = "wasm32"))]
             self.open_path(path);
         }

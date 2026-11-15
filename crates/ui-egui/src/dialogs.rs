@@ -79,13 +79,16 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
     let mut close = false;
     let mut next = dialog;
     let modal = widgets::show_modal(ctx, "dialog", |ui| {
-        ui.set_width(match dialog {
-            Dialog::Properties(_) => 640.0,
-            Dialog::Print => 820.0,
-            Dialog::FieldProps | Dialog::BulkFieldProps => 600.0,
-            Dialog::About => 780.0,
-            _ => 520.0,
-        });
+        ui.set_width(widgets::dialog_width(
+            ui.ctx(),
+            match dialog {
+                Dialog::Properties(_) => 640.0,
+                Dialog::Print => 820.0,
+                Dialog::FieldProps | Dialog::BulkFieldProps => 600.0,
+                Dialog::About => 780.0,
+                _ => 520.0,
+            },
+        ));
         match dialog {
             Dialog::WordCount => {
                 close = crate::word_count_ui::body(ui, app);
@@ -115,12 +118,16 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 let Some((_, id)) = app.active_ids() else { return };
                 let Some(doc) = app.session.get(id) else { return };
                 let i = &doc.info;
+                // The value column shares the (clamped) dialog width with the
+                // 150 pt label column: 420 pt at desktop, shrinking on narrow
+                // windows instead of pushing the dialog past the window edge.
+                let field_w = (ui.available_width() - 150.0 - 18.0).max(200.0).min(420.0);
                 let row = |ui: &mut egui::Ui, k: &str, v: String| {
                     // Row labels are UI chrome; values are document data and stay as they are.
                     // Mockup: 12.5 px muted labels, 12.5 medium values, 150 px label column.
                     ui.label(egui::RichText::new(tl!(k)).font(theme::regular(12.5)).color(t.text_muted));
                     ui.scope(|ui| {
-                        ui.set_max_width(420.0);
+                        ui.set_max_width(field_w);
                         ui.add(
                             egui::Label::new(if v.is_empty() {
                                 egui::RichText::new("—").font(theme::regular(12.5)).color(t.text_faint)
@@ -142,7 +149,7 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                                 Some((_, draft)) if doc.allows_modification() => {
                                     for (k, v) in INFO_KEYS.iter().zip(draft.iter_mut()) {
                                         let l = ui.label(egui::RichText::new(tl!(k)).font(theme::regular(12.5)).color(t.text_muted));
-                                        ui.add(widgets::line(v).desired_width(420.0).background_color(t.field).id_salt(("info", *k)))
+                                        ui.add(widgets::line(v).desired_width(field_w).background_color(t.field).id_salt(("info", *k)))
                                             .labelled_by(l.id);
                                         ui.end_row();
                                     }
@@ -708,7 +715,7 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 return;
             }
             Dialog::CertificateViewer => {
-                ui.set_width(700.0);
+                ui.set_width(widgets::dialog_width(ui.ctx(), 700.0));
                 let trusted = app.session.trusted_certificates().to_vec();
                 let Some(v) = app.cert_viewer.as_mut() else {
                     close = true;
@@ -906,7 +913,7 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 return;
             }
             Dialog::ActionWizard => {
-                ui.set_width(620.0);
+                ui.set_width(widgets::dialog_width(ui.ctx(), 620.0));
                 close = crate::actions_ui::body(ui, app, &t);
                 return;
             }
@@ -917,12 +924,12 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 return;
             }
             Dialog::JsConsole => {
-                ui.set_width(640.0);
+                ui.set_width(widgets::dialog_width(ui.ctx(), 640.0));
                 close = crate::js_ui::console_body(ui, app, &t);
                 return;
             }
             Dialog::DocumentJs => {
-                ui.set_width(640.0);
+                ui.set_width(widgets::dialog_width(ui.ctx(), 640.0));
                 close = crate::js_ui::document_js_body(ui, app, &t);
                 return;
             }
@@ -951,7 +958,7 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 return;
             }
             Dialog::Marks(kind) => {
-                ui.set_width(720.0);
+                ui.set_width(widgets::dialog_width(ui.ctx(), 820.0));
                 let (apply, cancel) = crate::marks_ui::body(ui, app, &t, kind);
                 marks_now = apply;
                 close = apply || cancel;
@@ -1035,7 +1042,10 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                 let now = std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_secs()).unwrap_or(0);
                 egui::Grid::new("recoverable").num_columns(2).spacing([18.0, 6.0]).show(ui, |ui| {
                     for m in &app.recoverable {
-                        ui.label(egui::RichText::new(&m.name).font(theme::medium(13.0)));
+                        // Wrapped: a long file name used to set this column's
+                        // width and push the whole dialog past the window
+                        // (T-019 fix round). It wraps at the grid's width.
+                        ui.add(egui::Label::new(egui::RichText::new(&m.name).font(theme::medium(13.0))).wrap());
                         let mins = now.saturating_sub(m.saved_at) / 60;
                         let when = match mins {
                             0 => tl!("just now").to_string(),
@@ -1094,7 +1104,10 @@ fn dialogs(app: &mut PdfCraftApp, ctx: &egui::Context) {
                     egui::Grid::new("keys").num_columns(2).spacing([24.0, 6.0]).show(ui, |ui| {
                         for (k, v) in &rows {
                             ui.label(egui::RichText::new(k).font(egui::FontId::monospace(12.5)));
-                            ui.label(v);
+                            // Wrapped: a long description (notably in Urdu)
+                            // used to set this column's width and push the
+                            // dialog past the window (T-019 fix round).
+                            ui.add(egui::Label::new(v).wrap());
                             ui.end_row();
                         }
                     });
@@ -1420,7 +1433,7 @@ fn save_prompt(app: &mut PdfCraftApp, ctx: &egui::Context) {
     let shown = shorten_middle(&name, 80);
     let mut choice: Option<Option<bool>> = None;
     let modal = widgets::show_modal(ctx, "save_prompt", |ui| {
-        ui.set_width(420.0);
+        ui.set_width(widgets::dialog_width(ui.ctx(), 420.0));
         ui.horizontal(|ui| {
             ui.add(crate::icons::image("save", 22.0, t.accent));
             let title = ui.add(
@@ -1484,7 +1497,7 @@ fn link_prompt(app: &mut PdfCraftApp, ctx: &egui::Context) {
     let (title, open) = if email { (tl!("Write this email?"), tl!("Open email app")) } else { (tl!("Open this web page?"), tl!("Open link")) };
     let mut choice: Option<bool> = None;
     let modal = widgets::show_modal(ctx, "link_prompt", |ui| {
-        ui.set_width(460.0);
+        ui.set_width(widgets::dialog_width(ui.ctx(), 460.0));
         ui.horizontal(|ui| {
             ui.add(crate::icons::image("external-link", 22.0, t.accent));
             ui.label(egui::RichText::new(title).font(theme::semibold(16.0)));
@@ -1551,7 +1564,7 @@ fn full_screen_prompt(app: &mut PdfCraftApp, ctx: &egui::Context) {
     let t = Tokens::get(ctx);
     let mut choice = None;
     let modal = widgets::show_modal(ctx, "full_screen_prompt", |ui| {
-        ui.set_width(460.0);
+        ui.set_width(widgets::dialog_width(ui.ctx(), 460.0));
         ui.horizontal(|ui| {
             ui.add(crate::icons::image("maximize", 22.0, t.accent));
             ui.label(egui::RichText::new(tl!("Open in Full Screen mode?")).font(theme::semibold(16.0)));
@@ -1586,7 +1599,7 @@ fn remote_link_prompt(app: &mut PdfCraftApp, ctx: &egui::Context) {
     let Some(pending) = app.pending_remote_link.clone() else { return };
     let mut choice = None;
     let modal = widgets::show_modal(ctx, "remote_link_prompt", |ui| {
-        ui.set_width(460.0);
+        ui.set_width(widgets::dialog_width(ui.ctx(), 460.0));
         ui.label(egui::RichText::new(tl!("Open this local PDF?")).font(theme::semibold(16.0)));
         ui.add_space(6.0);
         ui.label(tl!("This document is trying to open a local file:"));
@@ -1636,7 +1649,7 @@ fn password_modal(
     let t = Tokens::get(ctx);
     let mut answer = None;
     let modal = widgets::show_modal(ctx, id, |ui| {
-        ui.set_width(400.0);
+        ui.set_width(widgets::dialog_width(ui.ctx(), 400.0));
         ui.horizontal(|ui| {
             ui.add(crate::icons::image("lock", 22.0, t.accent));
             ui.label(egui::RichText::new(title).font(theme::semibold(17.0)));
@@ -1693,5 +1706,444 @@ fn unlock(app: &mut PdfCraftApp, ctx: &egui::Context) {
         }
         Some(PasswordAnswer::Cancel) => app.submit_unlock(None),
         None => {}
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::theme;
+    use egui::{Rect, vec2};
+
+    /// Render a dialog at `width` x `height` and return the last frame's
+    /// shapes. Three frames: egui grids lay out narrow on frame 1 (they
+    /// request a discard) and only settle afterwards. Pins English first:
+    /// a test that leaves the thread on another language breaks English
+    /// lookups for the next test on the same thread.
+    fn render_dialog(width: f32, height: f32, app: &mut PdfCraftApp) -> Vec<egui::epaint::ClippedShape> {
+        crate::i18n::set_current(crate::i18n::Lang::EN);
+        let ctx = egui::Context::default();
+        ctx.set_fonts(theme::font_definitions());
+        theme::apply(&ctx, theme::ThemeKind::Light);
+        let mut shapes = Vec::new();
+        for _ in 0..3 {
+            let output = ctx.run_ui(
+                egui::RawInput { screen_rect: Some(Rect::from_min_size(egui::Pos2::ZERO, vec2(width, height))), ..Default::default() },
+                |ui| {
+                    crate::dialogs::show(app, ui.ctx());
+                },
+            );
+            shapes = output.shapes.clone();
+            output.drop_without_applying_deltas();
+        }
+        shapes
+    }
+
+    /// Nothing paints past the window's left/right edge, for a MODAL dialog.
+    /// The home probe (clip rect ∩ shape rect) is vacuous here: modal content
+    /// is clipped by the screen rect itself, so the intersection can never
+    /// leave the window even when the dialog is 1080pt wide in an 800pt
+    /// window (proven by a debug run on the unclamped Print dialog: shapes
+    /// span x[-140..940] yet the clip probe passed). So instead: a shape
+    /// whose clip rect does not cut it horizontally (the clip spans the whole
+    /// window) must itself stay inside the window. A narrower clip means a
+    /// container (ScrollArea) contains the shape by design, and such shapes
+    /// are skipped — the container's own frame is checked by this same rule.
+    /// Returns the first offending shape, if any.
+    fn first_horizontal_overflow(shapes: &[egui::epaint::ClippedShape], width: f32) -> Option<String> {
+        for shape in shapes {
+            let clip = shape.clip_rect;
+            let screen_clipped = clip.min.x <= 0.0 && clip.max.x >= width;
+            if !screen_clipped {
+                continue;
+            }
+            let rect = shape.shape.visual_bounding_rect();
+            if !rect.is_finite() {
+                continue;
+            }
+            if rect.min.x < -1.0 || rect.max.x > width + 1.0 {
+                return Some(format!("shape paints {rect:?} (clip {clip:?})"));
+            }
+        }
+        None
+    }
+
+    /// The marker text really painted (guards against a vacuous pass when a
+    /// dialog closes early for missing state). NOTE: egui culls plain
+    /// `ui.label` texts that sit fully off-screen, so a marker must be a
+    /// text that stays at least partly visible even while the dialog
+    /// overflows — a footer button, a combo value, a central label — never a
+    /// left-edge title of a dialog wider than the window.
+    fn has_text(shapes: &[egui::epaint::ClippedShape], text: &str) -> bool {
+        shapes.iter().any(|s| matches!(&s.shape, egui::Shape::Text(t) if t.galley.job.text == text))
+    }
+
+    /// An app with a 3-page document open, as every dialog's body expects.
+    fn app_with_doc() -> PdfCraftApp {
+        let mut app = PdfCraftApp::new();
+        let bytes = app.session.create_blank(612.0, 792.0, 3).unwrap();
+        app.open_bytes("dialog-test.pdf", None, bytes.as_ref().clone()).unwrap();
+        app
+    }
+
+    /// Add two text fields to the open document; return their names.
+    fn add_two_text_fields(app: &mut PdfCraftApp) -> Vec<String> {
+        for (i, name) in ["field-one", "field-two"].iter().enumerate() {
+            let y = 100.0 + i as f64 * 40.0;
+            app.apply_edit(Edit::AddField {
+                page: 0,
+                rect: [100.0, y, 300.0, y + 30.0],
+                kind: pdfcraft_engine::NewField::Text { multiline: false },
+                name: Some(name.to_string()),
+            });
+        }
+        let (_, id) = app.active_ids().expect("a document is open");
+        let doc = app.session.get(id).expect("document in session");
+        doc.form.iter().map(|f| f.name.clone()).collect()
+    }
+
+    /// Render one dialog at 800px and 600px widths; return a failure line per
+    /// width that fails (marker missing, or a shape past the window edge).
+    /// Collecting instead of asserting, so one run lists EVERY overflowing
+    /// dialog instead of stopping at the first.
+    fn check_dialog(dialog: Dialog, marker: &str, mut setup: impl FnMut(&mut PdfCraftApp)) -> Vec<String> {
+        let mut failures = Vec::new();
+        for width in [800.0, 600.0] {
+            let mut app = app_with_doc();
+            setup(&mut app);
+            app.dialog = Some(dialog);
+            let shapes = render_dialog(width, 900.0, &mut app);
+            if !has_text(&shapes, marker) {
+                failures.push(format!("{dialog:?} at {width}px: marker {marker:?} did not paint"));
+            }
+            if let Some(overflow) = first_horizontal_overflow(&shapes, width) {
+                failures.push(format!("{dialog:?} at {width}px: horizontal overflow: {overflow}"));
+            }
+        }
+        failures
+    }
+
+    /// Fail with the joined list, or pass silently.
+    fn assert_no_failures(failures: Vec<String>) {
+        assert!(failures.is_empty(), "dialog overflow failures:\n{}", failures.join("\n"));
+    }
+
+    /// The wide dialogs: Print (820), Properties (640), About (780), Marks
+    /// (520), ActionWizard, JsConsole / DocumentJs (640 inner), the
+    /// certificate viewer (700 inner), RedactProps.
+    #[test]
+    fn wide_dialogs_have_no_horizontal_overflow() {
+        let mut failures = Vec::new();
+        // Print's marker is the footer/combo "Save as PDF", not the title:
+        // egui culls plain labels that sit fully off-screen, and the
+        // unclamped dialog's title sits past the left edge at 800px.
+        failures.extend(check_dialog(Dialog::Print, "Save as PDF", |_| {}));
+        for (tab, marker) in [
+            (PropsTab::Description, "PDF producer"),
+            (PropsTab::InitialView, "Layout and Magnification"),
+            (PropsTab::Security, "Security method"),
+            (PropsTab::Fonts, "Fonts"),
+            (PropsTab::Advanced, "PDF version"),
+        ] {
+            failures.extend(check_dialog(Dialog::Properties(tab), marker, |_| {}));
+        }
+        failures.extend(check_dialog(Dialog::About, "Rehman-PDF", |_| {}));
+        for (kind, marker) in [
+            (pdfcraft_engine::MarkKind::HeaderFooter, "Add Header and Footer"),
+            (pdfcraft_engine::MarkKind::Watermark, "Add Watermark"),
+            (pdfcraft_engine::MarkKind::Background, "Add Background"),
+        ] {
+            failures.extend(check_dialog(Dialog::Marks(kind), marker, |_| {}));
+        }
+        failures.extend(check_dialog(Dialog::ActionWizard, "Action Wizard", |_| {}));
+        failures.extend(check_dialog(Dialog::JsConsole, "JavaScript Console", |_| {}));
+        failures.extend(check_dialog(Dialog::DocumentJs, "Document JavaScripts", |_| {}));
+        failures.extend(check_dialog(Dialog::CertificateViewer, "Certificate Viewer", |app| {
+            app.cert_viewer = Some(crate::sign_ui::CertViewer { chain: Vec::new(), selected: 0, tab: crate::sign_ui::CertTab::Summary });
+        }));
+        failures.extend(check_dialog(Dialog::RedactProps, "Redaction Tool Properties", |_| {}));
+        assert_no_failures(failures);
+    }
+
+    /// About's Contributors and Models tabs (wide tables inside a ScrollArea).
+    #[test]
+    fn about_tabs_have_no_horizontal_overflow() {
+        let mut failures = Vec::new();
+        for (tab, marker) in [(1u8, "Contributors"), (2u8, "Models")] {
+            for width in [800.0, 600.0] {
+                let mut app = app_with_doc();
+                app.dialog = Some(Dialog::About);
+                let ctx = egui::Context::default();
+                ctx.set_fonts(theme::font_definitions());
+                theme::apply(&ctx, theme::ThemeKind::Light);
+                ctx.data_mut(|d| d.insert_temp(egui::Id::new("about_tab"), tab));
+                let mut shapes = Vec::new();
+                for _ in 0..3 {
+                    let output = ctx.run_ui(
+                        egui::RawInput { screen_rect: Some(Rect::from_min_size(egui::Pos2::ZERO, vec2(width, 900.0))), ..Default::default() },
+                        |ui| {
+                            crate::dialogs::show(&mut app, ui.ctx());
+                        },
+                    );
+                    shapes = output.shapes.clone();
+                    output.drop_without_applying_deltas();
+                }
+                if !has_text(&shapes, marker) {
+                    failures.push(format!("About tab {tab} at {width}px: marker {marker:?} did not paint"));
+                }
+                if let Some(o) = first_horizontal_overflow(&shapes, width) {
+                    failures.push(format!("About tab {tab} at {width}px: horizontal overflow: {o}"));
+                }
+            }
+        }
+        assert_no_failures(failures);
+    }
+
+    /// Every remaining default-width (520) dialog, one sweep.
+    #[test]
+    fn default_dialogs_have_no_horizontal_overflow() {
+        let mut failures = Vec::new();
+        failures.extend(check_dialog(Dialog::WordCount, "Word count", |_| {}));
+        failures.extend(check_dialog(Dialog::CreateImages, "Create PDF from images", |app| {
+            // Without a draft the body paints its heading once, then closes
+            // the dialog — so by the third frame nothing is left to probe.
+            app.image_import = Some(crate::create_ui::ImageImport { images: Vec::new(), choice: crate::create_ui::ResolutionChoice::Image, dpi: 72.0 });
+        }));
+        failures.extend(check_dialog(Dialog::Split, "Split document", |_| {}));
+        failures.extend(check_dialog(Dialog::ReplacePages, "Replace Pages", |app| {
+            app.replace_draft = Some(crate::files::ReplaceDraft {
+                name: "source.pdf".to_string(),
+                bytes: std::sync::Arc::new(Vec::new()),
+                src_pages: 3,
+                from: 1,
+                to: 3,
+                src_from: 1,
+                pages: vec![0, 1, 2],
+                range_edited: false,
+                target: None,
+            });
+        }));
+        failures.extend(check_dialog(Dialog::RedactPages, "Mark Page Range", |_| {}));
+        failures.extend(check_dialog(Dialog::RedactSearch, "Find text and redact", |_| {}));
+        failures.extend(check_dialog(Dialog::RedactApply, "Apply redactions", |_| {}));
+        failures.extend(check_dialog(Dialog::LinkProps, "Create Link", |app| {
+            app.open_link_props(0, Some([100.0, 100.0, 200.0, 120.0]), None);
+        }));
+        failures.extend(check_dialog(Dialog::Extract, "Extract pages", |_| {}));
+        failures.extend(check_dialog(Dialog::RotatePages, "Rotate Pages", |_| {}));
+        failures.extend(check_dialog(Dialog::DuplicateField, "Duplicate Field", |app| {
+            let names = add_two_text_fields(app);
+            app.duplicate_draft = Some(crate::DuplicateDraft { name: names[0].clone(), all: true, from: 1, to: 3 });
+        }));
+        failures.extend(check_dialog(Dialog::Optimize, "PDF Optimizer", |_| {}));
+        failures.extend(check_dialog(Dialog::AuditSpace, "Space Audit", |_| {}));
+        failures.extend(check_dialog(Dialog::Sign, "Choose the digital ID that you want to use for signing:", |app| {
+            // Without a draft the dialog closes on frame 1. One (unusable)
+            // ID is enough to reach the Choose step, so its label paints.
+            app.digital_ids.push(crate::sign_ui::DigitalIdEntry {
+                path: "test-id.p12".to_string(),
+                name: "Test ID".to_string(),
+                issuer: "Test CA".to_string(),
+                email: "test@example.org".to_string(),
+                expires: "2030-01-01".to_string(),
+                unusable: Some("Test only: no private key.".to_string()),
+            });
+            app.start_signing(0, None, None, None);
+        }));
+        failures.extend(check_dialog(Dialog::SummarizeComments, "Summarize Options", |_| {}));
+        failures.extend(check_dialog(Dialog::Revert, "Revert", |_| {}));
+        failures.extend(check_dialog(Dialog::OverwriteChanged, "Save over the changed file?", |_| {}));
+        failures.extend(check_dialog(Dialog::RemoveHidden, "Remove hidden information", |_| {}));
+        failures.extend(check_dialog(Dialog::Sanitize, "Sanitize document", |_| {}));
+        // Field Properties, all 8 tabs.
+        for (tab, marker) in [
+            (crate::prepare::FieldTab::General, "COMMON PROPERTIES"),
+            (crate::prepare::FieldTab::Appearance, "Font Size:"), // "Borders and Colors" needs a field look; fresh fields have none
+            (crate::prepare::FieldTab::Position, "Left:"),
+            (crate::prepare::FieldTab::Options, "Default Value:"),
+            (crate::prepare::FieldTab::Format, "Select format category:"),
+            (crate::prepare::FieldTab::Validate, "Field value is not validated"),
+            (crate::prepare::FieldTab::Calculate, "Value is not calculated"),
+            (crate::prepare::FieldTab::Actions, "Add an Action"),
+        ] {
+            failures.extend(check_dialog(Dialog::FieldProps, marker, |app| {
+                let names = add_two_text_fields(app);
+                let (_, id) = app.active_ids().expect("a document is open");
+                let doc = app.session.get(id).expect("document in session");
+                let field = doc.form.iter().find(|f| f.name == names[0]).expect("field-one exists");
+                let mut draft = crate::prepare::FieldDraft::new(field, 0);
+                draft.tab = tab;
+                app.field_props = Some(draft);
+            }));
+        }
+        // Bulk Field Properties, all 3 tabs.
+        for (tab, marker) in [
+            (crate::bulk_fields::Tab::General, "Tooltip:"),
+            (crate::bulk_fields::Tab::Appearance, "Font Size:"),
+            (crate::bulk_fields::Tab::Options, "Alignment:"),
+        ] {
+            failures.extend(check_dialog(Dialog::BulkFieldProps, marker, |app| {
+                let names = add_two_text_fields(app);
+                let (_, id) = app.active_ids().expect("a document is open");
+                let doc = app.session.get(id).expect("document in session");
+                let mut draft = crate::bulk_fields::Draft::new(doc, names).expect("fields exist");
+                draft.tab = tab;
+                app.bulk_field_props = Some(draft);
+            }));
+        }
+        failures.extend(check_dialog(Dialog::Signature, "Create signature", |_| {}));
+        failures.extend(check_dialog(Dialog::AltText, "Set Alternate Text", |app| {
+            let (_, id) = app.active_ids().expect("a document is open");
+            app.alt_draft.doc = Some(id);
+        }));
+        failures.extend(check_dialog(Dialog::CreateStamp, "Create Custom Stamp", |_| {}));
+        failures.extend(check_dialog(Dialog::PdfA, "PDF/A", |_| {}));
+        failures.extend(check_dialog(Dialog::CompareFiles, "Compare Files", |app| {
+            let bytes = app.session.create_blank(612.0, 792.0, 2).unwrap();
+            app.open_bytes("A very long older document name that keeps going and going and going.pdf", None, bytes.as_ref().clone()).unwrap();
+        }));
+        failures.extend(check_dialog(Dialog::Preferences, "Preferences", |_| {}));
+        failures.extend(check_dialog(Dialog::RecognizeText, "Recognize Text", |_| {}));
+        failures.extend(check_dialog(Dialog::AccessibilityOptions, "Accessibility Checker Options", |_| {}));
+        failures.extend(check_dialog(Dialog::Export(crate::export_ui::ExportKind::Image), "Export to Image", |_| {}));
+        failures.extend(check_dialog(Dialog::Export(crate::export_ui::ExportKind::Text), "Export to Text", |_| {}));
+        failures.extend(check_dialog(Dialog::Export(crate::export_ui::ExportKind::AllImages), "Export All Images", |_| {}));
+        failures.extend(check_dialog(Dialog::PageBoxes, "Set Page Boxes", |_| {}));
+        failures.extend(check_dialog(Dialog::Protect, "Protect Using Password", |_| {}));
+        failures.extend(check_dialog(Dialog::NumberPages, "Number pages", |_| {}));
+        failures.extend(check_dialog(Dialog::Recovery, "Recover unsaved documents?", |app| {
+            app.recoverable.push(crate::recovery::RecoveryMeta {
+                key: "test-key".to_string(),
+                name: "A very long unsaved document name that keeps going and going and going.pdf".to_string(),
+                path: None,
+                saved_at: 1_700_000_000,
+                encrypted: false,
+                instance: None,
+            });
+        }));
+        failures.extend(check_dialog(Dialog::Shortcuts, "Keyboard shortcuts", |_| {}));
+        assert_no_failures(failures);
+    }
+
+    /// The standalone prompts (password / save / link / full-screen / updates),
+    /// each with a long name, URL or path that must wrap, not widen.
+    #[test]
+    fn standalone_prompts_have_no_horizontal_overflow() {
+        let mut failures = Vec::new();
+        // Save-changes prompt: a long file name in the title.
+        for width in [800.0, 600.0] {
+            let mut app = app_with_doc();
+            let bytes = app.session.create_blank(612.0, 792.0, 1).unwrap();
+            app.open_bytes("A very long document name that keeps going and going and going and going.pdf", None, bytes.as_ref().clone()).unwrap();
+            let (_, id) = app.active_ids().expect("a document is open");
+            app.close_request = Some(crate::CloseRequest::Tab(id));
+            let shapes = render_dialog(width, 900.0, &mut app);
+            if !has_text(&shapes, "Your changes will be lost if you don't save them.") {
+                failures.push(format!("save prompt at {width}px: marker did not paint"));
+            }
+            if let Some(o) = first_horizontal_overflow(&shapes, width) {
+                failures.push(format!("save prompt at {width}px: horizontal overflow: {o}"));
+            }
+        }
+        // Open-link prompt: a long URL.
+        for width in [800.0, 600.0] {
+            let mut app = app_with_doc();
+            app.pending_link = Some(crate::PendingLink {
+                url: "https://example.org/a/very/long/path/that/keeps/going/and/going/and/going?with=a&long=query&string=attached".to_string(),
+                origin: crate::LinkOrigin::Link,
+            });
+            let shapes = render_dialog(width, 900.0, &mut app);
+            if !has_text(&shapes, "Open this web page?") {
+                failures.push(format!("link prompt at {width}px: marker did not paint"));
+            }
+            if let Some(o) = first_horizontal_overflow(&shapes, width) {
+                failures.push(format!("link prompt at {width}px: horizontal overflow: {o}"));
+            }
+        }
+        // Remote-link prompt: a long local path.
+        for width in [800.0, 600.0] {
+            let mut app = app_with_doc();
+            let (_, id) = app.active_ids().expect("a document is open");
+            app.pending_remote_link = Some(crate::PendingRemoteLink {
+                source: id,
+                path: "/tmp/somewhere/deep/in/a/folder/with/a/very/long/name/that/keeps/going/document.pdf".into(),
+                destination: pdfcraft_render::RemoteDestination::Default,
+            });
+            let shapes = render_dialog(width, 900.0, &mut app);
+            if !has_text(&shapes, "Open this local PDF?") {
+                failures.push(format!("remote-link prompt at {width}px: marker did not paint"));
+            }
+            if let Some(o) = first_horizontal_overflow(&shapes, width) {
+                failures.push(format!("remote-link prompt at {width}px: horizontal overflow: {o}"));
+            }
+        }
+        // Full-screen prompt.
+        for width in [800.0, 600.0] {
+            let mut app = app_with_doc();
+            let (_, id) = app.active_ids().expect("a document is open");
+            app.pending_full_screen = Some(id);
+            let shapes = render_dialog(width, 900.0, &mut app);
+            if !has_text(&shapes, "Open in Full Screen mode?") {
+                failures.push(format!("full-screen prompt at {width}px: marker did not paint"));
+            }
+            if let Some(o) = first_horizontal_overflow(&shapes, width) {
+                failures.push(format!("full-screen prompt at {width}px: horizontal overflow: {o}"));
+            }
+        }
+        // Updates dialog.
+        for width in [800.0, 600.0] {
+            let mut app = app_with_doc();
+            app.updates.open = true;
+            let shapes = render_dialog(width, 900.0, &mut app);
+            if !has_text(&shapes, "Check for updates") {
+                failures.push(format!("updates dialog at {width}px: marker did not paint"));
+            }
+            if let Some(o) = first_horizontal_overflow(&shapes, width) {
+                failures.push(format!("updates dialog at {width}px: horizontal overflow: {o}"));
+            }
+        }
+        assert_no_failures(failures);
+    }
+
+    /// The wide dialogs in Urdu (the long labels) at 600 px.
+    #[test]
+    fn wide_dialogs_have_no_horizontal_overflow_in_urdu() {
+        let mut failures = Vec::new();
+        let ur = crate::i18n::Lang::from_code("ur").unwrap();
+        for (dialog, marker) in [
+            (Dialog::Print, crate::i18n::tr(ur, "Cancel")), // footer button: visible even unclamped
+            (Dialog::Properties(PropsTab::Description), crate::i18n::tr(ur, "PDF producer")),
+            (Dialog::About, "Rehman-PDF"),
+            (Dialog::Shortcuts, crate::i18n::tr(ur, "Keyboard shortcuts")),
+            // RedactProps stacks its two columns in Urdu too; the title is
+            // the marker, the left grid is what can overflow.
+            (Dialog::RedactProps, crate::i18n::tr(ur, "Redaction Tool Properties")),
+        ] {
+            let mut app = app_with_doc();
+            app.dialog = Some(dialog);
+            crate::i18n::set_current(ur);
+            let ctx = egui::Context::default();
+            ctx.set_fonts(theme::font_definitions());
+            theme::apply(&ctx, theme::ThemeKind::Light);
+            let mut shapes = Vec::new();
+            for _ in 0..3 {
+                let output = ctx.run_ui(
+                    egui::RawInput { screen_rect: Some(Rect::from_min_size(egui::Pos2::ZERO, vec2(600.0, 900.0))), ..Default::default() },
+                    |ui| {
+                        crate::dialogs::show(&mut app, ui.ctx());
+                    },
+                );
+                shapes = output.shapes.clone();
+                output.drop_without_applying_deltas();
+            }
+            if !has_text(&shapes, marker) {
+                failures.push(format!("{dialog:?} in Urdu at 600px: marker {marker:?} did not paint"));
+            }
+            if let Some(o) = first_horizontal_overflow(&shapes, 600.0) {
+                failures.push(format!("{dialog:?} in Urdu at 600px: horizontal overflow: {o}"));
+            }
+            crate::i18n::set_current(crate::i18n::Lang::EN);
+        }
+        assert_no_failures(failures);
     }
 }

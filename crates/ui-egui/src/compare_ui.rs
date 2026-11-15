@@ -65,7 +65,10 @@ pub(crate) fn body(ui: &mut egui::Ui, app: &mut PdfCraftApp, t: &Tokens) -> (boo
         });
         ui.end_row();
         ui.label(tl!("New file:"));
-        ui.label(egui::RichText::new(new_name).strong());
+        // Wrapped: a long file name used to set this column's width and push
+        // the whole dialog past the window (T-019 fix round). It wraps at the
+        // grid's width; the combo in the row above pins the column at 320.
+        ui.add(egui::Label::new(egui::RichText::new(new_name).strong()).wrap());
         ui.end_row();
     });
     ui.add_space(4.0);

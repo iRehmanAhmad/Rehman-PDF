@@ -2160,6 +2160,7 @@
 	Remove from Recent	Rimuovi dai recenti
 	Remove saved {what}	Rimuovi l'elemento salvato: {what}
 	Remove {name} from Recent	Rimuovi {name} dai recenti
+	{name} is no longer there — removed from Recent.	{name} non c'è più — rimosso dai recenti.
 	Reopen the files that were open when Rehman-PDF last closed	Riapri i file aperti alla chiusura precedente di Rehman-PDF
 	Reset page size	Ripristina dimensione pagine
 	Reset to printer defaults	Ripristina le impostazioni predefinite della stampante

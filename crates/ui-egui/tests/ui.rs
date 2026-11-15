@@ -80,8 +80,16 @@ fn painted_text(h: &Harness<'static, PdfCraftApp>) -> Vec<(String, bool, egui::R
 
 #[test]
 fn long_recent_names_and_paths_are_cut_before_the_page_count() {
-    let name = format!("{}.pdf", "Quarterly report final version ".repeat(10));
-    let path = format!("/{}/{name}", "A folder with a long name".repeat(8));
+    // T-019: a recent whose file is gone paints greyed without its page
+    // count, so this truncation test uses a real file on disk (the name
+    // repeat is shorter than the original's — a 324-byte component cannot
+    // exist on disk — but still far wider than the Recent half).
+    let name = format!("{}.pdf", "Quarterly report final version ".repeat(6));
+    let dir = std::env::temp_dir().join(format!("pdfcraft-long-recent-{}", std::process::id())).join("A folder with a long name".repeat(8));
+    std::fs::create_dir_all(&dir).unwrap();
+    let file = dir.join(&name);
+    std::fs::write(&file, b"%PDF-1.7\n").unwrap();
+    let path = file.to_string_lossy().into_owned();
     let h = harness({
         let (name, path) = (name.clone(), path.clone());
         move |app| app.recent.push(pdfcraft_ui_egui::RecentFile { name, path, pages: 7, size: 2048 })
@@ -93,6 +101,7 @@ fn long_recent_names_and_paths_are_cut_before_the_page_count() {
         assert!(*cut, "{whole:?} is cut short");
         assert!(rect.right() < detail.left(), "{whole:?} ends before the page count");
     }
+    let _ = std::fs::remove_dir_all(dir.parent().unwrap());
 }
 
 #[test]

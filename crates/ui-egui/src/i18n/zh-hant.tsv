@@ -28,6 +28,7 @@
 	Clear Recent Files	清除最近的檔案
 	Remove from Recent	從最近的檔案中移除
 	Remove {name} from Recent	從最近的檔案中移除{name}
+	{name} is no longer there — removed from Recent.	{name} 已不存在 — 已從最近的檔案中移除。
 	Pin folder to Home…	將資料夾釘選到首頁…
 	Folders	資料夾
 	Pin a folder…	釘選資料夾…

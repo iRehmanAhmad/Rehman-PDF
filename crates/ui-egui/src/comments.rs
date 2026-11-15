@@ -1755,7 +1755,11 @@ pub fn swatch_grid(ui: &mut egui::Ui, current: Option<Rgb>) -> Option<Rgb> {
     let open_id = base.with("other-colour");
     let value_id = open_id.with("value");
     let mut open = ui.data(|d| d.get_temp::<bool>(open_id)).unwrap_or(false);
-    egui::Grid::new(base.with("swatches")).spacing(vec2(6.0, 6.0)).show(ui, |ui| {
+    // The grid's columns hold 22 pt swatches, so its minimum column width is
+    // 0: egui's default (the theme's interact size, 40 pt) inflates every
+    // column to 40 pt and the picker to ~270 pt wide, pushing dialogs that
+    // hold it (Bulk Field Properties, RedactProps) past narrow windows.
+    egui::Grid::new(base.with("swatches")).spacing(vec2(6.0, 6.0)).min_col_width(0.0).show(ui, |ui| {
         for (i, (name, c)) in SWATCHES.iter().enumerate() {
             if swatch(ui, *c, on(c), tl!(name)).clicked() {
                 picked = Some(*c);

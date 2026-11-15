@@ -22,7 +22,10 @@ pub fn title(ui: &mut egui::Ui, text: &str) {
 pub fn tab_bar<T: Copy + PartialEq>(ui: &mut egui::Ui, tabs: &[(T, &str)], active: T) -> Option<T> {
     let t = Tokens::get(ui.ctx());
     let mut picked = None;
-    let row = ui.horizontal(|ui| {
+    // Wrapped: five tabs in Urdu are ~555 pt and would push a 520 pt dialog
+    // past the window; they wrap to a second line instead (T-019 fix round).
+    // One line at desktop in both languages; the divider below spans the row.
+    let row = ui.horizontal_wrapped(|ui| {
         ui.spacing_mut().item_spacing.x = 2.0;
         for (id, label) in tabs {
             let is_active = *id == active;

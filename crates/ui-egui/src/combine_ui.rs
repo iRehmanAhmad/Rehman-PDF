@@ -1313,14 +1313,12 @@ fn table(
         app.combine_tab.fitted = available;
         app.combine_tab.layout = app.combine_tab.layout.wrapping_add(1);
     }
+    // The re-fit is display-only (T-019 fix round 2): the stored widths stay
+    // the user's — writing the fitted widths back here shrank a column the
+    // user had just widened, and bumping `layout` re-keyed the table, which
+    // threw away egui_extras' in-progress resize drag after its first step.
+    // A hand resize is stored only by the `shown` path below, as before T-019.
     let widths = fit_columns(app.combine_columns.resolved(available), available);
-    // A column widened by hand keeps its width only while it fits: wider than
-    // the window, the columns re-fit instead of scrolling (T-019). The table
-    // state is keyed by the layout counter, so a re-fit bumps it to apply.
-    if app.combine_columns.widths.is_some_and(|w| w != widths) {
-        app.combine_columns.widths = Some(widths);
-        app.combine_tab.layout = app.combine_tab.layout.wrapping_add(1);
-    }
     let rows = Rows { checks, selected, twice, conflicts, dragging, sort: app.combine_tab.sort };
     let mut heading_event = None;
     let mut shown = None;
@@ -2818,7 +2816,9 @@ mod tests {
     }
 
     /// T-019: a column widened by hand re-fits instead of scrolling — no
-    /// horizontal ScrollArea, no bar, and the stored widths shrink to fit.
+    /// horizontal ScrollArea, no bar, and the painted table stays inside the
+    /// window. The re-fit is display-only (fix round 2): the stored widths
+    /// stay the user's, so a hand resize is never shrunk back.
     #[test]
     fn combine_table_refits_wide_columns_instead_of_scrolling() {
         let bytes = locked();
@@ -2840,9 +2840,10 @@ mod tests {
             }
         }
         output.drop_without_applying_deltas();
-        let stored = app.combine_columns.widths.expect("widths stay stored");
-        let sum: f32 = stored.iter().sum();
-        assert!(sum <= width, "widened columns re-fit to the window: {stored:?} sum {sum}");
+        // The display fits the window, but the stored widths are the user's
+        // own: a re-fit must not clobber a hand resize (fix round 2 — the
+        // write-back shrank a dragged column back and broke its drag).
+        assert_eq!(app.combine_columns.widths.expect("widths stay stored"), [800.0, 170.0, 84.0, 110.0, 200.0], "a re-fit is display-only");
     }
 
     /// The re-fit itself: proportional above the minima, never below them

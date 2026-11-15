@@ -473,11 +473,23 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                     // The label wraps at 240 pt: the grid's column cap does
                     // not bind a checkbox's own text, and the label is ~275 pt
                     // in Urdu (T-019 fix round).
-                    ui.scope(|ui| {
-                        ui.set_max_width(240.0);
-                        let lab = ui.add(egui::Label::new(tl!("Use overlay text")).wrap());
-                        let _ = check.labelled_by(lab.id);
-                    });
+                    let label_clicked = ui
+                        .scope(|ui| {
+                            ui.set_max_width(240.0);
+                            // Clickable (fix round 2): a bare box plus a plain
+                            // Label left the words dead — clicking them, and a
+                            // `get_by_label("Use overlay text").click()`, did
+                            // nothing, so the box never turned on and no code
+                            // could be picked. A `Label` keeps its text as its
+                            // accesskit label, so it stays findable by label.
+                            let lab = ui.add(egui::Label::new(tl!("Use overlay text")).wrap().sense(egui::Sense::click()));
+                            let _ = check.labelled_by(lab.id);
+                            lab.clicked()
+                        })
+                        .inner;
+                    if label_clicked {
+                        d.use_overlay = !d.use_overlay;
+                    }
                 });
                 ui.end_row();
                 let on = d.use_overlay;
@@ -490,11 +502,17 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                     ui.horizontal_wrapped(|ui| {
                         let r = ui.add_enabled(on, widgets::radio(!d.use_code, ""));
                         out = (r.clicked(), r.id);
-                        ui.scope(|ui| {
-                            ui.set_max_width(200.0);
-                            let lab = ui.add(egui::Label::new(tl!("Custom text:")).wrap());
-                            let _ = r.labelled_by(lab.id);
-                        });
+                        // Clickable label, as in the "Use overlay text" row:
+                        // a plain Label leaves the words dead (fix round 2).
+                        let label_clicked = ui
+                            .scope(|ui| {
+                                ui.set_max_width(200.0);
+                                let lab = ui.add(egui::Label::new(tl!("Custom text:")).wrap().sense(egui::Sense::click()));
+                                let _ = r.labelled_by(lab.id);
+                                lab.clicked()
+                            })
+                            .inner;
+                        out.0 |= label_clicked;
                     });
                     out
                 } else {
@@ -513,11 +531,17 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                     ui.horizontal_wrapped(|ui| {
                         let r = ui.add_enabled(on, widgets::radio(d.use_code, ""));
                         clicked = r.clicked();
-                        ui.scope(|ui| {
-                            ui.set_max_width(200.0);
-                            let lab = ui.add(egui::Label::new(tl!("Redaction code:")).wrap());
-                            let _ = r.labelled_by(lab.id);
-                        });
+                        // Clickable label, as in the "Use overlay text" row:
+                        // a plain Label leaves the words dead (fix round 2).
+                        let label_clicked = ui
+                            .scope(|ui| {
+                                ui.set_max_width(200.0);
+                                let lab = ui.add(egui::Label::new(tl!("Redaction code:")).wrap().sense(egui::Sense::click()));
+                                let _ = r.labelled_by(lab.id);
+                                lab.clicked()
+                            })
+                            .inner;
+                        clicked |= label_clicked;
                     });
                     clicked
                 } else {
@@ -583,12 +607,24 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                             ui.horizontal_wrapped(|ui| {
                                 let check = ui.add(widgets::checkbox(&mut auto, ""));
                                 let changed = check.changed();
-                                ui.scope(|ui| {
-                                    ui.set_max_width(240.0);
-                                    let lab = ui.add(egui::Label::new(tl!("Auto-size text to fit redaction region")).wrap());
-                                    let _ = check.labelled_by(lab.id);
-                                });
-                                if changed {
+                                // Clickable label, as in the "Use overlay text"
+                                // row: a plain Label leaves the words dead
+                                // (fix round 2).
+                                let label_clicked = ui
+                                    .scope(|ui| {
+                                        ui.set_max_width(240.0);
+                                        let lab = ui
+                                            .add(egui::Label::new(tl!("Auto-size text to fit redaction region")).wrap().sense(egui::Sense::click()));
+                                        let _ = check.labelled_by(lab.id);
+                                        lab.clicked()
+                                    })
+                                    .inner;
+                                let mut toggled = changed;
+                                if label_clicked {
+                                    auto = !auto;
+                                    toggled = true;
+                                }
+                                if toggled {
                                     look.size = if auto { 0.0 } else { 10.0 };
                                 }
                             });
@@ -600,9 +636,17 @@ pub(crate) fn props_body(ui: &mut egui::Ui, d: &mut RedactPrefs, _t: &Tokens) ->
                         ui.horizontal(|ui| {
                             let check = ui.add(widgets::checkbox(&mut auto, ""));
                             let changed = check.changed();
-                            let lab = ui.add(egui::Label::new(tl!("Auto-size text to fit redaction region")).wrap());
+                            // Clickable label, as in the "Use overlay text"
+                            // row: a plain Label leaves the words dead
+                            // (fix round 2).
+                            let lab = ui.add(egui::Label::new(tl!("Auto-size text to fit redaction region")).wrap().sense(egui::Sense::click()));
                             let _ = check.labelled_by(lab.id);
-                            if changed {
+                            let mut toggled = changed;
+                            if lab.clicked() {
+                                auto = !auto;
+                                toggled = true;
+                            }
+                            if toggled {
                                 look.size = if auto { 0.0 } else { 10.0 };
                             }
                             if !auto {

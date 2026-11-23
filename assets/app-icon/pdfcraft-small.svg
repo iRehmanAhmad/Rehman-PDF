@@ -1,18 +1,24 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
-<!-- Rehman-PDF app mark: indigo tile, stacked pages, R. Contributor-original. -->
+<!-- Rehman-PDF app mark (2026-11-23): red document tile, white R built from two
+     folded pages. Contributor-original: generated for the project owner and
+     chosen by him; this vector master is a hand recreation of that mark. -->
 <defs>
-<linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
-<stop offset="0" stop-color="#5B55F1"/>
-<stop offset="1" stop-color="#4F46E5"/>
-</linearGradient>
-<clipPath id="tileclip"><rect width="512" height="512" rx="112"/></clipPath>
+<clipPath id="tileclip"><path d="M93 0 H410 L512 102 V419 Q512 512 419 512 H93 Q0 512 0 419 V93 Q0 0 93 0 Z"/></clipPath>
 </defs>
 <g clip-path="url(#tileclip)">
-<rect width="512" height="512" fill="url(#tile)"/>
-<g transform="rotate(-9 256 300)"><rect x="150" y="140" width="220" height="300" rx="26" fill="#DCDDFA"/></g>
-<g transform="rotate(-4.5 280 300)"><rect x="172" y="146" width="220" height="300" rx="26" fill="#ECECFB"/></g>
-<rect x="196" y="152" width="220" height="300" rx="26" fill="#FFFFFF"/>
-<polygon points="416,152 416,208 360,152" fill="#C9CBEF"/>
-<text x="306" y="376" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="168" font-weight="700" text-anchor="middle" fill="#4F46E5">R</text>
+<rect width="512" height="512" fill="#AC1C1F"/>
+<polygon points="410,0 512,102 410,102" fill="#C95253"/>
+<g fill="#000000" opacity="0.14" transform="translate(0 3)">
+<path d="M119 411 V166 L176 106 H214 V411 Z"/>
+<path d="M214 106 H339 L396 162 V256 Q396 274 378 274 H214 Z"/>
+<polygon points="220,274 325,274 409,411 305,411"/>
+</g>
+<g fill="#FFFFFF">
+<path d="M119 411 V166 L176 106 H214 V411 Z"/>
+<path d="M214 106 H339 L396 162 V256 Q396 274 378 274 H214 Z"/>
+<polygon points="220,274 325,274 409,411 305,411"/>
+</g>
+<polygon points="119,166 176,106 176,160" fill="#E8E9EC"/>
+<polygon points="339,106 396,162 339,162" fill="#E8E9EC"/>
 </g>
 </svg>
